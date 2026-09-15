@@ -1,0 +1,29 @@
+{
+  "common": {
+    "saving": "Lagrer…",
+    "errUnknownDevice": "Fant ikke enheten",
+    "errInvalidTime": "Ugyldig tid",
+    "errGeneric": "Noe gikk galt"
+  },
+  "driver": {
+    "time": {
+      "defaultName": "Tid"
+    },
+    "range": {
+      "defaultName": "Tidsintervall"
+    }
+  },
+  "timePicker": {
+    "name": "Tidsvelger",
+    "pickDevice": "Velg en Tid-enhet i innstillingene",
+    "saved": "Lagret __time__"
+  },
+  "timeRange": {
+    "pickDevice": "Velg en Tidsintervall-enhet i innstillingene",
+    "on": "På",
+    "off": "Av",
+    "saved": "Lagret __label__ __time__",
+    "duration": "__hours__ t __minutes__ min",
+    "durationMinutes": "__minutes__ min"
+  }
+}

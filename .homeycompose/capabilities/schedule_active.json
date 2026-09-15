@@ -1,0 +1,15 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Within range",
+    "sv": "Inom intervallet",
+    "no": "Innenfor intervallet",
+    "da": "Inden for intervallet",
+    "fi": "Aikavälin sisällä",
+    "nl": "Binnen bereik"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "insights": true
+}

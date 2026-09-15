@@ -1,0 +1,12 @@
+{
+  "name": "net.sparud.jsgadgets",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/homey": "npm:homey-apps-sdk-v3-types@^0.3.12",
+    "@types/node": "^26.6.0",
+    "typescript": "^5.4.0"
+  }
+}

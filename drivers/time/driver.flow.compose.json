@@ -1,0 +1,30 @@
+{
+  "triggers": [
+    {
+      "id": "time_reached",
+      "title": {
+        "en": "The time is reached",
+        "sv": "Tiden har inträffat",
+        "no": "Tidspunktet er nådd",
+        "da": "Tidspunktet er nået",
+        "fi": "Aika saavutettu",
+        "nl": "De tijd is bereikt"
+      },
+      "tokens": [
+        {
+          "name": "time",
+          "type": "string",
+          "example": "07:00",
+          "title": {
+            "en": "Time",
+            "sv": "Tid",
+            "no": "Tid",
+            "da": "Tid",
+            "fi": "Aika",
+            "nl": "Tijd"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "id": "net.sparud.jsgadgets",
+  "version": "1.0.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "JS Gadgets"
+  },
+  "description": {
+    "en": "A collection of dashboard widgets and utilities for Homey.",
+    "sv": "En samling dashboard-widgetar och verktyg för Homey.",
+    "no": "En samling dashboard-widgets og verktøy for Homey.",
+    "da": "En samling dashboard-widgets og værktøjer til Homey.",
+    "fi": "Kokoelma koontinäytön widgettejä ja työkaluja Homeylle.",
+    "nl": "Een verzameling dashboardwidgets en hulpmiddelen voor Homey."
+  },
+  "category": [
+    "tools"
+  ],
+  "brandColor": "#2674F0",
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Jan Sparud",
+    "email": "jan@sparud.net"
+  }
+}

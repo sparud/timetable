@@ -1,0 +1,69 @@
+{
+  "triggers": [
+    {
+      "id": "range_started",
+      "title": {
+        "en": "The range starts",
+        "sv": "Intervallet börjar",
+        "no": "Intervallet starter",
+        "da": "Intervallet starter",
+        "fi": "Aikaväli alkaa",
+        "nl": "Het bereik begint"
+      },
+      "tokens": [
+        {
+          "name": "time",
+          "type": "string",
+          "example": "07:00",
+          "title": {
+            "en": "Time",
+            "sv": "Tid",
+            "no": "Tid",
+            "da": "Tid",
+            "fi": "Aika",
+            "nl": "Tijd"
+          }
+        }
+      ]
+    },
+    {
+      "id": "range_ended",
+      "title": {
+        "en": "The range ends",
+        "sv": "Intervallet slutar",
+        "no": "Intervallet slutter",
+        "da": "Intervallet slutter",
+        "fi": "Aikaväli päättyy",
+        "nl": "Het bereik eindigt"
+      },
+      "tokens": [
+        {
+          "name": "time",
+          "type": "string",
+          "example": "07:00",
+          "title": {
+            "en": "Time",
+            "sv": "Tid",
+            "no": "Tid",
+            "da": "Tid",
+            "fi": "Aika",
+            "nl": "Tijd"
+          }
+        }
+      ]
+    }
+  ],
+  "conditions": [
+    {
+      "id": "range_is_active",
+      "title": {
+        "en": "The time !{{is|is not}} within the range",
+        "sv": "Tiden !{{är|är inte}} inom intervallet",
+        "no": "Tiden !{{er|er ikke}} innenfor intervallet",
+        "da": "Tiden !{{er|er ikke}} inden for intervallet",
+        "fi": "Aika !{{on|ei ole}} aikavälin sisällä",
+        "nl": "De tijd !{{is|is niet}} binnen het bereik"
+      }
+    }
+  ]
+}

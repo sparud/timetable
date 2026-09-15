@@ -1,0 +1,37 @@
+{
+  "name": {
+    "en": "Time Range",
+    "sv": "Tidsintervall",
+    "no": "Tidsintervall",
+    "da": "Tidsinterval",
+    "fi": "Aikaväli",
+    "nl": "Tijdsbereik"
+  },
+  "class": "other",
+  "capabilities": [
+    "schedule_start",
+    "schedule_end",
+    "schedule_active"
+  ],
+  "platforms": [
+    "local"
+  ],
+  "images": {
+    "small": "/drivers/range/assets/images/small.png",
+    "large": "/drivers/range/assets/images/large.png",
+    "xlarge": "/drivers/range/assets/images/xlarge.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

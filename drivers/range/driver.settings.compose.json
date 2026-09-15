@@ -1,0 +1,46 @@
+[
+  {
+    "id": "start",
+    "type": "text",
+    "value": "07:00",
+    "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+    "label": {
+      "en": "Start",
+      "sv": "Start",
+      "no": "Start",
+      "da": "Start",
+      "fi": "Alku",
+      "nl": "Start"
+    },
+    "hint": {
+      "en": "24-hour time, HH:MM.",
+      "sv": "24-timmarsformat, HH:MM.",
+      "no": "24-timersformat, HH:MM.",
+      "da": "24-timersformat, HH:MM.",
+      "fi": "24 tunnin muoto, HH:MM.",
+      "nl": "24-uursnotatie, UU:MM."
+    }
+  },
+  {
+    "id": "end",
+    "type": "text",
+    "value": "23:00",
+    "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+    "label": {
+      "en": "End",
+      "sv": "Slut",
+      "no": "Slutt",
+      "da": "Slut",
+      "fi": "Loppu",
+      "nl": "Einde"
+    },
+    "hint": {
+      "en": "24-hour time, HH:MM.",
+      "sv": "24-timmarsformat, HH:MM.",
+      "no": "24-timersformat, HH:MM.",
+      "da": "24-timersformat, HH:MM.",
+      "fi": "24 tunnin muoto, HH:MM.",
+      "nl": "24-uursnotatie, UU:MM."
+    }
+  }
+]

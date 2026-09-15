@@ -1,0 +1,29 @@
+{
+  "common": {
+    "saving": "Saving…",
+    "errUnknownDevice": "Device not found",
+    "errInvalidTime": "Invalid time",
+    "errGeneric": "Something went wrong"
+  },
+  "driver": {
+    "time": {
+      "defaultName": "Time"
+    },
+    "range": {
+      "defaultName": "Time Range"
+    }
+  },
+  "timePicker": {
+    "name": "Time Picker",
+    "pickDevice": "Pick a Time device in the settings",
+    "saved": "Saved __time__"
+  },
+  "timeRange": {
+    "pickDevice": "Pick a Time Range device in the settings",
+    "on": "On",
+    "off": "Off",
+    "saved": "Saved __label__ __time__",
+    "duration": "__hours__ h __minutes__ min",
+    "durationMinutes": "__minutes__ min"
+  }
+}

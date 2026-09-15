@@ -1,0 +1,15 @@
+{
+  "type": "string",
+  "title": {
+    "en": "End",
+    "sv": "Slut",
+    "no": "Slutt",
+    "da": "Slut",
+    "fi": "Loppu",
+    "nl": "Einde"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "insights": false
+}

@@ -1,0 +1,29 @@
+{
+  "common": {
+    "saving": "Sparar…",
+    "errUnknownDevice": "Enheten hittades inte",
+    "errInvalidTime": "Ogiltig tid",
+    "errGeneric": "Något gick fel"
+  },
+  "driver": {
+    "time": {
+      "defaultName": "Tid"
+    },
+    "range": {
+      "defaultName": "Tidsintervall"
+    }
+  },
+  "timePicker": {
+    "name": "Tidsväljare",
+    "pickDevice": "Välj en Tid-enhet i inställningarna",
+    "saved": "Sparade __time__"
+  },
+  "timeRange": {
+    "pickDevice": "Välj en Tidsintervall-enhet i inställningarna",
+    "on": "På",
+    "off": "Av",
+    "saved": "Sparade __label__ __time__",
+    "duration": "__hours__ h __minutes__ min",
+    "durationMinutes": "__minutes__ min"
+  }
+}

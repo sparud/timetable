@@ -1,0 +1,29 @@
+{
+  "common": {
+    "saving": "Opslaan…",
+    "errUnknownDevice": "Apparaat niet gevonden",
+    "errInvalidTime": "Ongeldige tijd",
+    "errGeneric": "Er ging iets mis"
+  },
+  "driver": {
+    "time": {
+      "defaultName": "Tijd"
+    },
+    "range": {
+      "defaultName": "Tijdsbereik"
+    }
+  },
+  "timePicker": {
+    "name": "Tijdkiezer",
+    "pickDevice": "Kies een Tijd-apparaat in de instellingen",
+    "saved": "Opgeslagen __time__"
+  },
+  "timeRange": {
+    "pickDevice": "Kies een Tijdsbereik-apparaat in de instellingen",
+    "on": "Aan",
+    "off": "Uit",
+    "saved": "Opgeslagen __label__ __time__",
+    "duration": "__hours__ u __minutes__ min",
+    "durationMinutes": "__minutes__ min"
+  }
+}

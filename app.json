@@ -1,0 +1,540 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "net.sparud.jsgadgets",
+  "version": "1.0.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "JS Gadgets"
+  },
+  "description": {
+    "en": "A collection of dashboard widgets and utilities for Homey.",
+    "sv": "En samling dashboard-widgetar och verktyg för Homey.",
+    "no": "En samling dashboard-widgets og verktøy for Homey.",
+    "da": "En samling dashboard-widgets og værktøjer til Homey.",
+    "fi": "Kokoelma koontinäytön widgettejä ja työkaluja Homeylle.",
+    "nl": "Een verzameling dashboardwidgets en hulpmiddelen voor Homey."
+  },
+  "category": [
+    "tools"
+  ],
+  "brandColor": "#2674F0",
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Jan Sparud",
+    "email": "jan@sparud.net"
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "range_started",
+        "title": {
+          "en": "The range starts",
+          "sv": "Intervallet börjar",
+          "no": "Intervallet starter",
+          "da": "Intervallet starter",
+          "fi": "Aikaväli alkaa",
+          "nl": "Het bereik begint"
+        },
+        "tokens": [
+          {
+            "name": "time",
+            "type": "string",
+            "example": "07:00",
+            "title": {
+              "en": "Time",
+              "sv": "Tid",
+              "no": "Tid",
+              "da": "Tid",
+              "fi": "Aika",
+              "nl": "Tijd"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=range"
+          }
+        ]
+      },
+      {
+        "id": "range_ended",
+        "title": {
+          "en": "The range ends",
+          "sv": "Intervallet slutar",
+          "no": "Intervallet slutter",
+          "da": "Intervallet slutter",
+          "fi": "Aikaväli päättyy",
+          "nl": "Het bereik eindigt"
+        },
+        "tokens": [
+          {
+            "name": "time",
+            "type": "string",
+            "example": "07:00",
+            "title": {
+              "en": "Time",
+              "sv": "Tid",
+              "no": "Tid",
+              "da": "Tid",
+              "fi": "Aika",
+              "nl": "Tijd"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=range"
+          }
+        ]
+      },
+      {
+        "id": "time_reached",
+        "title": {
+          "en": "The time is reached",
+          "sv": "Tiden har inträffat",
+          "no": "Tidspunktet er nådd",
+          "da": "Tidspunktet er nået",
+          "fi": "Aika saavutettu",
+          "nl": "De tijd is bereikt"
+        },
+        "tokens": [
+          {
+            "name": "time",
+            "type": "string",
+            "example": "07:00",
+            "title": {
+              "en": "Time",
+              "sv": "Tid",
+              "no": "Tid",
+              "da": "Tid",
+              "fi": "Aika",
+              "nl": "Tijd"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=time"
+          }
+        ]
+      }
+    ],
+    "conditions": [
+      {
+        "id": "range_is_active",
+        "title": {
+          "en": "The time !{{is|is not}} within the range",
+          "sv": "Tiden !{{är|är inte}} inom intervallet",
+          "no": "Tiden !{{er|er ikke}} innenfor intervallet",
+          "da": "Tiden !{{er|er ikke}} inden for intervallet",
+          "fi": "Aika !{{on|ei ole}} aikavälin sisällä",
+          "nl": "De tijd !{{is|is niet}} binnen het bereik"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=range"
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Time Range",
+        "sv": "Tidsintervall",
+        "no": "Tidsintervall",
+        "da": "Tidsinterval",
+        "fi": "Aikaväli",
+        "nl": "Tijdsbereik"
+      },
+      "class": "other",
+      "capabilities": [
+        "schedule_start",
+        "schedule_end",
+        "schedule_active"
+      ],
+      "platforms": [
+        "local"
+      ],
+      "images": {
+        "small": "/drivers/range/assets/images/small.png",
+        "large": "/drivers/range/assets/images/large.png",
+        "xlarge": "/drivers/range/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "id": "range",
+      "settings": [
+        {
+          "id": "start",
+          "type": "text",
+          "value": "07:00",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+          "label": {
+            "en": "Start",
+            "sv": "Start",
+            "no": "Start",
+            "da": "Start",
+            "fi": "Alku",
+            "nl": "Start"
+          },
+          "hint": {
+            "en": "24-hour time, HH:MM.",
+            "sv": "24-timmarsformat, HH:MM.",
+            "no": "24-timersformat, HH:MM.",
+            "da": "24-timersformat, HH:MM.",
+            "fi": "24 tunnin muoto, HH:MM.",
+            "nl": "24-uursnotatie, UU:MM."
+          }
+        },
+        {
+          "id": "end",
+          "type": "text",
+          "value": "23:00",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+          "label": {
+            "en": "End",
+            "sv": "Slut",
+            "no": "Slutt",
+            "da": "Slut",
+            "fi": "Loppu",
+            "nl": "Einde"
+          },
+          "hint": {
+            "en": "24-hour time, HH:MM.",
+            "sv": "24-timmarsformat, HH:MM.",
+            "no": "24-timersformat, HH:MM.",
+            "da": "24-timersformat, HH:MM.",
+            "fi": "24 tunnin muoto, HH:MM.",
+            "nl": "24-uursnotatie, UU:MM."
+          }
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Time",
+        "sv": "Tid",
+        "no": "Tid",
+        "da": "Tid",
+        "fi": "Aika",
+        "nl": "Tijd"
+      },
+      "class": "other",
+      "capabilities": [
+        "schedule_time"
+      ],
+      "platforms": [
+        "local"
+      ],
+      "images": {
+        "small": "/drivers/time/assets/images/small.png",
+        "large": "/drivers/time/assets/images/large.png",
+        "xlarge": "/drivers/time/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_devices"
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "id": "time",
+      "settings": [
+        {
+          "id": "time",
+          "type": "text",
+          "value": "07:00",
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+          "label": {
+            "en": "Time",
+            "sv": "Tid",
+            "no": "Tid",
+            "da": "Tid",
+            "fi": "Aika",
+            "nl": "Tijd"
+          },
+          "hint": {
+            "en": "24-hour time, HH:MM.",
+            "sv": "24-timmarsformat, HH:MM.",
+            "no": "24-timersformat, HH:MM.",
+            "da": "24-timersformat, HH:MM.",
+            "fi": "24 tunnin muoto, HH:MM.",
+            "nl": "24-uursnotatie, UU:MM."
+          }
+        }
+      ]
+    }
+  ],
+  "widgets": {
+    "range-picker": {
+      "name": {
+        "en": "Time Range Picker",
+        "sv": "Tidsintervall",
+        "no": "Tidsintervall",
+        "da": "Tidsinterval",
+        "fi": "Aikaväli",
+        "nl": "Tijdsbereik"
+      },
+      "height": 146,
+      "settings": [
+        {
+          "id": "device",
+          "type": "autocomplete",
+          "title": {
+            "en": "Device",
+            "sv": "Enhet",
+            "no": "Enhet",
+            "da": "Enhed",
+            "fi": "Laite",
+            "nl": "Apparaat"
+          },
+          "hint": {
+            "en": "Which Time Range device this widget edits.",
+            "sv": "Vilken Time Range-enhet denna widget redigerar.",
+            "no": "Hvilken Time Range-enhet denne widgeten redigerer.",
+            "da": "Hvilken Time Range-enhed denne widget redigerer.",
+            "fi": "Mitä Time Range-laitetta tämä widget muokkaa.",
+            "nl": "Welk Time Range-apparaat deze widget bewerkt."
+          }
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "value": "",
+          "title": {
+            "en": "Title",
+            "sv": "Titel",
+            "no": "Tittel",
+            "da": "Titel",
+            "fi": "Otsikko",
+            "nl": "Titel"
+          },
+          "hint": {
+            "en": "Optional. Leave empty to show the device's name.",
+            "sv": "Valfritt. Lämna tomt för att visa enhetens namn.",
+            "no": "Valgfritt. La stå tom for å vise enhetens navn.",
+            "da": "Valgfrit. Lad stå tom for at vise enhedens navn.",
+            "fi": "Valinnainen. Jätä tyhjäksi näyttääksesi laitteen nimen.",
+            "nl": "Optioneel. Laat leeg om de naam van het apparaat te tonen."
+          }
+        },
+        {
+          "id": "labelStart",
+          "type": "text",
+          "value": "",
+          "title": {
+            "en": "Start label",
+            "sv": "Startetikett",
+            "no": "Startetikett",
+            "da": "Startetiket",
+            "fi": "Aloitusotsikko",
+            "nl": "Startlabel"
+          },
+          "hint": {
+            "en": "Shown above the start time. Leave empty for \"On\".",
+            "sv": "Visas ovanför starttiden. Lämna tomt för \"På\".",
+            "no": "Vises over starttidspunktet. La stå tom for \"På\".",
+            "da": "Vises over starttidspunktet. Lad stå tom for \"Til\".",
+            "fi": "Näytetään aloitusajan yläpuolella. Jätä tyhjäksi käyttääksesi \"Päällä\".",
+            "nl": "Wordt boven de starttijd getoond. Laat leeg voor \"Aan\"."
+          }
+        },
+        {
+          "id": "labelEnd",
+          "type": "text",
+          "value": "",
+          "title": {
+            "en": "End label",
+            "sv": "Slutetikett",
+            "no": "Sluttetikett",
+            "da": "Slutetiket",
+            "fi": "Lopetusotsikko",
+            "nl": "Eindlabel"
+          },
+          "hint": {
+            "en": "Shown above the end time. Leave empty for \"Off\".",
+            "sv": "Visas ovanför sluttiden. Lämna tomt för \"Av\".",
+            "no": "Vises over sluttidspunktet. La stå tom for \"Av\".",
+            "da": "Vises over sluttidspunktet. Lad stå tom for \"Fra\".",
+            "fi": "Näytetään lopetusajan yläpuolella. Jätä tyhjäksi käyttääksesi \"Pois\".",
+            "nl": "Wordt boven de eindtijd getoond. Laat leeg voor \"Uit\"."
+          }
+        }
+      ],
+      "api": {
+        "getState": {
+          "method": "GET",
+          "path": "/state"
+        },
+        "setTime": {
+          "method": "PUT",
+          "path": "/time"
+        }
+      },
+      "id": "range-picker"
+    },
+    "time-picker": {
+      "name": {
+        "en": "Time Picker",
+        "sv": "Tidsväljare",
+        "no": "Tidsvelger",
+        "da": "Tidsvælger",
+        "fi": "Ajanvalitsin",
+        "nl": "Tijdkiezer"
+      },
+      "height": 136,
+      "settings": [
+        {
+          "id": "device",
+          "type": "autocomplete",
+          "title": {
+            "en": "Device",
+            "sv": "Enhet",
+            "no": "Enhet",
+            "da": "Enhed",
+            "fi": "Laite",
+            "nl": "Apparaat"
+          },
+          "hint": {
+            "en": "Which Time device this widget edits.",
+            "sv": "Vilken Time-enhet denna widget redigerar.",
+            "no": "Hvilken Time-enhet denne widgeten redigerer.",
+            "da": "Hvilken Time-enhed denne widget redigerer.",
+            "fi": "Mitä Time-laitetta tämä widget muokkaa.",
+            "nl": "Welk Time-apparaat deze widget bewerkt."
+          }
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "value": "",
+          "title": {
+            "en": "Title",
+            "sv": "Titel",
+            "no": "Tittel",
+            "da": "Titel",
+            "fi": "Otsikko",
+            "nl": "Titel"
+          },
+          "hint": {
+            "en": "Optional. Leave empty to show the device's name.",
+            "sv": "Valfritt. Lämna tomt för att visa enhetens namn.",
+            "no": "Valgfritt. La stå tom for å vise enhetens navn.",
+            "da": "Valgfrit. Lad stå tom for at vise enhedens navn.",
+            "fi": "Valinnainen. Jätä tyhjäksi näyttääksesi laitteen nimen.",
+            "nl": "Optioneel. Laat leeg om de naam van het apparaat te tonen."
+          }
+        }
+      ],
+      "api": {
+        "getState": {
+          "method": "GET",
+          "path": "/state"
+        },
+        "setTime": {
+          "method": "PUT",
+          "path": "/time"
+        }
+      },
+      "id": "time-picker"
+    }
+  },
+  "capabilities": {
+    "schedule_active": {
+      "type": "boolean",
+      "title": {
+        "en": "Within range",
+        "sv": "Inom intervallet",
+        "no": "Innenfor intervallet",
+        "da": "Inden for intervallet",
+        "fi": "Aikavälin sisällä",
+        "nl": "Binnen bereik"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": true
+    },
+    "schedule_end": {
+      "type": "string",
+      "title": {
+        "en": "End",
+        "sv": "Slut",
+        "no": "Slutt",
+        "da": "Slut",
+        "fi": "Loppu",
+        "nl": "Einde"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": false
+    },
+    "schedule_start": {
+      "type": "string",
+      "title": {
+        "en": "Start",
+        "sv": "Start",
+        "no": "Start",
+        "da": "Start",
+        "fi": "Alku",
+        "nl": "Start"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": false
+    },
+    "schedule_time": {
+      "type": "string",
+      "title": {
+        "en": "Time",
+        "sv": "Tid",
+        "no": "Tid",
+        "da": "Tid",
+        "fi": "Aika",
+        "nl": "Tijd"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "insights": false
+    }
+  }
+}

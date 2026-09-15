@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+
+      .tp {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--homey-su-1);
+      }
+
+      .tp-label {
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .tp-field {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 52px;
+        border-radius: var(--homey-border-radius-default);
+        background-color: var(--homey-color-mono-050);
+        border: var(--homey-line-light);
+        transition: background-color 150ms ease, opacity 150ms ease;
+      }
+
+      .tp-field:active {
+        background-color: var(--homey-color-mono-100);
+      }
+
+      .tp.is-disabled .tp-field {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+
+      .tp-field input {
+        font-family: inherit;
+        font-size: var(--homey-font-size-xxlarge);
+        line-height: var(--homey-line-height-xxlarge);
+        font-weight: var(--homey-font-weight-bold);
+        font-variant-numeric: tabular-nums;
+        color: var(--homey-text-color);
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: 0;
+        text-align: center;
+      }
+
+      /* Keep the native picker button, but make it blend in. */
+      .tp-field input::-webkit-calendar-picker-indicator {
+        opacity: 0.35;
+        cursor: pointer;
+      }
+
+      .tp-status {
+        text-align: center;
+        min-height: var(--homey-line-height-small);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .tp-status.is-success { color: var(--homey-text-color-success); }
+      .tp-status.is-warning { color: var(--homey-text-color-warning); }
+      .tp-status.is-error { color: var(--homey-text-color-danger); }
+    </style>
+  </head>
+
+  <body class="homey-widget">
+    <div class="tp" id="root">
+      <div class="tp-label homey-text-small-light" id="label">&nbsp;</div>
+      <div class="tp-field" id="field">
+        <input type="time" id="time" step="60" />
+      </div>
+      <div class="tp-status homey-text-small-light" id="status">&nbsp;</div>
+    </div>
+
+    <script type="text/javascript">
+      const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/;
+      const SAVE_DEBOUNCE = 500;
+
+      const root = document.getElementById('root');
+      const label = document.getElementById('label');
+      const field = document.getElementById('field');
+      const input = document.getElementById('time');
+      const status = document.getElementById('status');
+
+      let homey = null;
+      let device = null;
+      let statusTimeout = null;
+      let saveTimeout = null;
+      let savesInFlight = 0;
+      let saveSeq = 0;
+
+      function setStatus(text, state) {
+        clearTimeout(statusTimeout);
+        status.textContent = text || ' ';
+        status.className = `tp-status homey-text-small-light${state ? ` is-${state}` : ''}`;
+      }
+
+      function flashStatus(text, state, duration = 2000) {
+        setStatus(text, state);
+        statusTimeout = setTimeout(() => setStatus(null), duration);
+      }
+
+      function setDisabled(disabled) {
+        root.classList.toggle('is-disabled', disabled);
+        input.disabled = disabled;
+      }
+
+      function describeError(err) {
+        switch (err && err.message) {
+          case 'unknown_device':
+            return homey.__('common.errUnknownDevice');
+          case 'invalid_time':
+            return homey.__('common.errInvalidTime');
+          default:
+            console.error('Time Picker:', err);
+            return homey.__('common.errGeneric');
+        }
+      }
+
+      function isSafeToReplaceValue() {
+        return saveTimeout === null
+          && savesInFlight === 0
+          && document.activeElement !== input;
+      }
+
+      function apply(state) {
+        label.textContent = homey.getSettings().title || state.name;
+        input.value = TIME_PATTERN.test(state.times.time) ? state.times.time : '';
+      }
+
+      async function refresh() {
+        if (!isSafeToReplaceValue()) return;
+
+        try {
+          apply(await homey.api('GET', `/state?id=${encodeURIComponent(device.id)}`));
+          setDisabled(false);
+          setStatus(null);
+        } catch (err) {
+          setDisabled(true);
+          setStatus(describeError(err), 'error');
+        }
+      }
+
+      function scheduleSave() {
+        const value = input.value.slice(0, 5);
+        if (!TIME_PATTERN.test(value)) return;
+
+        setStatus(homey.__('common.saving'));
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+          saveTimeout = null;
+          save(value);
+        }, SAVE_DEBOUNCE);
+      }
+
+      async function save(value) {
+        const seq = ++saveSeq;
+        savesInFlight++;
+
+        try {
+          // The app owns the device, so the write is immediate - nothing to confirm.
+          await homey.api('PUT', '/time', { id: device.id, slot: 'time', value });
+          if (seq !== saveSeq) return;
+
+          flashStatus(homey.__('timePicker.saved', { time: value }), 'success');
+          try {
+            homey.hapticFeedback();
+          } catch (err) { /* not available on every platform */ }
+        } catch (err) {
+          if (seq !== saveSeq) return;
+          setStatus(describeError(err), 'error');
+        } finally {
+          savesInFlight--;
+        }
+      }
+
+      function applyColorScheme() {
+        const bg = getComputedStyle(document.body).backgroundColor;
+        const rgb = (bg.match(/\d+(\.\d+)?/g) || []).slice(0, 3).map(Number);
+        if (rgb.length < 3) return;
+
+        const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
+        document.documentElement.style.colorScheme = luminance < 0.5 ? 'dark' : 'light';
+      }
+
+      function onHomeyReady(Homey) {
+        homey = Homey;
+        applyColorScheme();
+
+        const settings = Homey.getSettings();
+        device = settings.device || null;
+
+        if (device === null) {
+          label.textContent = settings.title || Homey.__('timePicker.name');
+          setDisabled(true);
+          setStatus(Homey.__('timePicker.pickDevice'), 'error');
+          Homey.ready();
+          return;
+        }
+
+        label.textContent = settings.title || device.name || ' ';
+
+        field.addEventListener('click', event => {
+          if (event.target === input || input.disabled) return;
+          input.focus();
+          if (typeof input.showPicker === 'function') {
+            try {
+              input.showPicker();
+            } catch (err) { /* needs a user gesture on some platforms */ }
+          }
+        });
+
+        input.addEventListener('change', scheduleSave);
+
+        Homey.on('schedule', state => {
+          if (!state || !device || state.id !== device.id) return;
+          if (!isSafeToReplaceValue()) return;
+          apply(state);
+        });
+
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) refresh();
+        });
+
+        Homey.ready();
+        refresh();
+      }
+    </script>
+  </body>
+</html>

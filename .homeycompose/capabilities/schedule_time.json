@@ -1,0 +1,15 @@
+{
+  "type": "string",
+  "title": {
+    "en": "Time",
+    "sv": "Tid",
+    "no": "Tid",
+    "da": "Tid",
+    "fi": "Aika",
+    "nl": "Tijd"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "insights": false
+}

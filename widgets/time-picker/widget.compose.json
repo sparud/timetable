@@ -1,0 +1,64 @@
+{
+  "name": {
+    "en": "Time Picker",
+    "sv": "Tidsväljare",
+    "no": "Tidsvelger",
+    "da": "Tidsvælger",
+    "fi": "Ajanvalitsin",
+    "nl": "Tijdkiezer"
+  },
+  "height": 136,
+  "settings": [
+    {
+      "id": "device",
+      "type": "autocomplete",
+      "title": {
+        "en": "Device",
+        "sv": "Enhet",
+        "no": "Enhet",
+        "da": "Enhed",
+        "fi": "Laite",
+        "nl": "Apparaat"
+      },
+      "hint": {
+        "en": "Which Time device this widget edits.",
+        "sv": "Vilken Time-enhet denna widget redigerar.",
+        "no": "Hvilken Time-enhet denne widgeten redigerer.",
+        "da": "Hvilken Time-enhed denne widget redigerer.",
+        "fi": "Mitä Time-laitetta tämä widget muokkaa.",
+        "nl": "Welk Time-apparaat deze widget bewerkt."
+      }
+    },
+    {
+      "id": "title",
+      "type": "text",
+      "value": "",
+      "title": {
+        "en": "Title",
+        "sv": "Titel",
+        "no": "Tittel",
+        "da": "Titel",
+        "fi": "Otsikko",
+        "nl": "Titel"
+      },
+      "hint": {
+        "en": "Optional. Leave empty to show the device's name.",
+        "sv": "Valfritt. Lämna tomt för att visa enhetens namn.",
+        "no": "Valgfritt. La stå tom for å vise enhetens navn.",
+        "da": "Valgfrit. Lad stå tom for at vise enhedens navn.",
+        "fi": "Valinnainen. Jätä tyhjäksi näyttääksesi laitteen nimen.",
+        "nl": "Optioneel. Laat leeg om de naam van het apparaat te tonen."
+      }
+    }
+  ],
+  "api": {
+    "getState": {
+      "method": "GET",
+      "path": "/state"
+    },
+    "setTime": {
+      "method": "PUT",
+      "path": "/time"
+    }
+  }
+}

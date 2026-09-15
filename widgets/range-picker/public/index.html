@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <style>
+      body { margin: 0; overflow: hidden; }
+
+      .tr { display: flex; flex-direction: column; gap: var(--homey-su-1); }
+
+      /* The subject is often implicit, so an unset title must not reserve a row. */
+      .tr-title:empty { display: none; }
+
+      .tr-title, .tr-label, .tr-status {
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .tr-cells { display: flex; gap: var(--homey-su-2); }
+      .tr-cell { flex: 1 1 0; min-width: 0; }
+
+      .tr-field {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 44px;
+        border-radius: var(--homey-border-radius-default);
+        background-color: var(--homey-color-mono-050);
+        border: var(--homey-line-light);
+        transition: background-color 150ms ease, opacity 150ms ease;
+      }
+
+      .tr-field:active { background-color: var(--homey-color-mono-100); }
+
+      .tr-cell.is-disabled .tr-field { opacity: 0.4; pointer-events: none; }
+
+      .tr-field input {
+        font-family: inherit;
+        /* Two controls share the width, so this is a step down from the single picker. */
+        font-size: var(--homey-font-size-xlarge);
+        line-height: var(--homey-line-height-xlarge);
+        font-weight: var(--homey-font-weight-bold);
+        font-variant-numeric: tabular-nums;
+        color: var(--homey-text-color);
+        background: transparent;
+        border: none;
+        outline: none;
+        padding: 0;
+        text-align: center;
+        max-width: 100%;
+      }
+
+      .tr-field input::-webkit-calendar-picker-indicator { opacity: 0.35; cursor: pointer; }
+
+      .tr-status { min-height: var(--homey-line-height-small); }
+      .tr-status.is-success { color: var(--homey-text-color-success); }
+      .tr-status.is-warning { color: var(--homey-text-color-warning); }
+      .tr-status.is-error   { color: var(--homey-text-color-danger); }
+    </style>
+  </head>
+
+  <body class="homey-widget">
+    <div class="tr">
+      <div class="tr-title homey-text-small-light" id="title">&nbsp;</div>
+      <div class="tr-cells">
+        <div class="tr-cell" id="cell-start">
+          <div class="tr-label homey-text-small-light" id="label-start">&nbsp;</div>
+          <div class="tr-field" id="field-start"><input type="time" id="input-start" step="60" /></div>
+        </div>
+        <div class="tr-cell" id="cell-end">
+          <div class="tr-label homey-text-small-light" id="label-end">&nbsp;</div>
+          <div class="tr-field" id="field-end"><input type="time" id="input-end" step="60" /></div>
+        </div>
+      </div>
+      <div class="tr-status homey-text-small-light" id="status">&nbsp;</div>
+    </div>
+
+    <script type="text/javascript">
+      const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/;
+      const SAVE_DEBOUNCE = 500;
+
+      const status = document.getElementById('status');
+
+      let homey = null;
+      let device = null;
+      let statusTimeout = null;
+
+      const slots = [
+        { key: 'start', labelSetting: 'labelStart', defaultLabel: 'timeRange.on' },
+        { key: 'end', labelSetting: 'labelEnd', defaultLabel: 'timeRange.off' },
+      ].map(slot => Object.assign(slot, {
+        cell: document.getElementById(`cell-${slot.key}`),
+        field: document.getElementById(`field-${slot.key}`),
+        input: document.getElementById(`input-${slot.key}`),
+        label: document.getElementById(`label-${slot.key}`),
+        saveTimeout: null,
+        savesInFlight: 0,
+        saveSeq: 0,
+      }));
+
+      const minutesOf = value => {
+        const m = TIME_PATTERN.exec(value);
+        return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+      };
+
+      // The range may wrap past midnight, so an end before the start is legitimate -
+      // showing the length is what makes a genuine mistake obvious.
+      function describeDuration() {
+        const from = minutesOf(slots[0].input.value.slice(0, 5));
+        const to = minutesOf(slots[1].input.value.slice(0, 5));
+        if (from === null || to === null) return null;
+
+        const total = (to - from + 1440) % 1440;
+        const hours = Math.floor(total / 60);
+        const minutes = total % 60;
+
+        return hours === 0
+          ? homey.__('timeRange.durationMinutes', { minutes })
+          : homey.__('timeRange.duration', { hours, minutes });
+      }
+
+      function setStatus(text, state) {
+        clearTimeout(statusTimeout);
+        status.textContent = text || ' ';
+        status.className = `tr-status homey-text-small-light${state ? ` is-${state}` : ''}`;
+      }
+
+      function showIdleStatus() { setStatus(describeDuration()); }
+
+      function flashStatus(text, state, duration = 2000) {
+        setStatus(text, state);
+        statusTimeout = setTimeout(showIdleStatus, duration);
+      }
+
+      function setDisabled(slot, disabled) {
+        slot.cell.classList.toggle('is-disabled', disabled);
+        slot.input.disabled = disabled;
+      }
+
+      function describeError(err) {
+        switch (err && err.message) {
+          case 'unknown_device':
+            return homey.__('common.errUnknownDevice');
+          case 'invalid_time':
+            return homey.__('common.errInvalidTime');
+          default:
+            console.error('Time Range Picker:', err);
+            return homey.__('common.errGeneric');
+        }
+      }
+
+      function isSafeToReplaceValue(slot) {
+        return slot.saveTimeout === null
+          && slot.savesInFlight === 0
+          && document.activeElement !== slot.input;
+      }
+
+      function apply(state) {
+        document.getElementById('title').textContent = homey.getSettings().title || state.name;
+        for (const slot of slots) {
+          if (!isSafeToReplaceValue(slot)) continue;
+          const value = state.times[slot.key];
+          slot.input.value = TIME_PATTERN.test(value) ? value : '';
+        }
+        showIdleStatus();
+      }
+
+      async function refresh() {
+        if (!slots.every(isSafeToReplaceValue)) return;
+
+        try {
+          apply(await homey.api('GET', `/state?id=${encodeURIComponent(device.id)}`));
+          slots.forEach(slot => setDisabled(slot, false));
+        } catch (err) {
+          slots.forEach(slot => setDisabled(slot, true));
+          setStatus(describeError(err), 'error');
+        }
+      }
+
+      function scheduleSave(slot) {
+        const value = slot.input.value.slice(0, 5);
+        if (!TIME_PATTERN.test(value)) return;
+
+        setStatus(homey.__('common.saving'));
+        clearTimeout(slot.saveTimeout);
+        slot.saveTimeout = setTimeout(() => {
+          slot.saveTimeout = null;
+          save(slot, value);
+        }, SAVE_DEBOUNCE);
+      }
+
+      async function save(slot, value) {
+        const seq = ++slot.saveSeq;
+        slot.savesInFlight++;
+
+        try {
+          await homey.api('PUT', '/time', { id: device.id, slot: slot.key, value });
+          if (seq !== slot.saveSeq) return;
+
+          flashStatus(homey.__('timeRange.saved', { label: slot.label.textContent, time: value }), 'success');
+          try {
+            homey.hapticFeedback();
+          } catch (err) { /* not available on every platform */ }
+        } catch (err) {
+          if (seq !== slot.saveSeq) return;
+          setStatus(describeError(err), 'error');
+        } finally {
+          slot.savesInFlight--;
+        }
+      }
+
+      function applyColorScheme() {
+        const bg = getComputedStyle(document.body).backgroundColor;
+        const rgb = (bg.match(/\d+(\.\d+)?/g) || []).slice(0, 3).map(Number);
+        if (rgb.length < 3) return;
+
+        const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
+        document.documentElement.style.colorScheme = luminance < 0.5 ? 'dark' : 'light';
+      }
+
+      // Report the height we actually lay out to - it differs by a row depending on
+      // whether a title is shown.
+      function ready() {
+        const measured = document.body.scrollHeight;
+        homey.ready(measured > 40 ? { height: measured } : undefined);
+      }
+
+      function onHomeyReady(Homey) {
+        homey = Homey;
+        applyColorScheme();
+
+        const settings = Homey.getSettings();
+        device = settings.device || null;
+        document.getElementById('title').textContent = settings.title || '';
+
+        for (const slot of slots) {
+          slot.label.textContent = settings[slot.labelSetting] || Homey.__(slot.defaultLabel);
+
+          slot.field.addEventListener('click', event => {
+            if (event.target === slot.input || slot.input.disabled) return;
+            slot.input.focus();
+            if (typeof slot.input.showPicker === 'function') {
+              try {
+                slot.input.showPicker();
+              } catch (err) { /* needs a user gesture on some platforms */ }
+            }
+          });
+
+          slot.input.addEventListener('change', () => scheduleSave(slot));
+        }
+
+        if (device === null) {
+          slots.forEach(slot => setDisabled(slot, true));
+          setStatus(Homey.__('timeRange.pickDevice'), 'error');
+          ready();
+          return;
+        }
+
+        Homey.on('schedule', state => {
+          if (!state || !device || state.id !== device.id) return;
+          apply(state);
+        });
+
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) refresh();
+        });
+
+        ready();
+        refresh();
+      }
+    </script>
+  </body>
+</html>

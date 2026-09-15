@@ -1,0 +1,35 @@
+{
+  "name": {
+    "en": "Time",
+    "sv": "Tid",
+    "no": "Tid",
+    "da": "Tid",
+    "fi": "Aika",
+    "nl": "Tijd"
+  },
+  "class": "other",
+  "capabilities": [
+    "schedule_time"
+  ],
+  "platforms": [
+    "local"
+  ],
+  "images": {
+    "small": "/drivers/time/assets/images/small.png",
+    "large": "/drivers/time/assets/images/large.png",
+    "xlarge": "/drivers/time/assets/images/xlarge.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_devices"
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}
