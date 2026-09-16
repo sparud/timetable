@@ -1,6 +1,7 @@
 {
   "name": "net.sparud.jsgadgets",
   "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
     "build": "tsc",
     "test": "tsc && node test/dst.js"

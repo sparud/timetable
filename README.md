@@ -100,4 +100,4 @@ Homey Pro. Dashboard widgets are not available on Homey Cloud.
 
 ## Licence
 
-GPL-3.0
+MIT
