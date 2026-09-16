@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#000000"/>
+  <g transform="translate(78.8 315.9) scale(2.28)">
+    <rect x="0" y="0" width="380" height="172" rx="18" fill="#1C1C1E"/>
+    
+    <text x="190" y="31" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8E8E93"
+          text-anchor="middle">Evening lamps</text>
+    
+    <circle cx="354" cy="26" r="15" fill="#2674F0"/>
+    <g fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"
+       transform="translate(346 18)">
+      <path d="M8 2.5v5.5"/><path d="M4.4 4.6a5 5 0 1 0 7.2 0"/>
+    </g>
+    
+    <text x="101.0" y="54" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8E8E93"
+          text-anchor="middle">On</text>
+    <rect x="16" y="60" width="170" height="44" rx="10" fill="#2C2C2E" stroke="#3A3A3C"/>
+    <text x="101.0" y="91.0" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700"
+          fill="#F5F5F7" text-anchor="middle">19:25</text>
+    
+    <text x="279.0" y="54" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8E8E93"
+          text-anchor="middle">Off</text>
+    <rect x="194" y="60" width="170" height="44" rx="10" fill="#2C2C2E" stroke="#3A3A3C"/>
+    <text x="279.0" y="91.0" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700"
+          fill="#F5F5F7" text-anchor="middle">23:58</text>
+    <rect x="80.0" y="112" width="28" height="22" rx="6" fill="#3A3A3C"/>
+    <text x="94.0" y="127.5" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#F5F5F7" text-anchor="middle">Mo</text>
+    <rect x="112.0" y="112" width="28" height="22" rx="6" fill="#3A3A3C"/>
+    <text x="126.0" y="127.5" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#F5F5F7" text-anchor="middle">Tu</text>
+    <rect x="144.0" y="112" width="28" height="22" rx="6" fill="#3A3A3C"/>
+    <text x="158.0" y="127.5" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#F5F5F7" text-anchor="middle">We</text>
+    <rect x="176.0" y="112" width="28" height="22" rx="6" fill="#3A3A3C"/>
+    <text x="190.0" y="127.5" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#F5F5F7" text-anchor="middle">Th</text>
+    <rect x="208.0" y="112" width="28" height="22" rx="6" fill="#3A3A3C"/>
+    <text x="222.0" y="127.5" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#F5F5F7" text-anchor="middle">Fr</text>
+    <rect x="240.0" y="112" width="28" height="22" rx="6" fill="#3A3A3C"/>
+    <text x="254.0" y="127.5" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#F5F5F7" text-anchor="middle">Sa</text>
+    <rect x="272.0" y="112" width="28" height="22" rx="6" fill="#3A3A3C"/>
+    <text x="286.0" y="127.5" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#F5F5F7" text-anchor="middle">Su</text>
+    <text x="190" y="152" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8E8E93"
+          text-anchor="middle">4 h 33 min</text>
+  </g>
+</svg>

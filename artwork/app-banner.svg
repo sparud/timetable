@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#3B86FF"/>
+      <stop offset="1" stop-color="#0B2E78"/>
+    </linearGradient>
+  </defs>
+  <rect width="1000" height="700" fill="url(#bg)"/>
+  <g transform="translate(162 350) scale(0.70)">
+    <g fill="none" stroke="#fff" stroke-linecap="round" transform="translate(-256 -256)">
+      <circle cx="256" cy="256" r="150" stroke-width="26" opacity="0.30"/>
+      <path d="M 150.9 361.1 A 148 148 0 0 1 360.6 151.4" stroke-width="26"/>
+      <path d="M 256 170 L 256 262 L 318 292" stroke-width="24" stroke-linejoin="round"/>
+    </g>
+    <circle cx="-105.1" cy="105.1" r="30" fill="#fff"/>
+    <circle cx="104.6" cy="-104.6" r="30" fill="#fff"/>
+  </g>
+  <text x="352" y="330" font-family="Helvetica, Arial, sans-serif" font-size="104"
+        font-weight="700" fill="#fff" letter-spacing="-2">JS Gadgets</text>
+  <text x="354" y="408" font-family="Helvetica, Arial, sans-serif" font-size="52"
+        font-weight="400" fill="#fff" opacity="0.72">Schedules on your dashboard</text>
+</svg>

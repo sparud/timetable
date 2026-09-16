@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Dial with a highlighted span: the app is about intervals, not just instants. -->
+  <g fill="none" stroke="#fff" stroke-linecap="round">
+    <circle cx="256" cy="256" r="150" stroke-width="26" opacity="0.28"/>
+    <!-- span from 8 o'clock round through 12 to 2 o'clock -->
+    <path d="M 150.9 361.1 A 148 148 0 0 1 360.6 151.4" stroke-width="26"/>
+    <path d="M 256 170 L 256 262 L 318 292" stroke-width="24" stroke-linejoin="round"/>
+  </g>
+  <circle cx="150.9" cy="361.1" r="30" fill="#fff"/>
+  <circle cx="360.6" cy="151.4" r="30" fill="#fff"/>
+</svg>

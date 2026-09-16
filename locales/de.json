@@ -1,0 +1,43 @@
+{
+  "common": {
+    "saving": "Speichern…",
+    "errUnknownDevice": "Gerät nicht gefunden",
+    "errInvalidTime": "Ungültige Zeit",
+    "errGeneric": "Etwas ist schiefgelaufen",
+    "everyDay": "Täglich",
+    "errNoDays": "Mindestens einen Tag wählen",
+    "paused": "Pausiert",
+    "pause": "Pausieren",
+    "resume": "Fortsetzen"
+  },
+  "driver": {
+    "time": {
+      "defaultName": "Zeit"
+    },
+    "range": {
+      "defaultName": "Zeitraum"
+    }
+  },
+  "timePicker": {
+    "name": "Zeitauswahl",
+    "pickDevice": "Wähle in den Einstellungen ein Zeit-Gerät",
+    "saved": "__time__ gespeichert"
+  },
+  "timeRange": {
+    "pickDevice": "Wähle in den Einstellungen ein Zeitraum-Gerät",
+    "on": "Ein",
+    "off": "Aus",
+    "saved": "__label__ __time__ gespeichert",
+    "duration": "__hours__ Std. __minutes__ Min.",
+    "durationMinutes": "__minutes__ Min."
+  },
+  "weekday": {
+    "mon": "Mo",
+    "tue": "Di",
+    "wed": "Mi",
+    "thu": "Do",
+    "fri": "Fr",
+    "sat": "Sa",
+    "sun": "So"
+  }
+}

@@ -9,7 +9,7 @@
       "sv": "Start",
       "no": "Start",
       "da": "Start",
-      "fi": "Alku",
+      "de": "Start",
       "nl": "Start"
     },
     "hint": {
@@ -17,7 +17,7 @@
       "sv": "24-timmarsformat, HH:MM.",
       "no": "24-timersformat, HH:MM.",
       "da": "24-timersformat, HH:MM.",
-      "fi": "24 tunnin muoto, HH:MM.",
+      "de": "24-Stunden-Format, HH:MM.",
       "nl": "24-uursnotatie, UU:MM."
     }
   },
@@ -31,7 +31,7 @@
       "sv": "Slut",
       "no": "Slutt",
       "da": "Slut",
-      "fi": "Loppu",
+      "de": "Ende",
       "nl": "Einde"
     },
     "hint": {
@@ -39,7 +39,7 @@
       "sv": "24-timmarsformat, HH:MM.",
       "no": "24-timersformat, HH:MM.",
       "da": "24-timersformat, HH:MM.",
-      "fi": "24 tunnin muoto, HH:MM.",
+      "de": "24-Stunden-Format, HH:MM.",
       "nl": "24-uursnotatie, UU:MM."
     }
   },
@@ -50,7 +50,7 @@
       "sv": "Upprepa på",
       "no": "Gjenta på",
       "da": "Gentag på",
-      "fi": "Toista",
+      "de": "Wiederholen am",
       "nl": "Herhalen op"
     },
     "children": [
@@ -63,7 +63,7 @@
           "sv": "Måndag",
           "no": "Mandag",
           "da": "Mandag",
-          "fi": "Maanantai",
+          "de": "Montag",
           "nl": "Maandag"
         },
         "hint": {
@@ -71,7 +71,7 @@
           "sv": "Lämna alla omarkerade för att upprepa varje dag. För ett intervall över midnatt gäller dagen då det börjar — \"Måndag\" på 22:00–06:00 betyder natten som börjar på måndag.",
           "no": "La alle stå umerket for å gjenta hver dag. For et intervall over midnatt gjelder dagen det starter — \"Mandag\" på 22:00–06:00 betyr natten som begynner på mandag.",
           "da": "Lad alle stå umarkeret for at gentage hver dag. For et interval over midnat gælder dagen, det starter — \"Mandag\" på 22:00–06:00 betyder natten, der begynder mandag.",
-          "fi": "Jätä kaikki valitsematta toistaaksesi joka päivä. Keskiyön yli ulottuvassa aikavälissä valitaan päivä, jona se alkaa — \"Maanantai\" välillä 22:00–06:00 tarkoittaa maanantaina alkavaa yötä.",
+          "de": "Alle Häkchen entfernen, um täglich zu wiederholen. Bei einem Zeitraum über Mitternacht zählt der Tag, an dem er beginnt — „Montag“ bei 22:00–06:00 meint die Nacht, die am Montag beginnt.",
           "nl": "Laat alles uitgevinkt om elke dag te herhalen. Bij een bereik over middernacht telt de dag waarop het begint — \"Maandag\" bij 22:00–06:00 betekent de nacht die maandag begint."
         }
       },
@@ -84,7 +84,7 @@
           "sv": "Tisdag",
           "no": "Tirsdag",
           "da": "Tirsdag",
-          "fi": "Tiistai",
+          "de": "Dienstag",
           "nl": "Dinsdag"
         }
       },
@@ -97,7 +97,7 @@
           "sv": "Onsdag",
           "no": "Onsdag",
           "da": "Onsdag",
-          "fi": "Keskiviikko",
+          "de": "Mittwoch",
           "nl": "Woensdag"
         }
       },
@@ -110,7 +110,7 @@
           "sv": "Torsdag",
           "no": "Torsdag",
           "da": "Torsdag",
-          "fi": "Torstai",
+          "de": "Donnerstag",
           "nl": "Donderdag"
         }
       },
@@ -123,7 +123,7 @@
           "sv": "Fredag",
           "no": "Fredag",
           "da": "Fredag",
-          "fi": "Perjantai",
+          "de": "Freitag",
           "nl": "Vrijdag"
         }
       },
@@ -136,7 +136,7 @@
           "sv": "Lördag",
           "no": "Lørdag",
           "da": "Lørdag",
-          "fi": "Lauantai",
+          "de": "Samstag",
           "nl": "Zaterdag"
         }
       },
@@ -149,7 +149,7 @@
           "sv": "Söndag",
           "no": "Søndag",
           "da": "Søndag",
-          "fi": "Sunnuntai",
+          "de": "Sonntag",
           "nl": "Zondag"
         }
       }

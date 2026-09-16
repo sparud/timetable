@@ -7,15 +7,16 @@
     "local"
   ],
   "name": {
-    "en": "JS Gadgets"
+    "en": "JS Gadgets",
+    "de": "JS Gadgets"
   },
   "description": {
-    "en": "A collection of dashboard widgets and utilities for Homey.",
-    "sv": "En samling dashboard-widgetar och verktyg för Homey.",
-    "no": "En samling dashboard-widgets og verktøy for Homey.",
-    "da": "En samling dashboard-widgets og værktøjer til Homey.",
-    "fi": "Kokoelma koontinäytön widgettejä ja työkaluja Homeylle.",
-    "nl": "Een verzameling dashboardwidgets en hulpmiddelen voor Homey."
+    "en": "Schedules you can edit straight from your dashboard.",
+    "sv": "Scheman du kan ändra direkt från din instrumentpanel.",
+    "no": "Tidsplaner du kan endre rett fra dashbordet.",
+    "da": "Tidsplaner du kan ændre direkte fra dit dashboard.",
+    "de": "Zeitpläne, die du direkt vom Dashboard aus änderst.",
+    "nl": "Schema’s die je rechtstreeks vanaf je dashboard aanpast."
   },
   "category": [
     "tools"

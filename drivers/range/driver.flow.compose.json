@@ -7,7 +7,7 @@
         "sv": "Intervallet börjar",
         "no": "Intervallet starter",
         "da": "Intervallet starter",
-        "fi": "Aikaväli alkaa",
+        "de": "Der Zeitraum beginnt",
         "nl": "Het bereik begint"
       },
       "tokens": [
@@ -20,7 +20,7 @@
             "sv": "Tid",
             "no": "Tid",
             "da": "Tid",
-            "fi": "Aika",
+            "de": "Zeit",
             "nl": "Tijd"
           }
         }
@@ -33,7 +33,7 @@
         "sv": "Intervallet slutar",
         "no": "Intervallet slutter",
         "da": "Intervallet slutter",
-        "fi": "Aikaväli päättyy",
+        "de": "Der Zeitraum endet",
         "nl": "Het bereik eindigt"
       },
       "tokens": [
@@ -46,7 +46,7 @@
             "sv": "Tid",
             "no": "Tid",
             "da": "Tid",
-            "fi": "Aika",
+            "de": "Zeit",
             "nl": "Tijd"
           }
         }
@@ -61,7 +61,7 @@
         "sv": "Tiden !{{är|är inte}} inom intervallet",
         "no": "Tiden !{{er|er ikke}} innenfor intervallet",
         "da": "Tiden !{{er|er ikke}} inden for intervallet",
-        "fi": "Aika !{{on|ei ole}} aikavälin sisällä",
+        "de": "Die Zeit !{{liegt|liegt nicht}} im Zeitraum",
         "nl": "De tijd !{{is|is niet}} binnen het bereik"
       }
     }
@@ -74,7 +74,7 @@
         "sv": "Ställ in starttiden",
         "no": "Sett starttidspunktet",
         "da": "Indstil starttidspunktet",
-        "fi": "Aseta aloitusaika",
+        "de": "Startzeit festlegen",
         "nl": "Stel de starttijd in"
       },
       "titleFormatted": {
@@ -82,7 +82,7 @@
         "sv": "Ställ in starttiden till [[time]]",
         "no": "Sett starttidspunktet til [[time]]",
         "da": "Indstil starttidspunktet til [[time]]",
-        "fi": "Aseta aloitusajaksi [[time]]",
+        "de": "Startzeit auf [[time]] setzen",
         "nl": "Stel de starttijd in op [[time]]"
       },
       "args": [
@@ -94,7 +94,7 @@
             "sv": "Tid",
             "no": "Tid",
             "da": "Tid",
-            "fi": "Aika",
+            "de": "Zeit",
             "nl": "Tijd"
           },
           "placeholder": {
@@ -102,7 +102,7 @@
             "sv": "22:30",
             "no": "22:30",
             "da": "22:30",
-            "fi": "22:30",
+            "de": "22:30",
             "nl": "22:30"
           }
         }
@@ -115,7 +115,7 @@
         "sv": "Ställ in sluttiden",
         "no": "Sett sluttidspunktet",
         "da": "Indstil sluttidspunktet",
-        "fi": "Aseta lopetusaika",
+        "de": "Endzeit festlegen",
         "nl": "Stel de eindtijd in"
       },
       "titleFormatted": {
@@ -123,7 +123,7 @@
         "sv": "Ställ in sluttiden till [[time]]",
         "no": "Sett sluttidspunktet til [[time]]",
         "da": "Indstil sluttidspunktet til [[time]]",
-        "fi": "Aseta lopetusajaksi [[time]]",
+        "de": "Endzeit auf [[time]] setzen",
         "nl": "Stel de eindtijd in op [[time]]"
       },
       "args": [
@@ -135,7 +135,7 @@
             "sv": "Tid",
             "no": "Tid",
             "da": "Tid",
-            "fi": "Aika",
+            "de": "Zeit",
             "nl": "Tijd"
           },
           "placeholder": {
@@ -143,7 +143,7 @@
             "sv": "22:30",
             "no": "22:30",
             "da": "22:30",
-            "fi": "22:30",
+            "de": "22:30",
             "nl": "22:30"
           }
         }

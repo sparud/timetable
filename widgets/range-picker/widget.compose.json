@@ -4,7 +4,7 @@
     "sv": "Tidsintervall",
     "no": "Tidsintervall",
     "da": "Tidsinterval",
-    "fi": "Aikaväli",
+    "de": "Zeitraum-Auswahl",
     "nl": "Tijdsbereik"
   },
   "height": 172,
@@ -17,7 +17,7 @@
         "sv": "Enhet",
         "no": "Enhet",
         "da": "Enhed",
-        "fi": "Laite",
+        "de": "Gerät",
         "nl": "Apparaat"
       },
       "hint": {
@@ -25,7 +25,7 @@
         "sv": "Vilken Time Range-enhet denna widget redigerar.",
         "no": "Hvilken Time Range-enhet denne widgeten redigerer.",
         "da": "Hvilken Time Range-enhed denne widget redigerer.",
-        "fi": "Mitä Time Range-laitetta tämä widget muokkaa.",
+        "de": "Welches Zeitraum-Gerät dieses Widget bearbeitet.",
         "nl": "Welk Time Range-apparaat deze widget bewerkt."
       }
     },
@@ -38,7 +38,7 @@
         "sv": "Titel",
         "no": "Tittel",
         "da": "Titel",
-        "fi": "Otsikko",
+        "de": "Titel",
         "nl": "Titel"
       },
       "hint": {
@@ -46,7 +46,7 @@
         "sv": "Valfri etikett ovanför båda tiderna. Lämna tomt för att dölja raden helt.",
         "no": "Valgfri etikett over begge tidspunktene. La stå tom for å skjule raden helt.",
         "da": "Valgfri etiket over begge tidspunkter. Lad stå tom for at skjule rækken helt.",
-        "fi": "Valinnainen otsikko molempien aikojen yläpuolella. Jätä tyhjäksi piilottaaksesi rivin kokonaan.",
+        "de": "Optionale Beschriftung über beiden Zeiten. Leer lassen, um die Zeile ganz auszublenden.",
         "nl": "Optioneel label boven beide tijden. Laat leeg om de rij volledig te verbergen."
       }
     },
@@ -59,7 +59,7 @@
         "sv": "Startetikett",
         "no": "Startetikett",
         "da": "Startetiket",
-        "fi": "Aloitusotsikko",
+        "de": "Beschriftung Start",
         "nl": "Startlabel"
       },
       "hint": {
@@ -67,7 +67,7 @@
         "sv": "Visas ovanför starttiden. Lämna tomt för \"På\".",
         "no": "Vises over starttidspunktet. La stå tom for \"På\".",
         "da": "Vises over starttidspunktet. Lad stå tom for \"Til\".",
-        "fi": "Näytetään aloitusajan yläpuolella. Jätä tyhjäksi käyttääksesi \"Päällä\".",
+        "de": "Wird über der Startzeit angezeigt. Leer lassen für „Ein“.",
         "nl": "Wordt boven de starttijd getoond. Laat leeg voor \"Aan\"."
       }
     },
@@ -80,7 +80,7 @@
         "sv": "Slutetikett",
         "no": "Sluttetikett",
         "da": "Slutetiket",
-        "fi": "Lopetusotsikko",
+        "de": "Beschriftung Ende",
         "nl": "Eindlabel"
       },
       "hint": {
@@ -88,7 +88,7 @@
         "sv": "Visas ovanför sluttiden. Lämna tomt för \"Av\".",
         "no": "Vises over sluttidspunktet. La stå tom for \"Av\".",
         "da": "Vises over sluttidspunktet. Lad stå tom for \"Fra\".",
-        "fi": "Näytetään lopetusajan yläpuolella. Jätä tyhjäksi käyttääksesi \"Pois\".",
+        "de": "Wird über der Endzeit angezeigt. Leer lassen für „Aus“.",
         "nl": "Wordt boven de eindtijd getoond. Laat leeg voor \"Uit\"."
       }
     }

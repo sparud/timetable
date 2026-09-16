@@ -9,7 +9,7 @@
       "sv": "Tid",
       "no": "Tid",
       "da": "Tid",
-      "fi": "Aika",
+      "de": "Zeit",
       "nl": "Tijd"
     },
     "hint": {
@@ -17,7 +17,7 @@
       "sv": "24-timmarsformat, HH:MM.",
       "no": "24-timersformat, HH:MM.",
       "da": "24-timersformat, HH:MM.",
-      "fi": "24 tunnin muoto, HH:MM.",
+      "de": "24-Stunden-Format, HH:MM.",
       "nl": "24-uursnotatie, UU:MM."
     }
   },
@@ -28,7 +28,7 @@
       "sv": "Upprepa på",
       "no": "Gjenta på",
       "da": "Gentag på",
-      "fi": "Toista",
+      "de": "Wiederholen am",
       "nl": "Herhalen op"
     },
     "children": [
@@ -41,7 +41,7 @@
           "sv": "Måndag",
           "no": "Mandag",
           "da": "Mandag",
-          "fi": "Maanantai",
+          "de": "Montag",
           "nl": "Maandag"
         },
         "hint": {
@@ -49,7 +49,7 @@
           "sv": "Lämna alla omarkerade för att upprepa varje dag.",
           "no": "La alle stå umerket for å gjenta hver dag.",
           "da": "Lad alle stå umarkeret for at gentage hver dag.",
-          "fi": "Jätä kaikki valitsematta toistaaksesi joka päivä.",
+          "de": "Alle Häkchen entfernen, um täglich zu wiederholen.",
           "nl": "Laat alles uitgevinkt om elke dag te herhalen."
         }
       },
@@ -62,7 +62,7 @@
           "sv": "Tisdag",
           "no": "Tirsdag",
           "da": "Tirsdag",
-          "fi": "Tiistai",
+          "de": "Dienstag",
           "nl": "Dinsdag"
         }
       },
@@ -75,7 +75,7 @@
           "sv": "Onsdag",
           "no": "Onsdag",
           "da": "Onsdag",
-          "fi": "Keskiviikko",
+          "de": "Mittwoch",
           "nl": "Woensdag"
         }
       },
@@ -88,7 +88,7 @@
           "sv": "Torsdag",
           "no": "Torsdag",
           "da": "Torsdag",
-          "fi": "Torstai",
+          "de": "Donnerstag",
           "nl": "Donderdag"
         }
       },
@@ -101,7 +101,7 @@
           "sv": "Fredag",
           "no": "Fredag",
           "da": "Fredag",
-          "fi": "Perjantai",
+          "de": "Freitag",
           "nl": "Vrijdag"
         }
       },
@@ -114,7 +114,7 @@
           "sv": "Lördag",
           "no": "Lørdag",
           "da": "Lørdag",
-          "fi": "Lauantai",
+          "de": "Samstag",
           "nl": "Zaterdag"
         }
       },
@@ -127,7 +127,7 @@
           "sv": "Söndag",
           "no": "Søndag",
           "da": "Søndag",
-          "fi": "Sunnuntai",
+          "de": "Sonntag",
           "nl": "Zondag"
         }
       }

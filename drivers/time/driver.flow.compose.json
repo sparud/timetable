@@ -7,7 +7,7 @@
         "sv": "Tiden har inträffat",
         "no": "Tidspunktet er nådd",
         "da": "Tidspunktet er nået",
-        "fi": "Aika saavutettu",
+        "de": "Die Zeit ist erreicht",
         "nl": "De tijd is bereikt"
       },
       "tokens": [
@@ -20,7 +20,7 @@
             "sv": "Tid",
             "no": "Tid",
             "da": "Tid",
-            "fi": "Aika",
+            "de": "Zeit",
             "nl": "Tijd"
           }
         }
@@ -35,7 +35,7 @@
         "sv": "Ställ in tiden",
         "no": "Sett tidspunktet",
         "da": "Indstil tidspunktet",
-        "fi": "Aseta aika",
+        "de": "Zeit festlegen",
         "nl": "Stel de tijd in"
       },
       "titleFormatted": {
@@ -43,7 +43,7 @@
         "sv": "Ställ in tiden till [[time]]",
         "no": "Sett tidspunktet til [[time]]",
         "da": "Indstil tidspunktet til [[time]]",
-        "fi": "Aseta ajaksi [[time]]",
+        "de": "Zeit auf [[time]] setzen",
         "nl": "Stel de tijd in op [[time]]"
       },
       "args": [
@@ -55,7 +55,7 @@
             "sv": "Tid",
             "no": "Tid",
             "da": "Tid",
-            "fi": "Aika",
+            "de": "Zeit",
             "nl": "Tijd"
           },
           "placeholder": {
@@ -63,7 +63,7 @@
             "sv": "22:30",
             "no": "22:30",
             "da": "22:30",
-            "fi": "22:30",
+            "de": "22:30",
             "nl": "22:30"
           }
         }

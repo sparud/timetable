@@ -8,15 +8,16 @@
     "local"
   ],
   "name": {
-    "en": "JS Gadgets"
+    "en": "JS Gadgets",
+    "de": "JS Gadgets"
   },
   "description": {
-    "en": "A collection of dashboard widgets and utilities for Homey.",
-    "sv": "En samling dashboard-widgetar och verktyg för Homey.",
-    "no": "En samling dashboard-widgets og verktøy for Homey.",
-    "da": "En samling dashboard-widgets og værktøjer til Homey.",
-    "fi": "Kokoelma koontinäytön widgettejä ja työkaluja Homeylle.",
-    "nl": "Een verzameling dashboardwidgets en hulpmiddelen voor Homey."
+    "en": "Schedules you can edit straight from your dashboard.",
+    "sv": "Scheman du kan ändra direkt från din instrumentpanel.",
+    "no": "Tidsplaner du kan endre rett fra dashbordet.",
+    "da": "Tidsplaner du kan ændre direkte fra dit dashboard.",
+    "de": "Zeitpläne, die du direkt vom Dashboard aus änderst.",
+    "nl": "Schema’s die je rechtstreeks vanaf je dashboard aanpast."
   },
   "category": [
     "tools"
@@ -41,7 +42,7 @@
           "sv": "Intervallet börjar",
           "no": "Intervallet starter",
           "da": "Intervallet starter",
-          "fi": "Aikaväli alkaa",
+          "de": "Der Zeitraum beginnt",
           "nl": "Het bereik begint"
         },
         "tokens": [
@@ -54,7 +55,7 @@
               "sv": "Tid",
               "no": "Tid",
               "da": "Tid",
-              "fi": "Aika",
+              "de": "Zeit",
               "nl": "Tijd"
             }
           }
@@ -74,7 +75,7 @@
           "sv": "Intervallet slutar",
           "no": "Intervallet slutter",
           "da": "Intervallet slutter",
-          "fi": "Aikaväli päättyy",
+          "de": "Der Zeitraum endet",
           "nl": "Het bereik eindigt"
         },
         "tokens": [
@@ -87,7 +88,7 @@
               "sv": "Tid",
               "no": "Tid",
               "da": "Tid",
-              "fi": "Aika",
+              "de": "Zeit",
               "nl": "Tijd"
             }
           }
@@ -107,7 +108,7 @@
           "sv": "Tiden har inträffat",
           "no": "Tidspunktet er nådd",
           "da": "Tidspunktet er nået",
-          "fi": "Aika saavutettu",
+          "de": "Die Zeit ist erreicht",
           "nl": "De tijd is bereikt"
         },
         "tokens": [
@@ -120,7 +121,7 @@
               "sv": "Tid",
               "no": "Tid",
               "da": "Tid",
-              "fi": "Aika",
+              "de": "Zeit",
               "nl": "Tijd"
             }
           }
@@ -142,7 +143,7 @@
           "sv": "Tiden !{{är|är inte}} inom intervallet",
           "no": "Tiden !{{er|er ikke}} innenfor intervallet",
           "da": "Tiden !{{er|er ikke}} inden for intervallet",
-          "fi": "Aika !{{on|ei ole}} aikavälin sisällä",
+          "de": "Die Zeit !{{liegt|liegt nicht}} im Zeitraum",
           "nl": "De tijd !{{is|is niet}} binnen het bereik"
         },
         "args": [
@@ -162,7 +163,7 @@
           "sv": "Ställ in starttiden",
           "no": "Sett starttidspunktet",
           "da": "Indstil starttidspunktet",
-          "fi": "Aseta aloitusaika",
+          "de": "Startzeit festlegen",
           "nl": "Stel de starttijd in"
         },
         "titleFormatted": {
@@ -170,7 +171,7 @@
           "sv": "Ställ in starttiden till [[time]]",
           "no": "Sett starttidspunktet til [[time]]",
           "da": "Indstil starttidspunktet til [[time]]",
-          "fi": "Aseta aloitusajaksi [[time]]",
+          "de": "Startzeit auf [[time]] setzen",
           "nl": "Stel de starttijd in op [[time]]"
         },
         "args": [
@@ -187,7 +188,7 @@
               "sv": "Tid",
               "no": "Tid",
               "da": "Tid",
-              "fi": "Aika",
+              "de": "Zeit",
               "nl": "Tijd"
             },
             "placeholder": {
@@ -195,7 +196,7 @@
               "sv": "22:30",
               "no": "22:30",
               "da": "22:30",
-              "fi": "22:30",
+              "de": "22:30",
               "nl": "22:30"
             }
           }
@@ -208,7 +209,7 @@
           "sv": "Ställ in sluttiden",
           "no": "Sett sluttidspunktet",
           "da": "Indstil sluttidspunktet",
-          "fi": "Aseta lopetusaika",
+          "de": "Endzeit festlegen",
           "nl": "Stel de eindtijd in"
         },
         "titleFormatted": {
@@ -216,7 +217,7 @@
           "sv": "Ställ in sluttiden till [[time]]",
           "no": "Sett sluttidspunktet til [[time]]",
           "da": "Indstil sluttidspunktet til [[time]]",
-          "fi": "Aseta lopetusajaksi [[time]]",
+          "de": "Endzeit auf [[time]] setzen",
           "nl": "Stel de eindtijd in op [[time]]"
         },
         "args": [
@@ -233,7 +234,7 @@
               "sv": "Tid",
               "no": "Tid",
               "da": "Tid",
-              "fi": "Aika",
+              "de": "Zeit",
               "nl": "Tijd"
             },
             "placeholder": {
@@ -241,7 +242,7 @@
               "sv": "22:30",
               "no": "22:30",
               "da": "22:30",
-              "fi": "22:30",
+              "de": "22:30",
               "nl": "22:30"
             }
           }
@@ -254,7 +255,7 @@
           "sv": "Ställ in tiden",
           "no": "Sett tidspunktet",
           "da": "Indstil tidspunktet",
-          "fi": "Aseta aika",
+          "de": "Zeit festlegen",
           "nl": "Stel de tijd in"
         },
         "titleFormatted": {
@@ -262,7 +263,7 @@
           "sv": "Ställ in tiden till [[time]]",
           "no": "Sett tidspunktet til [[time]]",
           "da": "Indstil tidspunktet til [[time]]",
-          "fi": "Aseta ajaksi [[time]]",
+          "de": "Zeit auf [[time]] setzen",
           "nl": "Stel de tijd in op [[time]]"
         },
         "args": [
@@ -279,7 +280,7 @@
               "sv": "Tid",
               "no": "Tid",
               "da": "Tid",
-              "fi": "Aika",
+              "de": "Zeit",
               "nl": "Tijd"
             },
             "placeholder": {
@@ -287,7 +288,7 @@
               "sv": "22:30",
               "no": "22:30",
               "da": "22:30",
-              "fi": "22:30",
+              "de": "22:30",
               "nl": "22:30"
             }
           }
@@ -302,7 +303,7 @@
         "sv": "Tidsintervall",
         "no": "Tidsintervall",
         "da": "Tidsinterval",
-        "fi": "Aikaväli",
+        "de": "Zeitraum",
         "nl": "Tijdsbereik"
       },
       "class": "other",
@@ -345,7 +346,7 @@
             "sv": "Start",
             "no": "Start",
             "da": "Start",
-            "fi": "Alku",
+            "de": "Start",
             "nl": "Start"
           },
           "hint": {
@@ -353,7 +354,7 @@
             "sv": "24-timmarsformat, HH:MM.",
             "no": "24-timersformat, HH:MM.",
             "da": "24-timersformat, HH:MM.",
-            "fi": "24 tunnin muoto, HH:MM.",
+            "de": "24-Stunden-Format, HH:MM.",
             "nl": "24-uursnotatie, UU:MM."
           }
         },
@@ -367,7 +368,7 @@
             "sv": "Slut",
             "no": "Slutt",
             "da": "Slut",
-            "fi": "Loppu",
+            "de": "Ende",
             "nl": "Einde"
           },
           "hint": {
@@ -375,7 +376,7 @@
             "sv": "24-timmarsformat, HH:MM.",
             "no": "24-timersformat, HH:MM.",
             "da": "24-timersformat, HH:MM.",
-            "fi": "24 tunnin muoto, HH:MM.",
+            "de": "24-Stunden-Format, HH:MM.",
             "nl": "24-uursnotatie, UU:MM."
           }
         },
@@ -386,7 +387,7 @@
             "sv": "Upprepa på",
             "no": "Gjenta på",
             "da": "Gentag på",
-            "fi": "Toista",
+            "de": "Wiederholen am",
             "nl": "Herhalen op"
           },
           "children": [
@@ -399,7 +400,7 @@
                 "sv": "Måndag",
                 "no": "Mandag",
                 "da": "Mandag",
-                "fi": "Maanantai",
+                "de": "Montag",
                 "nl": "Maandag"
               },
               "hint": {
@@ -407,7 +408,7 @@
                 "sv": "Lämna alla omarkerade för att upprepa varje dag. För ett intervall över midnatt gäller dagen då det börjar — \"Måndag\" på 22:00–06:00 betyder natten som börjar på måndag.",
                 "no": "La alle stå umerket for å gjenta hver dag. For et intervall over midnatt gjelder dagen det starter — \"Mandag\" på 22:00–06:00 betyr natten som begynner på mandag.",
                 "da": "Lad alle stå umarkeret for at gentage hver dag. For et interval over midnat gælder dagen, det starter — \"Mandag\" på 22:00–06:00 betyder natten, der begynder mandag.",
-                "fi": "Jätä kaikki valitsematta toistaaksesi joka päivä. Keskiyön yli ulottuvassa aikavälissä valitaan päivä, jona se alkaa — \"Maanantai\" välillä 22:00–06:00 tarkoittaa maanantaina alkavaa yötä.",
+                "de": "Alle Häkchen entfernen, um täglich zu wiederholen. Bei einem Zeitraum über Mitternacht zählt der Tag, an dem er beginnt — „Montag“ bei 22:00–06:00 meint die Nacht, die am Montag beginnt.",
                 "nl": "Laat alles uitgevinkt om elke dag te herhalen. Bij een bereik over middernacht telt de dag waarop het begint — \"Maandag\" bij 22:00–06:00 betekent de nacht die maandag begint."
               }
             },
@@ -420,7 +421,7 @@
                 "sv": "Tisdag",
                 "no": "Tirsdag",
                 "da": "Tirsdag",
-                "fi": "Tiistai",
+                "de": "Dienstag",
                 "nl": "Dinsdag"
               }
             },
@@ -433,7 +434,7 @@
                 "sv": "Onsdag",
                 "no": "Onsdag",
                 "da": "Onsdag",
-                "fi": "Keskiviikko",
+                "de": "Mittwoch",
                 "nl": "Woensdag"
               }
             },
@@ -446,7 +447,7 @@
                 "sv": "Torsdag",
                 "no": "Torsdag",
                 "da": "Torsdag",
-                "fi": "Torstai",
+                "de": "Donnerstag",
                 "nl": "Donderdag"
               }
             },
@@ -459,7 +460,7 @@
                 "sv": "Fredag",
                 "no": "Fredag",
                 "da": "Fredag",
-                "fi": "Perjantai",
+                "de": "Freitag",
                 "nl": "Vrijdag"
               }
             },
@@ -472,7 +473,7 @@
                 "sv": "Lördag",
                 "no": "Lørdag",
                 "da": "Lørdag",
-                "fi": "Lauantai",
+                "de": "Samstag",
                 "nl": "Zaterdag"
               }
             },
@@ -485,7 +486,7 @@
                 "sv": "Söndag",
                 "no": "Søndag",
                 "da": "Søndag",
-                "fi": "Sunnuntai",
+                "de": "Sonntag",
                 "nl": "Zondag"
               }
             }
@@ -499,7 +500,7 @@
         "sv": "Tid",
         "no": "Tid",
         "da": "Tid",
-        "fi": "Aika",
+        "de": "Zeit",
         "nl": "Tijd"
       },
       "class": "other",
@@ -540,7 +541,7 @@
             "sv": "Tid",
             "no": "Tid",
             "da": "Tid",
-            "fi": "Aika",
+            "de": "Zeit",
             "nl": "Tijd"
           },
           "hint": {
@@ -548,7 +549,7 @@
             "sv": "24-timmarsformat, HH:MM.",
             "no": "24-timersformat, HH:MM.",
             "da": "24-timersformat, HH:MM.",
-            "fi": "24 tunnin muoto, HH:MM.",
+            "de": "24-Stunden-Format, HH:MM.",
             "nl": "24-uursnotatie, UU:MM."
           }
         },
@@ -559,7 +560,7 @@
             "sv": "Upprepa på",
             "no": "Gjenta på",
             "da": "Gentag på",
-            "fi": "Toista",
+            "de": "Wiederholen am",
             "nl": "Herhalen op"
           },
           "children": [
@@ -572,7 +573,7 @@
                 "sv": "Måndag",
                 "no": "Mandag",
                 "da": "Mandag",
-                "fi": "Maanantai",
+                "de": "Montag",
                 "nl": "Maandag"
               },
               "hint": {
@@ -580,7 +581,7 @@
                 "sv": "Lämna alla omarkerade för att upprepa varje dag.",
                 "no": "La alle stå umerket for å gjenta hver dag.",
                 "da": "Lad alle stå umarkeret for at gentage hver dag.",
-                "fi": "Jätä kaikki valitsematta toistaaksesi joka päivä.",
+                "de": "Alle Häkchen entfernen, um täglich zu wiederholen.",
                 "nl": "Laat alles uitgevinkt om elke dag te herhalen."
               }
             },
@@ -593,7 +594,7 @@
                 "sv": "Tisdag",
                 "no": "Tirsdag",
                 "da": "Tirsdag",
-                "fi": "Tiistai",
+                "de": "Dienstag",
                 "nl": "Dinsdag"
               }
             },
@@ -606,7 +607,7 @@
                 "sv": "Onsdag",
                 "no": "Onsdag",
                 "da": "Onsdag",
-                "fi": "Keskiviikko",
+                "de": "Mittwoch",
                 "nl": "Woensdag"
               }
             },
@@ -619,7 +620,7 @@
                 "sv": "Torsdag",
                 "no": "Torsdag",
                 "da": "Torsdag",
-                "fi": "Torstai",
+                "de": "Donnerstag",
                 "nl": "Donderdag"
               }
             },
@@ -632,7 +633,7 @@
                 "sv": "Fredag",
                 "no": "Fredag",
                 "da": "Fredag",
-                "fi": "Perjantai",
+                "de": "Freitag",
                 "nl": "Vrijdag"
               }
             },
@@ -645,7 +646,7 @@
                 "sv": "Lördag",
                 "no": "Lørdag",
                 "da": "Lørdag",
-                "fi": "Lauantai",
+                "de": "Samstag",
                 "nl": "Zaterdag"
               }
             },
@@ -658,7 +659,7 @@
                 "sv": "Söndag",
                 "no": "Søndag",
                 "da": "Søndag",
-                "fi": "Sunnuntai",
+                "de": "Sonntag",
                 "nl": "Zondag"
               }
             }
@@ -674,7 +675,7 @@
         "sv": "Tidsintervall",
         "no": "Tidsintervall",
         "da": "Tidsinterval",
-        "fi": "Aikaväli",
+        "de": "Zeitraum-Auswahl",
         "nl": "Tijdsbereik"
       },
       "height": 172,
@@ -687,7 +688,7 @@
             "sv": "Enhet",
             "no": "Enhet",
             "da": "Enhed",
-            "fi": "Laite",
+            "de": "Gerät",
             "nl": "Apparaat"
           },
           "hint": {
@@ -695,7 +696,7 @@
             "sv": "Vilken Time Range-enhet denna widget redigerar.",
             "no": "Hvilken Time Range-enhet denne widgeten redigerer.",
             "da": "Hvilken Time Range-enhed denne widget redigerer.",
-            "fi": "Mitä Time Range-laitetta tämä widget muokkaa.",
+            "de": "Welches Zeitraum-Gerät dieses Widget bearbeitet.",
             "nl": "Welk Time Range-apparaat deze widget bewerkt."
           }
         },
@@ -708,7 +709,7 @@
             "sv": "Titel",
             "no": "Tittel",
             "da": "Titel",
-            "fi": "Otsikko",
+            "de": "Titel",
             "nl": "Titel"
           },
           "hint": {
@@ -716,7 +717,7 @@
             "sv": "Valfri etikett ovanför båda tiderna. Lämna tomt för att dölja raden helt.",
             "no": "Valgfri etikett over begge tidspunktene. La stå tom for å skjule raden helt.",
             "da": "Valgfri etiket over begge tidspunkter. Lad stå tom for at skjule rækken helt.",
-            "fi": "Valinnainen otsikko molempien aikojen yläpuolella. Jätä tyhjäksi piilottaaksesi rivin kokonaan.",
+            "de": "Optionale Beschriftung über beiden Zeiten. Leer lassen, um die Zeile ganz auszublenden.",
             "nl": "Optioneel label boven beide tijden. Laat leeg om de rij volledig te verbergen."
           }
         },
@@ -729,7 +730,7 @@
             "sv": "Startetikett",
             "no": "Startetikett",
             "da": "Startetiket",
-            "fi": "Aloitusotsikko",
+            "de": "Beschriftung Start",
             "nl": "Startlabel"
           },
           "hint": {
@@ -737,7 +738,7 @@
             "sv": "Visas ovanför starttiden. Lämna tomt för \"På\".",
             "no": "Vises over starttidspunktet. La stå tom for \"På\".",
             "da": "Vises over starttidspunktet. Lad stå tom for \"Til\".",
-            "fi": "Näytetään aloitusajan yläpuolella. Jätä tyhjäksi käyttääksesi \"Päällä\".",
+            "de": "Wird über der Startzeit angezeigt. Leer lassen für „Ein“.",
             "nl": "Wordt boven de starttijd getoond. Laat leeg voor \"Aan\"."
           }
         },
@@ -750,7 +751,7 @@
             "sv": "Slutetikett",
             "no": "Sluttetikett",
             "da": "Slutetiket",
-            "fi": "Lopetusotsikko",
+            "de": "Beschriftung Ende",
             "nl": "Eindlabel"
           },
           "hint": {
@@ -758,7 +759,7 @@
             "sv": "Visas ovanför sluttiden. Lämna tomt för \"Av\".",
             "no": "Vises over sluttidspunktet. La stå tom for \"Av\".",
             "da": "Vises over sluttidspunktet. Lad stå tom for \"Fra\".",
-            "fi": "Näytetään lopetusajan yläpuolella. Jätä tyhjäksi käyttääksesi \"Pois\".",
+            "de": "Wird über der Endzeit angezeigt. Leer lassen für „Aus“.",
             "nl": "Wordt boven de eindtijd getoond. Laat leeg voor \"Uit\"."
           }
         }
@@ -789,7 +790,7 @@
         "sv": "Tidsväljare",
         "no": "Tidsvelger",
         "da": "Tidsvælger",
-        "fi": "Ajanvalitsin",
+        "de": "Zeitauswahl",
         "nl": "Tijdkiezer"
       },
       "height": 160,
@@ -802,7 +803,7 @@
             "sv": "Enhet",
             "no": "Enhet",
             "da": "Enhed",
-            "fi": "Laite",
+            "de": "Gerät",
             "nl": "Apparaat"
           },
           "hint": {
@@ -810,7 +811,7 @@
             "sv": "Vilken Time-enhet denna widget redigerar.",
             "no": "Hvilken Time-enhet denne widgeten redigerer.",
             "da": "Hvilken Time-enhed denne widget redigerer.",
-            "fi": "Mitä Time-laitetta tämä widget muokkaa.",
+            "de": "Welches Zeit-Gerät dieses Widget bearbeitet.",
             "nl": "Welk Time-apparaat deze widget bewerkt."
           }
         },
@@ -823,7 +824,7 @@
             "sv": "Titel",
             "no": "Tittel",
             "da": "Titel",
-            "fi": "Otsikko",
+            "de": "Titel",
             "nl": "Titel"
           },
           "hint": {
@@ -831,7 +832,7 @@
             "sv": "Valfritt. Lämna tomt för att visa enhetens namn.",
             "no": "Valgfritt. La stå tom for å vise enhetens navn.",
             "da": "Valgfrit. Lad stå tom for at vise enhedens navn.",
-            "fi": "Valinnainen. Jätä tyhjäksi näyttääksesi laitteen nimen.",
+            "de": "Optional. Leer lassen, um den Gerätenamen anzuzeigen.",
             "nl": "Optioneel. Laat leeg om de naam van het apparaat te tonen."
           }
         }
@@ -865,7 +866,7 @@
         "sv": "Inom intervallet",
         "no": "Innenfor intervallet",
         "da": "Inden for intervallet",
-        "fi": "Aikavälin sisällä",
+        "de": "Im Zeitraum",
         "nl": "Binnen bereik"
       },
       "getable": true,
@@ -880,7 +881,7 @@
         "sv": "Slut",
         "no": "Slutt",
         "da": "Slut",
-        "fi": "Loppu",
+        "de": "Ende",
         "nl": "Einde"
       },
       "getable": true,
@@ -895,7 +896,7 @@
         "sv": "Start",
         "no": "Start",
         "da": "Start",
-        "fi": "Alku",
+        "de": "Start",
         "nl": "Start"
       },
       "getable": true,
@@ -910,7 +911,7 @@
         "sv": "Tid",
         "no": "Tid",
         "da": "Tid",
-        "fi": "Aika",
+        "de": "Zeit",
         "nl": "Tijd"
       },
       "getable": true,
