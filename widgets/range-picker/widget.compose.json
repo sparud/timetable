@@ -7,7 +7,7 @@
     "fi": "Aikaväli",
     "nl": "Tijdsbereik"
   },
-  "height": 146,
+  "height": 172,
   "settings": [
     {
       "id": "device",
@@ -101,6 +101,10 @@
     "setTime": {
       "method": "PUT",
       "path": "/time"
+    },
+    "setDays": {
+      "method": "PUT",
+      "path": "/days"
     }
   }
 }

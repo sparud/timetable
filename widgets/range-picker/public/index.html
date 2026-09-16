@@ -53,6 +53,36 @@
 
       .tr-field input::-webkit-calendar-picker-indicator { opacity: 0.35; cursor: pointer; }
 
+      .tr-days {
+        display: flex;
+        justify-content: center;
+        gap: var(--homey-su-1);
+      }
+
+      .tr-day {
+        min-width: 28px;
+        padding: 1px 4px;
+        text-align: center;
+        border-radius: var(--homey-border-radius-small);
+        font-size: var(--homey-font-size-small);
+        line-height: var(--homey-line-height-small);
+        color: var(--homey-text-color-light);
+        background: transparent;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 120ms ease, color 120ms ease;
+      }
+
+      .tr-day.is-on {
+        background-color: var(--homey-color-mono-100);
+        color: var(--homey-text-color);
+        font-weight: var(--homey-font-weight-medium);
+      }
+
+      .tr-days.is-disabled { pointer-events: none; opacity: 0.4; }
+
       .tr-status { min-height: var(--homey-line-height-small); }
       .tr-status.is-success { color: var(--homey-text-color-success); }
       .tr-status.is-warning { color: var(--homey-text-color-warning); }
@@ -73,6 +103,7 @@
           <div class="tr-field" id="field-end"><input type="time" id="input-end" step="60" /></div>
         </div>
       </div>
+      <div class="tr-days" id="days"></div>
       <div class="tr-status homey-text-small-light" id="status">&nbsp;</div>
     </div>
 
@@ -158,6 +189,7 @@
 
       function apply(state) {
         document.getElementById('title').textContent = homey.getSettings().title || state.name;
+        applyDays(state.days);
         for (const slot of slots) {
           if (!isSafeToReplaceValue(slot)) continue;
           const value = state.times[slot.key];
@@ -210,6 +242,55 @@
         }
       }
 
+      // Monday-first display order; the settings ids are Sunday-first to match Date.getUTCDay().
+      const WEEK = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+      const daysEl = document.getElementById('days');
+      let enabledDays = WEEK.slice();
+
+      function renderDays() {
+        daysEl.replaceChildren(...WEEK.map(day => {
+          const el = document.createElement('div');
+          el.className = `tr-day${enabledDays.includes(day) ? ' is-on' : ''}`;
+          el.textContent = homey.__(`weekday.${day}`);
+          el.addEventListener('click', () => toggleDay(day));
+          return el;
+        }));
+      }
+
+      async function toggleDay(day) {
+        const next = enabledDays.includes(day)
+          ? enabledDays.filter(d => d !== day)
+          : WEEK.filter(d => enabledDays.includes(d) || d === day);
+
+        // Every day and all seven ticked are the same schedule, so "none" has no meaning
+        // here - refuse the tap rather than silently turning the device off.
+        if (next.length === 0) {
+          flashStatus(homey.__('common.errNoDays'), 'error');
+          return;
+        }
+
+        const previous = enabledDays;
+        enabledDays = next;
+        renderDays();
+
+        try {
+          await homey.api('PUT', '/days', { id: device.id, days: next });
+          flashStatus(next.length === WEEK.length
+            ? homey.__('common.everyDay')
+            : next.map(d => homey.__(`weekday.${d}`)).join(' '), 'success');
+        } catch (err) {
+          enabledDays = previous;
+          renderDays();
+          setStatus(describeError(err), 'error');
+        }
+      }
+
+      /** An empty setting means every day, which is the same schedule as all seven. */
+      function applyDays(days) {
+        enabledDays = !days || days.length === 0 ? WEEK.slice() : WEEK.filter(d => days.includes(d));
+        renderDays();
+      }
+
       function applyColorScheme() {
         const bg = getComputedStyle(document.body).backgroundColor;
         const rgb = (bg.match(/\d+(\.\d+)?/g) || []).slice(0, 3).map(Number);
@@ -252,6 +333,8 @@
 
         if (device === null) {
           slots.forEach(slot => setDisabled(slot, true));
+          renderDays();
+          daysEl.classList.add('is-disabled');
           setStatus(Homey.__('timeRange.pickDevice'), 'error');
           ready();
           return;

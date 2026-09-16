@@ -3,7 +3,9 @@
     "saving": "Opslaan…",
     "errUnknownDevice": "Apparaat niet gevonden",
     "errInvalidTime": "Ongeldige tijd",
-    "errGeneric": "Er ging iets mis"
+    "errGeneric": "Er ging iets mis",
+    "everyDay": "Elke dag",
+    "errNoDays": "Kies minstens één dag"
   },
   "driver": {
     "time": {
@@ -25,5 +27,14 @@
     "saved": "Opgeslagen __label__ __time__",
     "duration": "__hours__ u __minutes__ min",
     "durationMinutes": "__minutes__ min"
+  },
+  "weekday": {
+    "mon": "Ma",
+    "tue": "Di",
+    "wed": "Wo",
+    "thu": "Do",
+    "fri": "Vr",
+    "sat": "Za",
+    "sun": "Zo"
   }
 }

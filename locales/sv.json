@@ -3,7 +3,9 @@
     "saving": "Sparar…",
     "errUnknownDevice": "Enheten hittades inte",
     "errInvalidTime": "Ogiltig tid",
-    "errGeneric": "Något gick fel"
+    "errGeneric": "Något gick fel",
+    "everyDay": "Varje dag",
+    "errNoDays": "Välj minst en dag"
   },
   "driver": {
     "time": {
@@ -25,5 +27,14 @@
     "saved": "Sparade __label__ __time__",
     "duration": "__hours__ h __minutes__ min",
     "durationMinutes": "__minutes__ min"
+  },
+  "weekday": {
+    "mon": "Må",
+    "tue": "Ti",
+    "wed": "On",
+    "thu": "To",
+    "fri": "Fr",
+    "sat": "Lö",
+    "sun": "Sö"
   }
 }

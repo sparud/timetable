@@ -7,7 +7,7 @@
     "fi": "Ajanvalitsin",
     "nl": "Tijdkiezer"
   },
-  "height": 136,
+  "height": 160,
   "settings": [
     {
       "id": "device",
@@ -59,6 +59,10 @@
     "setTime": {
       "method": "PUT",
       "path": "/time"
+    },
+    "setDays": {
+      "method": "PUT",
+      "path": "/days"
     }
   }
 }

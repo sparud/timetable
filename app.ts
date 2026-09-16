@@ -91,6 +91,13 @@ class JsGadgetsApp extends Homey.App {
     return this.findDevice(id).toWidgetState();
   }
 
+  async setDeviceDays(id: string, days: string[]) {
+    const device = this.findDevice(id);
+    await device.setDays(days);
+
+    return device.toWidgetState();
+  }
+
   async setDeviceTime(id: string, slot: string, value: string) {
     if (!isTime(value)) throw new Error('invalid_time');
 

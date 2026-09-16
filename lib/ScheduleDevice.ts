@@ -59,6 +59,22 @@ export abstract class ScheduleDevice extends Homey.Device {
     this.homey.api.realtime('schedule', this.toWidgetState());
   }
 
+  /**
+   * Replaces the repeat days. At least one must remain: "no days" would mean never,
+   * which is not a state the settings can express - there, empty means every day.
+   */
+  async setDays(days: string[]): Promise<void> {
+    const wanted = WEEKDAYS.filter(day => days.includes(day));
+    if (wanted.length === 0) throw new Error('no_days');
+
+    const patch: Record<string, boolean> = {};
+    for (const day of WEEKDAYS) patch[day] = wanted.includes(day);
+
+    await this.setSettings(patch);
+    this.onTimesChanged();
+    this.publishState();
+  }
+
   async syncCapabilities(): Promise<void> {
     for (const slot of this.slots) {
       await this.setCapabilityValue(slot.capability, this.getTime(slot.id) ?? '--:--')
@@ -113,11 +129,16 @@ export abstract class ScheduleDevice extends Homey.Device {
   }
 
   /** Everything the widget needs to render this device. */
-  toWidgetState(): { id: string; name: string; times: Record<string, string | null> } {
+  toWidgetState(): {
+    id: string;
+    name: string;
+    times: Record<string, string | null>;
+    days: string[];
+  } {
     const times: Record<string, string | null> = {};
     for (const slot of this.slots) times[slot.id] = this.getTime(slot.id);
 
-    return { id: this.getData().id, name: this.getName(), times };
+    return { id: this.getData().id, name: this.getName(), times, days: this.days };
   }
 
 }

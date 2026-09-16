@@ -3,7 +3,9 @@
     "saving": "Tallennetaan…",
     "errUnknownDevice": "Laitetta ei löytynyt",
     "errInvalidTime": "Virheellinen aika",
-    "errGeneric": "Jokin meni pieleen"
+    "errGeneric": "Jokin meni pieleen",
+    "everyDay": "Joka päivä",
+    "errNoDays": "Valitse vähintään yksi päivä"
   },
   "driver": {
     "time": {
@@ -25,5 +27,14 @@
     "saved": "Tallennettu __label__ __time__",
     "duration": "__hours__ h __minutes__ min",
     "durationMinutes": "__minutes__ min"
+  },
+  "weekday": {
+    "mon": "Ma",
+    "tue": "Ti",
+    "wed": "Ke",
+    "thu": "To",
+    "fri": "Pe",
+    "sat": "La",
+    "sun": "Su"
   }
 }

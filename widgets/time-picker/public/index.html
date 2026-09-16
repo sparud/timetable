@@ -62,6 +62,36 @@
         cursor: pointer;
       }
 
+      .tp-days {
+        display: flex;
+        justify-content: center;
+        gap: var(--homey-su-1);
+      }
+
+      .tp-day {
+        min-width: 28px;
+        padding: 1px 4px;
+        text-align: center;
+        border-radius: var(--homey-border-radius-small);
+        font-size: var(--homey-font-size-small);
+        line-height: var(--homey-line-height-small);
+        color: var(--homey-text-color-light);
+        background: transparent;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 120ms ease, color 120ms ease;
+      }
+
+      .tp-day.is-on {
+        background-color: var(--homey-color-mono-100);
+        color: var(--homey-text-color);
+        font-weight: var(--homey-font-weight-medium);
+      }
+
+      .tp-days.is-disabled { pointer-events: none; opacity: 0.4; }
+
       .tp-status {
         text-align: center;
         min-height: var(--homey-line-height-small);
@@ -82,6 +112,7 @@
       <div class="tp-field" id="field">
         <input type="time" id="time" step="60" />
       </div>
+      <div class="tp-days" id="days"></div>
       <div class="tp-status homey-text-small-light" id="status">&nbsp;</div>
     </div>
 
@@ -139,6 +170,7 @@
       function apply(state) {
         label.textContent = homey.getSettings().title || state.name;
         input.value = TIME_PATTERN.test(state.times.time) ? state.times.time : '';
+        applyDays(state.days);
       }
 
       async function refresh() {
@@ -187,6 +219,55 @@
         }
       }
 
+      // Monday-first display order; the settings ids are Sunday-first to match Date.getUTCDay().
+      const WEEK = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+      const daysEl = document.getElementById('days');
+      let enabledDays = WEEK.slice();
+
+      function renderDays() {
+        daysEl.replaceChildren(...WEEK.map(day => {
+          const el = document.createElement('div');
+          el.className = `tp-day${enabledDays.includes(day) ? ' is-on' : ''}`;
+          el.textContent = homey.__(`weekday.${day}`);
+          el.addEventListener('click', () => toggleDay(day));
+          return el;
+        }));
+      }
+
+      async function toggleDay(day) {
+        const next = enabledDays.includes(day)
+          ? enabledDays.filter(d => d !== day)
+          : WEEK.filter(d => enabledDays.includes(d) || d === day);
+
+        // Every day and all seven ticked are the same schedule, so "none" has no meaning
+        // here - refuse the tap rather than silently turning the device off.
+        if (next.length === 0) {
+          flashStatus(homey.__('common.errNoDays'), 'error');
+          return;
+        }
+
+        const previous = enabledDays;
+        enabledDays = next;
+        renderDays();
+
+        try {
+          await homey.api('PUT', '/days', { id: device.id, days: next });
+          flashStatus(next.length === WEEK.length
+            ? homey.__('common.everyDay')
+            : next.map(d => homey.__(`weekday.${d}`)).join(' '), 'success');
+        } catch (err) {
+          enabledDays = previous;
+          renderDays();
+          setStatus(describeError(err), 'error');
+        }
+      }
+
+      /** An empty setting means every day, which is the same schedule as all seven. */
+      function applyDays(days) {
+        enabledDays = !days || days.length === 0 ? WEEK.slice() : WEEK.filter(d => days.includes(d));
+        renderDays();
+      }
+
       function applyColorScheme() {
         const bg = getComputedStyle(document.body).backgroundColor;
         const rgb = (bg.match(/\d+(\.\d+)?/g) || []).slice(0, 3).map(Number);
@@ -194,6 +275,12 @@
 
         const luminance = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255;
         document.documentElement.style.colorScheme = luminance < 0.5 ? 'dark' : 'light';
+      }
+
+      // Report the height we actually lay out to, rather than the manifest's fixed value.
+      function ready() {
+        const measured = document.body.scrollHeight;
+        homey.ready(measured > 40 ? { height: measured } : undefined);
       }
 
       function onHomeyReady(Homey) {
@@ -206,8 +293,10 @@
         if (device === null) {
           label.textContent = settings.title || Homey.__('timePicker.name');
           setDisabled(true);
+          renderDays();
+          daysEl.classList.add('is-disabled');
           setStatus(Homey.__('timePicker.pickDevice'), 'error');
-          Homey.ready();
+          ready();
           return;
         }
 
@@ -235,7 +324,7 @@
           if (!document.hidden) refresh();
         });
 
-        Homey.ready();
+        ready();
         refresh();
       }
     </script>

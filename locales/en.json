@@ -3,7 +3,9 @@
     "saving": "Saving…",
     "errUnknownDevice": "Device not found",
     "errInvalidTime": "Invalid time",
-    "errGeneric": "Something went wrong"
+    "errGeneric": "Something went wrong",
+    "everyDay": "Every day",
+    "errNoDays": "Pick at least one day"
   },
   "driver": {
     "time": {
@@ -25,5 +27,14 @@
     "saved": "Saved __label__ __time__",
     "duration": "__hours__ h __minutes__ min",
     "durationMinutes": "__minutes__ min"
+  },
+  "weekday": {
+    "mon": "Mo",
+    "tue": "Tu",
+    "wed": "We",
+    "thu": "Th",
+    "fri": "Fr",
+    "sat": "Sa",
+    "sun": "Su"
   }
 }

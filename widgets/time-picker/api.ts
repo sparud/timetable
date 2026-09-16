@@ -2,6 +2,7 @@
 interface ScheduleApp {
   getDeviceState(id: string): unknown;
   setDeviceTime(id: string, slot: string, value: string): Promise<unknown>;
+  setDeviceDays(id: string, days: string[]): Promise<unknown>;
 }
 
 /** Homey passes the app instance on `homey.app`; that is all these handlers need. */
@@ -11,8 +12,7 @@ interface Context<Query = unknown, Body = unknown> {
   body: Body;
 }
 
-const app = (context: Context<never, never> | Context<any, any>): ScheduleApp =>
-  context.homey.app as ScheduleApp;
+const app = (context: Context<any, any>): ScheduleApp => context.homey.app as ScheduleApp;
 
 export = {
   async getState(context: Context<{ id: string }>) {
@@ -22,5 +22,10 @@ export = {
   async setTime(context: Context<unknown, { id: string; slot: string; value: string }>) {
     const { id, slot, value } = context.body;
     return app(context).setDeviceTime(id, slot, value);
+  },
+
+  async setDays(context: Context<unknown, { id: string; days: string[] }>) {
+    const { id, days } = context.body;
+    return app(context).setDeviceDays(id, days);
   },
 };

@@ -3,7 +3,9 @@
     "saving": "Lagrer…",
     "errUnknownDevice": "Fant ikke enheten",
     "errInvalidTime": "Ugyldig tid",
-    "errGeneric": "Noe gikk galt"
+    "errGeneric": "Noe gikk galt",
+    "everyDay": "Hver dag",
+    "errNoDays": "Velg minst én dag"
   },
   "driver": {
     "time": {
@@ -25,5 +27,14 @@
     "saved": "Lagret __label__ __time__",
     "duration": "__hours__ t __minutes__ min",
     "durationMinutes": "__minutes__ min"
+  },
+  "weekday": {
+    "mon": "Ma",
+    "tue": "Ti",
+    "wed": "On",
+    "thu": "To",
+    "fri": "Fr",
+    "sat": "Lø",
+    "sun": "Sø"
   }
 }
