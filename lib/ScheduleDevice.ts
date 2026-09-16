@@ -1,5 +1,5 @@
 import Homey from 'homey';
-import { Now, isTime, normalizeTime, shouldFire } from './time';
+import { Now, WEEKDAYS, isDayEnabled, isTime, normalizeTime, shouldFire } from './time';
 
 /** One editable time on a device: a settings key paired with the capability that shows it. */
 export interface Slot {
@@ -68,7 +68,9 @@ export abstract class ScheduleDevice extends Homey.Device {
 
   async onTick(now: Now): Promise<void> {
     for (const slot of this.slots) {
-      if (!shouldFire(this.getTime(slot.id), this.fired[slot.id], now)) continue;
+      if (!shouldFire(this.getTime(slot.id), this.fired[slot.id], now, this.isSlotDue(slot, now))) {
+        continue;
+      }
 
       this.fired[slot.id] = now.key;
       await this.onDue(slot, now).catch(this.error);
@@ -81,7 +83,9 @@ export abstract class ScheduleDevice extends Homey.Device {
     newSettings: Record<string, unknown>;
     changedKeys: string[];
   }): Promise<void> {
-    if (!changedKeys.some(key => this.slots.some(slot => slot.id === key))) return;
+    const relevant = changedKeys.some(key =>
+      this.slots.some(slot => slot.id === key) || (WEEKDAYS as readonly string[]).includes(key));
+    if (!relevant) return;
 
     // setSettings() has not resolved yet, so defer until the new values are readable.
     this.homey.setTimeout(() => {
@@ -94,6 +98,19 @@ export abstract class ScheduleDevice extends Homey.Device {
 
   /** Hook for subclasses that derive state from the times. */
   protected onTimesChanged(): void {}
+
+  /** The weekdays ticked on this device; empty means every day. */
+  get days(): string[] {
+    return WEEKDAYS.filter(day => this.getSetting(day) === true);
+  }
+
+  /**
+   * Whether this slot's weekday condition holds. The base device asks about today;
+   * a range's end belongs to the day its occurrence began, so it overrides this.
+   */
+  protected isSlotDue(_slot: Slot, now: Now): boolean {
+    return isDayEnabled(this.days, now.weekday);
+  }
 
   /** Everything the widget needs to render this device. */
   toWidgetState(): { id: string; name: string; times: Record<string, string | null> } {

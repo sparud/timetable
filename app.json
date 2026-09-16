@@ -377,6 +377,118 @@
             "fi": "24 tunnin muoto, HH:MM.",
             "nl": "24-uursnotatie, UU:MM."
           }
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Repeat on",
+            "sv": "Upprepa på",
+            "no": "Gjenta på",
+            "da": "Gentag på",
+            "fi": "Toista",
+            "nl": "Herhalen op"
+          },
+          "children": [
+            {
+              "id": "mon",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Monday",
+                "sv": "Måndag",
+                "no": "Mandag",
+                "da": "Mandag",
+                "fi": "Maanantai",
+                "nl": "Maandag"
+              },
+              "hint": {
+                "en": "Leave all unticked to repeat every day. For a range crossing midnight the day chosen is the day it starts — \"Monday\" on 22:00–06:00 means the night beginning Monday.",
+                "sv": "Lämna alla omarkerade för att upprepa varje dag. För ett intervall över midnatt gäller dagen då det börjar — \"Måndag\" på 22:00–06:00 betyder natten som börjar på måndag.",
+                "no": "La alle stå umerket for å gjenta hver dag. For et intervall over midnatt gjelder dagen det starter — \"Mandag\" på 22:00–06:00 betyr natten som begynner på mandag.",
+                "da": "Lad alle stå umarkeret for at gentage hver dag. For et interval over midnat gælder dagen, det starter — \"Mandag\" på 22:00–06:00 betyder natten, der begynder mandag.",
+                "fi": "Jätä kaikki valitsematta toistaaksesi joka päivä. Keskiyön yli ulottuvassa aikavälissä valitaan päivä, jona se alkaa — \"Maanantai\" välillä 22:00–06:00 tarkoittaa maanantaina alkavaa yötä.",
+                "nl": "Laat alles uitgevinkt om elke dag te herhalen. Bij een bereik over middernacht telt de dag waarop het begint — \"Maandag\" bij 22:00–06:00 betekent de nacht die maandag begint."
+              }
+            },
+            {
+              "id": "tue",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Tuesday",
+                "sv": "Tisdag",
+                "no": "Tirsdag",
+                "da": "Tirsdag",
+                "fi": "Tiistai",
+                "nl": "Dinsdag"
+              }
+            },
+            {
+              "id": "wed",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Wednesday",
+                "sv": "Onsdag",
+                "no": "Onsdag",
+                "da": "Onsdag",
+                "fi": "Keskiviikko",
+                "nl": "Woensdag"
+              }
+            },
+            {
+              "id": "thu",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Thursday",
+                "sv": "Torsdag",
+                "no": "Torsdag",
+                "da": "Torsdag",
+                "fi": "Torstai",
+                "nl": "Donderdag"
+              }
+            },
+            {
+              "id": "fri",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Friday",
+                "sv": "Fredag",
+                "no": "Fredag",
+                "da": "Fredag",
+                "fi": "Perjantai",
+                "nl": "Vrijdag"
+              }
+            },
+            {
+              "id": "sat",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Saturday",
+                "sv": "Lördag",
+                "no": "Lørdag",
+                "da": "Lørdag",
+                "fi": "Lauantai",
+                "nl": "Zaterdag"
+              }
+            },
+            {
+              "id": "sun",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Sunday",
+                "sv": "Söndag",
+                "no": "Søndag",
+                "da": "Søndag",
+                "fi": "Sunnuntai",
+                "nl": "Zondag"
+              }
+            }
+          ]
         }
       ]
     },
@@ -437,6 +549,118 @@
             "fi": "24 tunnin muoto, HH:MM.",
             "nl": "24-uursnotatie, UU:MM."
           }
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Repeat on",
+            "sv": "Upprepa på",
+            "no": "Gjenta på",
+            "da": "Gentag på",
+            "fi": "Toista",
+            "nl": "Herhalen op"
+          },
+          "children": [
+            {
+              "id": "mon",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Monday",
+                "sv": "Måndag",
+                "no": "Mandag",
+                "da": "Mandag",
+                "fi": "Maanantai",
+                "nl": "Maandag"
+              },
+              "hint": {
+                "en": "Leave all unticked to repeat every day.",
+                "sv": "Lämna alla omarkerade för att upprepa varje dag.",
+                "no": "La alle stå umerket for å gjenta hver dag.",
+                "da": "Lad alle stå umarkeret for at gentage hver dag.",
+                "fi": "Jätä kaikki valitsematta toistaaksesi joka päivä.",
+                "nl": "Laat alles uitgevinkt om elke dag te herhalen."
+              }
+            },
+            {
+              "id": "tue",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Tuesday",
+                "sv": "Tisdag",
+                "no": "Tirsdag",
+                "da": "Tirsdag",
+                "fi": "Tiistai",
+                "nl": "Dinsdag"
+              }
+            },
+            {
+              "id": "wed",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Wednesday",
+                "sv": "Onsdag",
+                "no": "Onsdag",
+                "da": "Onsdag",
+                "fi": "Keskiviikko",
+                "nl": "Woensdag"
+              }
+            },
+            {
+              "id": "thu",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Thursday",
+                "sv": "Torsdag",
+                "no": "Torsdag",
+                "da": "Torsdag",
+                "fi": "Torstai",
+                "nl": "Donderdag"
+              }
+            },
+            {
+              "id": "fri",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Friday",
+                "sv": "Fredag",
+                "no": "Fredag",
+                "da": "Fredag",
+                "fi": "Perjantai",
+                "nl": "Vrijdag"
+              }
+            },
+            {
+              "id": "sat",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Saturday",
+                "sv": "Lördag",
+                "no": "Lørdag",
+                "da": "Lørdag",
+                "fi": "Lauantai",
+                "nl": "Zaterdag"
+              }
+            },
+            {
+              "id": "sun",
+              "type": "checkbox",
+              "value": false,
+              "label": {
+                "en": "Sunday",
+                "sv": "Söndag",
+                "no": "Søndag",
+                "da": "Søndag",
+                "fi": "Sunnuntai",
+                "nl": "Zondag"
+              }
+            }
+          ]
         }
       ]
     }

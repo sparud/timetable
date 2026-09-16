@@ -6,7 +6,8 @@
  * same tick sequence over a simulated clock and counts how often a slot would fire.
  */
 const assert = require('assert');
-const { nowInZone, shouldFire, isWithin, normalizeTime } = require('../.homeybuild/lib/time.js');
+const { nowInZone, shouldFire, isWithin, normalizeTime,
+        isDayEnabled, isRangeActive, isRangeEndDue, previousWeekday } = require('../.homeybuild/lib/time.js');
 
 const TZ = 'Europe/Stockholm';
 const TICK_MS = 20_000;
@@ -136,6 +137,101 @@ check('normalizeTime accepts loose tag input, rejects nonsense', () => {
   assert.strictEqual(normalizeTime('7:5'), null);
   assert.strictEqual(normalizeTime('banana'), null);
   assert.strictEqual(normalizeTime(undefined), null);
+});
+
+// --- weekday repetition ------------------------------------------------------
+const DAYNAMES = ['sun','mon','tue','wed','thu','fri','sat'];
+/** A `Now` for a given local date and time, with the weekday derived the same way. */
+const at = (date, time) => {
+  const weekday = new Date(`${date}T00:00:00Z`).getUTCDay();
+  return { time, key: `${date}T${time}`, weekday };
+};
+
+check('weekday is the LOCAL day, derived from local date parts', () => {
+  // 2027-06-14 is a Monday; 23:30 UTC is already Tuesday 01:30 in Stockholm
+  assert.strictEqual(nowInZone(TZ, new Date('2027-06-14T10:00:00Z')).weekday, 1, 'Monday');
+  const late = nowInZone(TZ, new Date('2027-06-14T23:30:00Z'));
+  assert.strictEqual(late.time, '01:30');
+  assert.strictEqual(late.weekday, 2, 'rolled over to Tuesday locally');
+});
+
+check('no days ticked means every day', () => {
+  for (let d = 0; d < 7; d++) assert.strictEqual(isDayEnabled([], d), true);
+});
+
+check('ticked days gate correctly', () => {
+  assert.strictEqual(isDayEnabled(['mon'], 1), true);
+  assert.strictEqual(isDayEnabled(['mon'], 2), false);
+  assert.strictEqual(isDayEnabled(['sat','sun'], 0), true);
+  assert.strictEqual(isDayEnabled(['sat','sun'], 3), false);
+});
+
+check('previousWeekday wraps Sunday back to Saturday', () => {
+  assert.strictEqual(previousWeekday(0), 6);
+  assert.strictEqual(previousWeekday(1), 0);
+});
+
+// The table from the design discussion: 22:00-06:00, Mondays only.
+// 2027-06-14 is a Monday, 06-15 Tuesday, 06-16 Wednesday.
+const S = '22:00', E = '06:00', D = ['mon'];
+const expected = [
+  // date          time     active  startDue  endDue
+  ['2027-06-14', '21:59', false, false, false],
+  ['2027-06-14', '22:00', true,  true,  false],
+  ['2027-06-14', '23:30', true,  false, false],
+  ['2027-06-15', '03:00', true,  false, false],   // Tuesday, still Monday's night
+  ['2027-06-15', '05:59', true,  false, false],
+  ['2027-06-15', '06:00', false, false, true],    // closes on Tuesday morning
+  ['2027-06-15', '22:00', false, false, false],   // Tuesday night does not open
+  ['2027-06-16', '03:00', false, false, false],
+  ['2027-06-16', '06:00', false, false, false],   // no spurious end
+  ['2027-06-14', '06:00', false, false, false],   // Monday morning: nothing opened it
+];
+
+check('midnight-spanning range with weekdays matches the design table', () => {
+  for (const [date, time, active, startDue, endDue] of expected) {
+    const now = at(date, time);
+    const day = DAYNAMES[now.weekday];
+    assert.strictEqual(isRangeActive(S, E, D, now), active, `active ${day} ${time}`);
+    assert.strictEqual(isDayEnabled(D, now.weekday) && time === S, startDue, `start ${day} ${time}`);
+    assert.strictEqual(isRangeEndDue(S, E, D, now), endDue, `end ${day} ${time}`);
+  }
+});
+
+check('the naive reading (weekday per event) would leave the range open', () => {
+  // documents the bug this design avoids: on Tuesday 06:00 a per-event weekday check
+  // sees "not Monday" and never closes the range
+  const tueMorning = at('2027-06-15', '06:00');
+  assert.strictEqual(isDayEnabled(D, tueMorning.weekday), false, 'Tuesday is not enabled');
+  assert.strictEqual(isRangeEndDue(S, E, D, tueMorning), true, 'but the end is still due');
+});
+
+check('same-day range is unaffected by the start-day rule', () => {
+  const s = '08:00', e = '17:00';
+  assert.strictEqual(isRangeActive(s, e, D, at('2027-06-14', '12:00')), true);
+  assert.strictEqual(isRangeEndDue(s, e, D, at('2027-06-14', '17:00')), true);
+  assert.strictEqual(isRangeActive(s, e, D, at('2027-06-15', '12:00')), false);
+  assert.strictEqual(isRangeEndDue(s, e, D, at('2027-06-15', '17:00')), false);
+});
+
+check('weekend range crossing into Monday still closes', () => {
+  const days = ['sun'];
+  assert.strictEqual(isRangeActive(S, E, days, at('2027-06-13', '23:00')), true, 'Sunday night');
+  assert.strictEqual(isRangeActive(S, E, days, at('2027-06-14', '02:00')), true, 'into Monday');
+  assert.strictEqual(isRangeEndDue(S, E, days, at('2027-06-14', '06:00')), true, 'closes Monday');
+});
+
+check('every-day range behaves as before weekdays existed', () => {
+  for (const [date, time, active] of expected) {
+    const now = at(date, time);
+    assert.strictEqual(isRangeActive(S, E, [], now), isWithin(S, E, time), `${date} ${time}`);
+  }
+});
+
+check('shouldFire respects the day gate', () => {
+  const now = at('2027-06-15', '22:00');
+  assert.strictEqual(shouldFire('22:00', undefined, now, true), true);
+  assert.strictEqual(shouldFire('22:00', undefined, now, false), false);
 });
 
 for (const [status, name, detail] of results) {

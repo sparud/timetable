@@ -6,6 +6,8 @@ export interface Now {
   time: string;
   /** `YYYY-MM-DDTHH:MM` — unique per minute, so an event fires at most once. */
   key: string;
+  /** Local day of week, 0 = Sunday. */
+  weekday: number;
 }
 
 /**
@@ -53,7 +55,15 @@ export function nowInZone(timeZone: string, date: Date = new Date()): Now {
   const get = (type: string) => parts.find(part => part.type === type)?.value ?? '00';
   const time = `${get('hour')}:${get('minute')}`;
 
-  return { time, key: `${get('year')}-${get('month')}-${get('day')}T${time}` };
+  const year = get('year');
+  const month = get('month');
+  const day = get('day');
+
+  // Derived from the local date parts, so it is the local weekday and not the
+  // runtime's — and not locale-dependent the way Intl's `weekday` would be.
+  const weekday = new Date(Date.UTC(Number(year), Number(month) - 1, Number(day))).getUTCDay();
+
+  return { time, key: `${year}-${month}-${day}T${time}`, weekday };
 }
 
 /** Whether `time` falls in [start, end). Ranges may wrap past midnight. */
@@ -81,7 +91,53 @@ export function shouldFire(
   target: string | null,
   lastFiredKey: string | undefined,
   now: Now,
+  dayEnabled = true,
 ): boolean {
-  return target !== null && target === now.time && lastFiredKey !== now.key;
+  return dayEnabled && target !== null && target === now.time && lastFiredKey !== now.key;
+}
+
+/** Setting ids for the weekday checkboxes, indexed by `Now.weekday`. */
+export const WEEKDAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const;
+
+export function previousWeekday(weekday: number): number {
+  return (weekday + 6) % 7;
+}
+
+/** No days ticked means every day, so a device with the feature unused behaves as before. */
+export function isDayEnabled(days: string[], weekday: number): boolean {
+  return days.length === 0 || days.includes(WEEKDAYS[weekday]);
+}
+
+/**
+ * Whether a range is running right now.
+ *
+ * The weekdays select the day the range *starts*, so `22:00-06:00 on Mondays` means
+ * "the night beginning on Monday" and stays active into Tuesday morning. Judging each
+ * end separately would instead close the range on the wrong day, or never.
+ */
+export function isRangeActive(start: string, end: string, days: string[], now: Now): boolean {
+  const from = minutesOf(start);
+  const to = minutesOf(end);
+  const at = minutesOf(now.time);
+  if (from === null || to === null || at === null || from === to) return false;
+
+  const wraps = from > to;
+  const inWindow = wraps ? at >= from || at < to : at >= from && at < to;
+  if (!inWindow) return false;
+
+  const startedOn = wraps && at < to ? previousWeekday(now.weekday) : now.weekday;
+  return isDayEnabled(days, startedOn);
+}
+
+/** Whether the end of a range is due now, judged by the day its occurrence began. */
+export function isRangeEndDue(start: string, end: string, days: string[], now: Now): boolean {
+  if (now.time !== end) return false;
+
+  const from = minutesOf(start);
+  const to = minutesOf(end);
+  if (from === null || to === null || from === to) return false;
+
+  const startedOn = from > to ? previousWeekday(now.weekday) : now.weekday;
+  return isDayEnabled(days, startedOn);
 }
 

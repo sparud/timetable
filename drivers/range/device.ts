@@ -1,5 +1,5 @@
 import { ScheduleDevice, Slot } from '../../lib/ScheduleDevice';
-import { Now, isWithin } from '../../lib/time';
+import { Now, isDayEnabled, isRangeActive, isRangeEndDue } from '../../lib/time';
 
 const SLOTS: Slot[] = [
   { id: 'start', capability: 'schedule_start' },
@@ -10,6 +10,18 @@ class RangeDevice extends ScheduleDevice {
 
   override get slots(): Slot[] {
     return SLOTS;
+  }
+
+  /**
+   * The start is judged on today; the end belongs to the occurrence that opened it,
+   * which for a range crossing midnight began yesterday.
+   */
+  protected override isSlotDue(slot: Slot, now: Now): boolean {
+    if (slot.id === 'start') return isDayEnabled(this.days, now.weekday);
+
+    const start = this.getTime('start');
+    const end = this.getTime('end');
+    return start !== null && end !== null && isRangeEndDue(start, end, this.days, now);
   }
 
   protected override async onDue(slot: Slot, now: Now): Promise<void> {
@@ -24,11 +36,11 @@ class RangeDevice extends ScheduleDevice {
     await this.refreshActive(now);
   }
 
-  /** True while the clock sits inside the range; drives the capability and the condition card. */
+  /** True while the clock sits inside a range that began on an enabled weekday. */
   isActive(now: Now): boolean {
     const start = this.getTime('start');
     const end = this.getTime('end');
-    return start !== null && end !== null && isWithin(start, end, now.time);
+    return start !== null && end !== null && isRangeActive(start, end, this.days, now);
   }
 
   private async refreshActive(now: Now): Promise<void> {
