@@ -8,6 +8,23 @@ export interface Now {
   key: string;
 }
 
+/**
+ * Accepts what a Flow tag might carry - `7:30` as well as `07:30` - and returns the
+ * canonical `HH:MM`, or null if it is not a time at all.
+ */
+export function normalizeTime(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+
+  const match = /^\s*(\d{1,2}):(\d{2})\s*$/.exec(value);
+  if (!match) return null;
+
+  const hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  if (hours > 23 || minutes > 59) return null;
+
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+}
+
 export function isTime(value: unknown): value is string {
   return typeof value === 'string' && TIME_PATTERN.test(value);
 }

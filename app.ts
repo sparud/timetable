@@ -22,6 +22,14 @@ class JsGadgetsApp extends Homey.App {
           this.autocompleteDevices(driverId, query));
     }
 
+    // Flows can move the times too - handy for "start at [sunset]" or weekend hours.
+    for (const [card, slot] of [['set_time', 'time'], ['set_start', 'start'], ['set_end', 'end']]) {
+      this.homey.flow
+        .getActionCard(card)
+        .registerRunListener(async (args: { device: ScheduleDevice; time: string }) =>
+          args.device.setTime(slot, args.time));
+    }
+
     this.homey.flow
       .getConditionCard('range_is_active')
       .registerRunListener(async (args: { device: ScheduleDevice }) =>
@@ -89,10 +97,7 @@ class JsGadgetsApp extends Homey.App {
     const device = this.findDevice(id);
     await device.setTime(slot, value);
 
-    const state = device.toWidgetState();
-    this.homey.api.realtime('schedule', state);
-
-    return state;
+    return device.toWidgetState();
   }
 
 }

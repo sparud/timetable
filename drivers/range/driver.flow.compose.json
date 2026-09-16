@@ -65,5 +65,89 @@
         "nl": "De tijd !{{is|is niet}} binnen het bereik"
       }
     }
+  ],
+  "actions": [
+    {
+      "id": "set_start",
+      "title": {
+        "en": "Set the start time",
+        "sv": "Ställ in starttiden",
+        "no": "Sett starttidspunktet",
+        "da": "Indstil starttidspunktet",
+        "fi": "Aseta aloitusaika",
+        "nl": "Stel de starttijd in"
+      },
+      "titleFormatted": {
+        "en": "Set the start time to [[time]]",
+        "sv": "Ställ in starttiden till [[time]]",
+        "no": "Sett starttidspunktet til [[time]]",
+        "da": "Indstil starttidspunktet til [[time]]",
+        "fi": "Aseta aloitusajaksi [[time]]",
+        "nl": "Stel de starttijd in op [[time]]"
+      },
+      "args": [
+        {
+          "name": "time",
+          "type": "text",
+          "title": {
+            "en": "Time",
+            "sv": "Tid",
+            "no": "Tid",
+            "da": "Tid",
+            "fi": "Aika",
+            "nl": "Tijd"
+          },
+          "placeholder": {
+            "en": "22:30",
+            "sv": "22:30",
+            "no": "22:30",
+            "da": "22:30",
+            "fi": "22:30",
+            "nl": "22:30"
+          }
+        }
+      ]
+    },
+    {
+      "id": "set_end",
+      "title": {
+        "en": "Set the end time",
+        "sv": "Ställ in sluttiden",
+        "no": "Sett sluttidspunktet",
+        "da": "Indstil sluttidspunktet",
+        "fi": "Aseta lopetusaika",
+        "nl": "Stel de eindtijd in"
+      },
+      "titleFormatted": {
+        "en": "Set the end time to [[time]]",
+        "sv": "Ställ in sluttiden till [[time]]",
+        "no": "Sett sluttidspunktet til [[time]]",
+        "da": "Indstil sluttidspunktet til [[time]]",
+        "fi": "Aseta lopetusajaksi [[time]]",
+        "nl": "Stel de eindtijd in op [[time]]"
+      },
+      "args": [
+        {
+          "name": "time",
+          "type": "text",
+          "title": {
+            "en": "Time",
+            "sv": "Tid",
+            "no": "Tid",
+            "da": "Tid",
+            "fi": "Aika",
+            "nl": "Tijd"
+          },
+          "placeholder": {
+            "en": "22:30",
+            "sv": "22:30",
+            "no": "22:30",
+            "da": "22:30",
+            "fi": "22:30",
+            "nl": "22:30"
+          }
+        }
+      ]
+    }
   ]
 }

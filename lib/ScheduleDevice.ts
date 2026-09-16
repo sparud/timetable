@@ -1,5 +1,5 @@
 import Homey from 'homey';
-import { Now, isTime } from './time';
+import { Now, isTime, normalizeTime } from './time';
 
 /** One editable time on a device: a settings key paired with the capability that shows it. */
 export interface Slot {
@@ -43,13 +43,20 @@ export abstract class ScheduleDevice extends Homey.Device {
 
   /** Single funnel for time changes, whichever way they arrive. */
   async setTime(slotId: string, value: string): Promise<void> {
-    if (!isTime(value)) throw new Error('invalid_time');
+    const time = normalizeTime(value);
+    if (time === null) throw new Error('invalid_time');
     if (!this.slots.some(slot => slot.id === slotId)) throw new Error('unknown_slot');
-    if (this.getTime(slotId) === value) return;
+    if (this.getTime(slotId) === time) return;
 
-    await this.setSettings({ [slotId]: value });
+    await this.setSettings({ [slotId]: time });
     await this.syncCapabilities();
     this.onTimesChanged();
+    this.publishState();
+  }
+
+  /** Tell open widgets the times moved, whoever moved them. */
+  publishState(): void {
+    this.homey.api.realtime('schedule', this.toWidgetState());
   }
 
   async syncCapabilities(): Promise<void> {
@@ -79,7 +86,9 @@ export abstract class ScheduleDevice extends Homey.Device {
 
     // setSettings() has not resolved yet, so defer until the new values are readable.
     this.homey.setTimeout(() => {
-      this.syncCapabilities().catch(this.error);
+      this.syncCapabilities()
+        .then(() => this.publishState())
+        .catch(this.error);
       this.onTimesChanged();
     }, 0);
   }

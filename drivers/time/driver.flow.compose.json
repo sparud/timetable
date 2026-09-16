@@ -26,5 +26,48 @@
         }
       ]
     }
+  ],
+  "actions": [
+    {
+      "id": "set_time",
+      "title": {
+        "en": "Set the time",
+        "sv": "Ställ in tiden",
+        "no": "Sett tidspunktet",
+        "da": "Indstil tidspunktet",
+        "fi": "Aseta aika",
+        "nl": "Stel de tijd in"
+      },
+      "titleFormatted": {
+        "en": "Set the time to [[time]]",
+        "sv": "Ställ in tiden till [[time]]",
+        "no": "Sett tidspunktet til [[time]]",
+        "da": "Indstil tidspunktet til [[time]]",
+        "fi": "Aseta ajaksi [[time]]",
+        "nl": "Stel de tijd in op [[time]]"
+      },
+      "args": [
+        {
+          "name": "time",
+          "type": "text",
+          "title": {
+            "en": "Time",
+            "sv": "Tid",
+            "no": "Tid",
+            "da": "Tid",
+            "fi": "Aika",
+            "nl": "Tijd"
+          },
+          "placeholder": {
+            "en": "22:30",
+            "sv": "22:30",
+            "no": "22:30",
+            "da": "22:30",
+            "fi": "22:30",
+            "nl": "22:30"
+          }
+        }
+      ]
+    }
   ]
 }
