@@ -1,0 +1,10 @@
+{
+  "1.0.0": {
+    "en": "First release. Adds Time and Time Range devices whose times you set from a dashboard widget, from device settings or from a Flow, with weekday repetition and a pause switch.",
+    "sv": "Första versionen. Lägger till enheterna Tid och Tidsintervall, vars tider du ställer in från en widget på instrumentpanelen, från enhetens inställningar eller från ett flöde, med upprepning per veckodag och en pausknapp.",
+    "no": "Første versjon. Legger til enhetene Tid og Tidsintervall, med tider du stiller inn fra en widget på dashbordet, fra enhetens innstillinger eller fra en flyt, med gjentakelse per ukedag og en pauseknapp.",
+    "da": "Første version. Tilføjer enhederne Tid og Tidsinterval, hvis tider du indstiller fra en widget på dashboardet, fra enhedens indstillinger eller fra et flow, med gentagelse pr. ugedag og en pauseknap.",
+    "de": "Erste Version. Fügt die Geräte Zeit und Zeitraum hinzu, deren Zeiten du über ein Dashboard-Widget, die Geräteeinstellungen oder einen Flow festlegst — mit Wiederholung nach Wochentag und einem Pause-Schalter.",
+    "nl": "Eerste versie. Voegt de apparaten Tijd en Tijdsbereik toe, waarvan je de tijden instelt via een dashboardwidget, de apparaatinstellingen of een Flow, met herhaling per weekdag en een pauzeknop."
+  }
+}

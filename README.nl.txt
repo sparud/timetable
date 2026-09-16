@@ -13,4 +13,6 @@ Beide apparaten herhalen op de weekdagen die je kiest, kunnen worden gepauzeerd 
 WIDGETS
 Tijdkiezer en Tijdsbereik zetten de tijden, de weekdagen en de pauzeknop op je dashboard, zodat een schema met een paar tikken is aangepast.
 
+Timetable vraagt om geen enkele permissie: de app bezit zijn eigen apparaten en heeft dus nooit toegang tot de rest van je Homey nodig.
+
 Vereist Homey Pro; dashboardwidgets zijn niet beschikbaar op Homey Cloud.

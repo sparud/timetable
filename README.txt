@@ -13,4 +13,6 @@ Both devices repeat on the weekdays you choose, can be paused without losing the
 WIDGETS
 Time Picker and Time Range Picker put the times, the weekdays and the pause button on your dashboard, so a schedule can be changed in a couple of taps.
 
+Timetable asks for no permissions at all: it owns its own devices, so it never needs access to the rest of your Homey.
+
 Requires Homey Pro; dashboard widgets are not available on Homey Cloud.

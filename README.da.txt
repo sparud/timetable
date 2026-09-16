@@ -13,4 +13,6 @@ Begge enheder gentages på de ugedage, du vælger, kan sættes på pause uden at
 WIDGETS
 Tidsvælger og Tidsinterval placerer tiderne, ugedagene og pauseknappen på dit dashboard, så en tidsplan kan ændres med et par tryk.
 
+Timetable beder ikke om nogen tilladelser: den ejer sine egne enheder og har derfor aldrig brug for adgang til resten af din Homey.
+
 Kræver Homey Pro; widgets findes ikke på Homey Cloud.

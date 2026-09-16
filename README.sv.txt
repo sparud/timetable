@@ -13,4 +13,6 @@ Båda enheterna upprepas på de veckodagar du väljer, kan pausas utan att tider
 WIDGETAR
 Tidsväljare och Tidsintervall lägger tiderna, veckodagarna och pausknappen på din instrumentpanel, så att ett schema kan ändras med ett par tryck.
 
+Timetable begär inga behörigheter alls: den äger sina egna enheter och behöver därför aldrig åtkomst till resten av din Homey.
+
 Kräver Homey Pro; widgetar finns inte på Homey Cloud.

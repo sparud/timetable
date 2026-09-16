@@ -13,4 +13,6 @@ Beide Geräte wiederholen sich an den von dir gewählten Wochentagen, lassen sic
 WIDGETS
 Zeitauswahl und Zeitraum-Auswahl bringen die Zeiten, die Wochentage und die Pause-Taste auf dein Dashboard, sodass ein Zeitplan mit wenigen Tipps geändert ist.
 
+Timetable verlangt keinerlei Berechtigungen: Die App besitzt ihre eigenen Geräte und braucht deshalb nie Zugriff auf den Rest deines Homey.
+
 Erfordert Homey Pro; Dashboard-Widgets gibt es auf Homey Cloud nicht.
