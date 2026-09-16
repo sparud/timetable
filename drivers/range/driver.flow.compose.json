@@ -10,6 +10,14 @@
         "de": "Der Zeitraum beginnt",
         "nl": "Het bereik begint"
       },
+      "titleFormatted": {
+        "en": "The range starts",
+        "sv": "Intervallet börjar",
+        "no": "Intervallet starter",
+        "da": "Intervallet starter",
+        "de": "Der Zeitraum beginnt",
+        "nl": "Het bereik begint"
+      },
       "tokens": [
         {
           "name": "time",
@@ -29,6 +37,14 @@
     {
       "id": "range_ended",
       "title": {
+        "en": "The range ends",
+        "sv": "Intervallet slutar",
+        "no": "Intervallet slutter",
+        "da": "Intervallet slutter",
+        "de": "Der Zeitraum endet",
+        "nl": "Het bereik eindigt"
+      },
+      "titleFormatted": {
         "en": "The range ends",
         "sv": "Intervallet slutar",
         "no": "Intervallet slutter",
@@ -57,6 +73,14 @@
     {
       "id": "range_is_active",
       "title": {
+        "en": "The time !{{is|is not}} within the range",
+        "sv": "Tiden !{{är|är inte}} inom intervallet",
+        "no": "Tiden !{{er|er ikke}} innenfor intervallet",
+        "da": "Tiden !{{er|er ikke}} inden for intervallet",
+        "de": "Die Zeit !{{liegt|liegt nicht}} im Zeitraum",
+        "nl": "De tijd !{{is|is niet}} binnen het bereik"
+      },
+      "titleFormatted": {
         "en": "The time !{{is|is not}} within the range",
         "sv": "Tiden !{{är|är inte}} inom intervallet",
         "no": "Tiden !{{er|er ikke}} innenfor intervallet",

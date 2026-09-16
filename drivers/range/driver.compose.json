@@ -17,6 +17,7 @@
   "platforms": [
     "local"
   ],
+  "connectivity": [],
   "images": {
     "small": "/drivers/range/assets/images/small.png",
     "large": "/drivers/range/assets/images/large.png",

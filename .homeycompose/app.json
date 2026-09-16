@@ -26,6 +26,11 @@
     "tools"
   ],
   "brandColor": "#2674F0",
+  "support": "https://github.com/sparud/timetable/issues",
+  "source": "https://github.com/sparud/timetable",
+  "bugs": {
+    "url": "https://github.com/sparud/timetable/issues"
+  },
   "permissions": [],
   "images": {
     "small": "/assets/images/small.png",

@@ -15,6 +15,7 @@
   "platforms": [
     "local"
   ],
+  "connectivity": [],
   "images": {
     "small": "/drivers/time/assets/images/small.png",
     "large": "/drivers/time/assets/images/large.png",

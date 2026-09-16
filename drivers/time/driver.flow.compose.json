@@ -10,6 +10,14 @@
         "de": "Die Zeit ist erreicht",
         "nl": "De tijd is bereikt"
       },
+      "titleFormatted": {
+        "en": "The time is reached",
+        "sv": "Tiden har inträffat",
+        "no": "Tidspunktet er nådd",
+        "da": "Tidspunktet er nået",
+        "de": "Die Zeit ist erreicht",
+        "nl": "De tijd is bereikt"
+      },
       "tokens": [
         {
           "name": "time",

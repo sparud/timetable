@@ -27,6 +27,11 @@
     "tools"
   ],
   "brandColor": "#2674F0",
+  "support": "https://github.com/sparud/timetable/issues",
+  "source": "https://github.com/sparud/timetable",
+  "bugs": {
+    "url": "https://github.com/sparud/timetable/issues"
+  },
   "permissions": [],
   "images": {
     "small": "/assets/images/small.png",
@@ -42,6 +47,14 @@
       {
         "id": "range_started",
         "title": {
+          "en": "The range starts",
+          "sv": "Intervallet börjar",
+          "no": "Intervallet starter",
+          "da": "Intervallet starter",
+          "de": "Der Zeitraum beginnt",
+          "nl": "Het bereik begint"
+        },
+        "titleFormatted": {
           "en": "The range starts",
           "sv": "Intervallet börjar",
           "no": "Intervallet starter",
@@ -82,6 +95,14 @@
           "de": "Der Zeitraum endet",
           "nl": "Het bereik eindigt"
         },
+        "titleFormatted": {
+          "en": "The range ends",
+          "sv": "Intervallet slutar",
+          "no": "Intervallet slutter",
+          "da": "Intervallet slutter",
+          "de": "Der Zeitraum endet",
+          "nl": "Het bereik eindigt"
+        },
         "tokens": [
           {
             "name": "time",
@@ -108,6 +129,14 @@
       {
         "id": "time_reached",
         "title": {
+          "en": "The time is reached",
+          "sv": "Tiden har inträffat",
+          "no": "Tidspunktet er nådd",
+          "da": "Tidspunktet er nået",
+          "de": "Die Zeit ist erreicht",
+          "nl": "De tijd is bereikt"
+        },
+        "titleFormatted": {
           "en": "The time is reached",
           "sv": "Tiden har inträffat",
           "no": "Tidspunktet er nådd",
@@ -143,6 +172,14 @@
       {
         "id": "range_is_active",
         "title": {
+          "en": "The time !{{is|is not}} within the range",
+          "sv": "Tiden !{{är|är inte}} inom intervallet",
+          "no": "Tiden !{{er|er ikke}} innenfor intervallet",
+          "da": "Tiden !{{er|er ikke}} inden for intervallet",
+          "de": "Die Zeit !{{liegt|liegt nicht}} im Zeitraum",
+          "nl": "De tijd !{{is|is niet}} binnen het bereik"
+        },
+        "titleFormatted": {
           "en": "The time !{{is|is not}} within the range",
           "sv": "Tiden !{{är|är inte}} inom intervallet",
           "no": "Tiden !{{er|er ikke}} innenfor intervallet",
@@ -320,6 +357,7 @@
       "platforms": [
         "local"
       ],
+      "connectivity": [],
       "images": {
         "small": "/drivers/range/assets/images/small.png",
         "large": "/drivers/range/assets/images/large.png",
@@ -515,6 +553,7 @@
       "platforms": [
         "local"
       ],
+      "connectivity": [],
       "images": {
         "small": "/drivers/time/assets/images/small.png",
         "large": "/drivers/time/assets/images/large.png",
