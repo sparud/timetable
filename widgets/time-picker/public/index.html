@@ -129,6 +129,7 @@
       let homey = null;
       let device = null;
       let statusTimeout = null;
+      let enabled = true;
       let saveTimeout = null;
       let savesInFlight = 0;
       let saveSeq = 0;
@@ -141,7 +142,7 @@
 
       function flashStatus(text, state, duration = 2000) {
         setStatus(text, state);
-        statusTimeout = setTimeout(() => setStatus(null), duration);
+        statusTimeout = setTimeout(showIdleStatus, duration);
       }
 
       function setDisabled(disabled) {
@@ -170,7 +171,12 @@
       function apply(state) {
         label.textContent = homey.getSettings().title || state.name;
         input.value = TIME_PATTERN.test(state.times.time) ? state.times.time : '';
+        enabled = state.enabled !== false;
         applyDays(state.days);
+      }
+
+      function showIdleStatus() {
+        setStatus(enabled ? null : homey.__('common.paused'), enabled ? undefined : 'warning');
       }
 
       async function refresh() {
@@ -179,7 +185,7 @@
         try {
           apply(await homey.api('GET', `/state?id=${encodeURIComponent(device.id)}`));
           setDisabled(false);
-          setStatus(null);
+          showIdleStatus();
         } catch (err) {
           setDisabled(true);
           setStatus(describeError(err), 'error');

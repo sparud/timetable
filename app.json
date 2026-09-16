@@ -307,6 +307,7 @@
       },
       "class": "other",
       "capabilities": [
+        "onoff",
         "schedule_start",
         "schedule_end",
         "schedule_active"
@@ -503,6 +504,7 @@
       },
       "class": "other",
       "capabilities": [
+        "onoff",
         "schedule_time"
       ],
       "platforms": [

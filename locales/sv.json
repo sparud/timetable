@@ -5,7 +5,8 @@
     "errInvalidTime": "Ogiltig tid",
     "errGeneric": "Något gick fel",
     "everyDay": "Varje dag",
-    "errNoDays": "Välj minst en dag"
+    "errNoDays": "Välj minst en dag",
+    "paused": "Pausad"
   },
   "driver": {
     "time": {

@@ -9,6 +9,7 @@
   },
   "class": "other",
   "capabilities": [
+    "onoff",
     "schedule_time"
   ],
   "platforms": [

@@ -22,6 +22,20 @@ export abstract class ScheduleDevice extends Homey.Device {
   protected abstract onDue(slot: Slot, now: Now): Promise<void>;
 
   override async onInit(): Promise<void> {
+    // Devices paired before the toggle existed do not have the capability yet.
+    if (!this.hasCapability('onoff')) await this.addCapability('onoff').catch(this.error);
+    if (typeof this.getCapabilityValue('onoff') !== 'boolean') {
+      await this.setCapabilityValue('onoff', true).catch(this.error);
+    }
+
+    this.registerCapabilityListener('onoff', async () => {
+      // Deferred so the new value is readable, as with onSettings.
+      this.homey.setTimeout(() => {
+        this.onTimesChanged();
+        this.publishState();
+      }, 0);
+    });
+
     await this.syncCapabilities();
 
     // Seed the guard so restarting mid-minute cannot re-fire an event that already
@@ -82,7 +96,14 @@ export abstract class ScheduleDevice extends Homey.Device {
     }
   }
 
+  /** A disabled schedule keeps its times and days, it just stops acting on them. */
+  get enabled(): boolean {
+    return this.getCapabilityValue('onoff') !== false;
+  }
+
   async onTick(now: Now): Promise<void> {
+    if (!this.enabled) return;
+
     for (const slot of this.slots) {
       if (!shouldFire(this.getTime(slot.id), this.fired[slot.id], now, this.isSlotDue(slot, now))) {
         continue;
@@ -134,11 +155,18 @@ export abstract class ScheduleDevice extends Homey.Device {
     name: string;
     times: Record<string, string | null>;
     days: string[];
+    enabled: boolean;
   } {
     const times: Record<string, string | null> = {};
     for (const slot of this.slots) times[slot.id] = this.getTime(slot.id);
 
-    return { id: this.getData().id, name: this.getName(), times, days: this.days };
+    return {
+      id: this.getData().id,
+      name: this.getName(),
+      times,
+      days: this.days,
+      enabled: this.enabled,
+    };
   }
 
 }

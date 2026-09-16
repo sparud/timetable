@@ -38,6 +38,8 @@ class RangeDevice extends ScheduleDevice {
 
   /** True while the clock sits inside a range that began on an enabled weekday. */
   isActive(now: Now): boolean {
+    if (!this.enabled) return false;
+
     const start = this.getTime('start');
     const end = this.getTime('end');
     return start !== null && end !== null && isRangeActive(start, end, this.days, now);

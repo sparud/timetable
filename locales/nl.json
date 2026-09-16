@@ -5,7 +5,8 @@
     "errInvalidTime": "Ongeldige tijd",
     "errGeneric": "Er ging iets mis",
     "everyDay": "Elke dag",
-    "errNoDays": "Kies minstens één dag"
+    "errNoDays": "Kies minstens één dag",
+    "paused": "Gepauzeerd"
   },
   "driver": {
     "time": {

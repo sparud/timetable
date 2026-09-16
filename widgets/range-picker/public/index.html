@@ -116,6 +116,7 @@
       let homey = null;
       let device = null;
       let statusTimeout = null;
+      let enabled = true;
 
       const slots = [
         { key: 'start', labelSetting: 'labelStart', defaultLabel: 'timeRange.on' },
@@ -157,7 +158,10 @@
         status.className = `tr-status homey-text-small-light${state ? ` is-${state}` : ''}`;
       }
 
-      function showIdleStatus() { setStatus(describeDuration()); }
+      function showIdleStatus() {
+        if (!enabled) return setStatus(homey.__('common.paused'), 'warning');
+        setStatus(describeDuration());
+      }
 
       function flashStatus(text, state, duration = 2000) {
         setStatus(text, state);
@@ -189,6 +193,7 @@
 
       function apply(state) {
         document.getElementById('title').textContent = homey.getSettings().title || state.name;
+        enabled = state.enabled !== false;
         applyDays(state.days);
         for (const slot of slots) {
           if (!isSafeToReplaceValue(slot)) continue;

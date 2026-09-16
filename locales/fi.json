@@ -5,7 +5,8 @@
     "errInvalidTime": "Virheellinen aika",
     "errGeneric": "Jokin meni pieleen",
     "everyDay": "Joka päivä",
-    "errNoDays": "Valitse vähintään yksi päivä"
+    "errNoDays": "Valitse vähintään yksi päivä",
+    "paused": "Keskeytetty"
   },
   "driver": {
     "time": {

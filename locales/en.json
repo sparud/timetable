@@ -5,7 +5,8 @@
     "errInvalidTime": "Invalid time",
     "errGeneric": "Something went wrong",
     "everyDay": "Every day",
-    "errNoDays": "Pick at least one day"
+    "errNoDays": "Pick at least one day",
+    "paused": "Paused"
   },
   "driver": {
     "time": {
