@@ -1,5 +1,5 @@
 import Homey from 'homey';
-import { Now, isTime, normalizeTime } from './time';
+import { Now, isTime, normalizeTime, shouldFire } from './time';
 
 /** One editable time on a device: a settings key paired with the capability that shows it. */
 export interface Slot {
@@ -68,8 +68,7 @@ export abstract class ScheduleDevice extends Homey.Device {
 
   async onTick(now: Now): Promise<void> {
     for (const slot of this.slots) {
-      if (this.getTime(slot.id) !== now.time) continue;
-      if (this.fired[slot.id] === now.key) continue;
+      if (!shouldFire(this.getTime(slot.id), this.fired[slot.id], now)) continue;
 
       this.fired[slot.id] = now.key;
       await this.onDue(slot, now).catch(this.error);

@@ -2,7 +2,8 @@
   "name": "net.sparud.jsgadgets",
   "version": "1.0.0",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "tsc && node test/dst.js"
   },
   "devDependencies": {
     "@types/homey": "npm:homey-apps-sdk-v3-types@^0.3.12",

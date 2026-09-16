@@ -68,3 +68,20 @@ export function isWithin(start: string, end: string, time: string): boolean {
     ? at >= from && at < to
     : at >= from || at < to;
 }
+
+/**
+ * Whether a slot due at `target` should fire on this tick.
+ *
+ * `lastFiredKey` is the minute key the slot last fired for. Because the key is local
+ * date + local time, the repeated hour at the autumn DST change collapses onto one key,
+ * so a schedule inside it fires once rather than twice. The hour skipped in spring
+ * simply never matches, so it does not fire at all that day.
+ */
+export function shouldFire(
+  target: string | null,
+  lastFiredKey: string | undefined,
+  now: Now,
+): boolean {
+  return target !== null && target === now.time && lastFiredKey !== now.key;
+}
+
