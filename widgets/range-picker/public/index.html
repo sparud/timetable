@@ -53,6 +53,43 @@
 
       .tr-field input::-webkit-calendar-picker-indicator { opacity: 0.35; cursor: pointer; }
 
+      body { position: relative; }
+
+      .tr-power {
+        position: absolute;
+        top: var(--homey-su-2);
+        right: var(--homey-su-2);
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background-color: var(--homey-color-mono-100);
+        color: var(--homey-text-color-light);
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 120ms ease, color 120ms ease, opacity 120ms ease;
+      }
+
+      .tr-power svg {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+      }
+
+      .tr-power.is-on {
+        background-color: var(--homey-color-blue, #2674f0);
+        color: var(--homey-text-color-white, #fff);
+      }
+
+      .tr-power[disabled] { opacity: 0.35; pointer-events: none; }
+
       .tr-days {
         display: flex;
         justify-content: center;
@@ -92,6 +129,7 @@
 
   <body class="homey-widget">
     <div class="tr">
+      <button class="tr-power" id="power" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.5v8" /><path d="M7.4 6.6a6.5 6.5 0 1 0 9.2 0" /></svg></button>
       <div class="tr-title homey-text-small-light" id="title">&nbsp;</div>
       <div class="tr-cells">
         <div class="tr-cell" id="cell-start">
@@ -116,7 +154,6 @@
       let homey = null;
       let device = null;
       let statusTimeout = null;
-      let enabled = true;
 
       const slots = [
         { key: 'start', labelSetting: 'labelStart', defaultLabel: 'timeRange.on' },
@@ -159,7 +196,7 @@
       }
 
       function showIdleStatus() {
-        if (!enabled) return setStatus(homey.__('common.paused'), 'warning');
+        if (!enabledState) return setStatus(homey.__('common.paused'), 'warning');
         setStatus(describeDuration());
       }
 
@@ -192,9 +229,12 @@
       }
 
       function apply(state) {
-        document.getElementById('title').textContent = homey.getSettings().title || state.name;
-        enabled = state.enabled !== false;
+        // An unset title collapses its row entirely; the subject is often implicit.
+        document.getElementById('title').textContent = homey.getSettings().title || '';
+        enabledState = state.enabled !== false;
+        renderPower();
         applyDays(state.days);
+        syncHeight();
         for (const slot of slots) {
           if (!isSafeToReplaceValue(slot)) continue;
           const value = state.times[slot.key];
@@ -260,6 +300,7 @@
           el.addEventListener('click', () => toggleDay(day));
           return el;
         }));
+        syncHeight();
       }
 
       async function toggleDay(day) {
@@ -305,11 +346,47 @@
         document.documentElement.style.colorScheme = luminance < 0.5 ? 'dark' : 'light';
       }
 
-      // Report the height we actually lay out to - it differs by a row depending on
-      // whether a title is shown.
+      const powerEl = document.getElementById('power');
+      let enabledState = true;
+
+      function renderPower() {
+        powerEl.classList.toggle('is-on', enabledState);
+        powerEl.title = homey.__(enabledState ? 'common.pause' : 'common.resume');
+        powerEl.setAttribute('aria-pressed', String(enabledState));
+      }
+
+      async function togglePower() {
+        const next = !enabledState;
+        enabledState = next;
+        renderPower();
+        showIdleStatus();
+
+        try {
+          await homey.api('PUT', '/enabled', { id: device.id, enabled: next });
+        } catch (err) {
+          enabledState = !next;
+          renderPower();
+          setStatus(describeError(err), 'error');
+        }
+      }
+
+      /**
+       * Re-report the height once content that changes it has rendered. The day strip
+       * arrives with the first API response, well after ready() would have measured.
+       */
+      let reportedHeight = null;
+      function syncHeight() {
+        const measured = document.body.scrollHeight;
+        if (measured <= 40 || measured === reportedHeight) return;
+
+        reportedHeight = measured;
+        if (typeof homey.setHeight === 'function') homey.setHeight(measured);
+      }
+
       function ready() {
         const measured = document.body.scrollHeight;
-        homey.ready(measured > 40 ? { height: measured } : undefined);
+        reportedHeight = measured > 40 ? measured : null;
+        homey.ready(reportedHeight ? { height: reportedHeight } : undefined);
       }
 
       function onHomeyReady(Homey) {
@@ -339,11 +416,19 @@
         if (device === null) {
           slots.forEach(slot => setDisabled(slot, true));
           renderDays();
+          renderPower();
           daysEl.classList.add('is-disabled');
+          powerEl.disabled = true;
           setStatus(Homey.__('timeRange.pickDevice'), 'error');
           ready();
           return;
         }
+
+        powerEl.addEventListener('click', togglePower);
+
+        // Render before measuring, or the day strip is missing from the reported height.
+        renderPower();
+        renderDays();
 
         Homey.on('schedule', state => {
           if (!state || !device || state.id !== device.id) return;

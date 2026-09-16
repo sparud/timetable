@@ -6,7 +6,9 @@
     "errGeneric": "Något gick fel",
     "everyDay": "Varje dag",
     "errNoDays": "Välj minst en dag",
-    "paused": "Pausad"
+    "paused": "Pausad",
+    "pause": "Pausa",
+    "resume": "Återuppta"
   },
   "driver": {
     "time": {

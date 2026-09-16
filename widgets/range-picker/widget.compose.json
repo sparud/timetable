@@ -42,12 +42,12 @@
         "nl": "Titel"
       },
       "hint": {
-        "en": "Optional. Leave empty to show the device's name.",
-        "sv": "Valfritt. Lämna tomt för att visa enhetens namn.",
-        "no": "Valgfritt. La stå tom for å vise enhetens navn.",
-        "da": "Valgfrit. Lad stå tom for at vise enhedens navn.",
-        "fi": "Valinnainen. Jätä tyhjäksi näyttääksesi laitteen nimen.",
-        "nl": "Optioneel. Laat leeg om de naam van het apparaat te tonen."
+        "en": "Optional label above both times. Leave empty to hide the row entirely.",
+        "sv": "Valfri etikett ovanför båda tiderna. Lämna tomt för att dölja raden helt.",
+        "no": "Valgfri etikett over begge tidspunktene. La stå tom for å skjule raden helt.",
+        "da": "Valgfri etiket over begge tidspunkter. Lad stå tom for at skjule rækken helt.",
+        "fi": "Valinnainen otsikko molempien aikojen yläpuolella. Jätä tyhjäksi piilottaaksesi rivin kokonaan.",
+        "nl": "Optioneel label boven beide tijden. Laat leeg om de rij volledig te verbergen."
       }
     },
     {
@@ -105,6 +105,10 @@
     "setDays": {
       "method": "PUT",
       "path": "/days"
+    },
+    "setEnabled": {
+      "method": "PUT",
+      "path": "/enabled"
     }
   }
 }

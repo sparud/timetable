@@ -6,7 +6,9 @@
     "errGeneric": "Jokin meni pieleen",
     "everyDay": "Joka päivä",
     "errNoDays": "Valitse vähintään yksi päivä",
-    "paused": "Keskeytetty"
+    "paused": "Keskeytetty",
+    "pause": "Keskeytä",
+    "resume": "Jatka"
   },
   "driver": {
     "time": {

@@ -6,7 +6,9 @@
     "errGeneric": "Something went wrong",
     "everyDay": "Every day",
     "errNoDays": "Pick at least one day",
-    "paused": "Paused"
+    "paused": "Paused",
+    "pause": "Pause",
+    "resume": "Resume"
   },
   "driver": {
     "time": {

@@ -6,7 +6,9 @@
     "errGeneric": "Er ging iets mis",
     "everyDay": "Elke dag",
     "errNoDays": "Kies minstens één dag",
-    "paused": "Gepauzeerd"
+    "paused": "Gepauzeerd",
+    "pause": "Pauzeren",
+    "resume": "Hervatten"
   },
   "driver": {
     "time": {

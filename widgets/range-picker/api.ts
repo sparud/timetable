@@ -3,6 +3,7 @@ interface ScheduleApp {
   getDeviceState(id: string): unknown;
   setDeviceTime(id: string, slot: string, value: string): Promise<unknown>;
   setDeviceDays(id: string, days: string[]): Promise<unknown>;
+  setDeviceEnabled(id: string, enabled: boolean): Promise<unknown>;
 }
 
 /** Homey passes the app instance on `homey.app`; that is all these handlers need. */
@@ -27,5 +28,10 @@ export = {
   async setDays(context: Context<unknown, { id: string; days: string[] }>) {
     const { id, days } = context.body;
     return app(context).setDeviceDays(id, days);
+  },
+
+  async setEnabled(context: Context<unknown, { id: string; enabled: boolean }>) {
+    const { id, enabled } = context.body;
+    return app(context).setDeviceEnabled(id, enabled);
   },
 };

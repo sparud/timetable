@@ -73,6 +73,16 @@ export abstract class ScheduleDevice extends Homey.Device {
     this.homey.api.realtime('schedule', this.toWidgetState());
   }
 
+  /** Pauses or resumes the schedule, keeping its times and days. */
+  async setEnabled(value: boolean): Promise<void> {
+    if (this.enabled === value) return;
+
+    await this.setCapabilityValue('onoff', value);
+    // setCapabilityValue does not invoke our own capability listener.
+    this.onTimesChanged();
+    this.publishState();
+  }
+
   /**
    * Replaces the repeat days. At least one must remain: "no days" would mean never,
    * which is not a state the settings can express - there, empty means every day.

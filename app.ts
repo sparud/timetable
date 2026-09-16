@@ -91,6 +91,13 @@ class JsGadgetsApp extends Homey.App {
     return this.findDevice(id).toWidgetState();
   }
 
+  async setDeviceEnabled(id: string, enabled: boolean) {
+    const device = this.findDevice(id);
+    await device.setEnabled(enabled);
+
+    return device.toWidgetState();
+  }
+
   async setDeviceDays(id: string, days: string[]) {
     const device = this.findDevice(id);
     await device.setDays(days);

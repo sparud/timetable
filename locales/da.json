@@ -6,7 +6,9 @@
     "errGeneric": "Noget gik galt",
     "everyDay": "Hver dag",
     "errNoDays": "Vælg mindst én dag",
-    "paused": "Sat på pause"
+    "paused": "Sat på pause",
+    "pause": "Sæt på pause",
+    "resume": "Genoptag"
   },
   "driver": {
     "time": {

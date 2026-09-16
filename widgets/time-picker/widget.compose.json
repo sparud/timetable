@@ -63,6 +63,10 @@
     "setDays": {
       "method": "PUT",
       "path": "/days"
+    },
+    "setEnabled": {
+      "method": "PUT",
+      "path": "/enabled"
     }
   }
 }
