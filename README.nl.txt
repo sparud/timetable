@@ -1,6 +1,6 @@
 Schema's die je rechtstreeks vanaf je dashboard aanpast.
 
-In Homey zit een schema normaal gesproken in een Flow, en het wijzigen betekent de Flow-editor openen. JS Gadgets maakt van het schema juist een apparaat: met een naam, een plek in je apparatenlijst en een dashboardtegel die iedereen in huis kan bijstellen.
+In Homey zit een schema normaal gesproken in een Flow, en het wijzigen betekent de Flow-editor openen. Timetable maakt van het schema juist een apparaat: met een naam, een plek in je apparatenlijst en een dashboardtegel die iedereen in huis kan bijstellen.
 
 TIJD
 Eén moment op de dag. Start een Flow zodra de klok dat moment bereikt.

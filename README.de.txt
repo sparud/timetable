@@ -1,6 +1,6 @@
 Zeitpläne, die du direkt vom Dashboard aus änderst.
 
-In Homey steckt ein Zeitplan normalerweise in einem Flow, und ihn zu ändern heißt, den Flow-Editor zu öffnen. JS Gadgets macht aus dem Zeitplan stattdessen ein Gerät: mit Namen, einem Platz in der Geräteliste und einer Dashboard-Kachel, die jeder im Haushalt anpassen kann.
+In Homey steckt ein Zeitplan normalerweise in einem Flow, und ihn zu ändern heißt, den Flow-Editor zu öffnen. Timetable macht aus dem Zeitplan stattdessen ein Gerät: mit Namen, einem Platz in der Geräteliste und einer Dashboard-Kachel, die jeder im Haushalt anpassen kann.
 
 ZEIT
 Ein einzelner Zeitpunkt am Tag. Löst einen Flow aus, sobald die Uhr ihn erreicht.

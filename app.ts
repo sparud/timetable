@@ -10,7 +10,7 @@ const TICK_MS = 20_000;
 
 const DRIVERS = ['time', 'range'] as const;
 
-class JsGadgetsApp extends Homey.App {
+class TimetableApp extends Homey.App {
 
   private ticker?: NodeJS.Timeout;
 
@@ -39,7 +39,7 @@ class JsGadgetsApp extends Homey.App {
       this.onTick().catch(err => this.error('Tick failed:', err));
     }, TICK_MS);
 
-    this.log('JS Gadgets has been initialized');
+    this.log('Timetable has been initialized');
   }
 
   override async onUninit(): Promise<void> {
@@ -116,4 +116,4 @@ class JsGadgetsApp extends Homey.App {
 
 }
 
-export = JsGadgetsApp;
+export = TimetableApp;

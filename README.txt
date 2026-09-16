@@ -1,6 +1,6 @@
 Schedules you can edit straight from your dashboard.
 
-In Homey a schedule normally lives inside a Flow, where changing it means opening the Flow editor. JS Gadgets turns a schedule into a device instead: it has a name, a place in your device list, and a dashboard tile anyone in the household can adjust.
+In Homey a schedule normally lives inside a Flow, where changing it means opening the Flow editor. Timetable turns a schedule into a device instead: it has a name, a place in your device list, and a dashboard tile anyone in the household can adjust.
 
 TIME
 A single moment in the day. Triggers a Flow when the clock reaches it.

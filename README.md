@@ -1,4 +1,4 @@
-# JS Gadgets
+# Timetable
 
 A Homey app that turns a schedule into a **device**, so the times live somewhere you
 can see and change them — including from a dashboard tile — instead of being buried

@@ -1,6 +1,6 @@
 Tidsplaner du kan ændre direkte fra dit dashboard.
 
-I Homey ligger en tidsplan normalt inde i et flow, og at ændre den betyder at åbne flow-editoren. JS Gadgets gør tidsplanen til en enhed i stedet: den har et navn, en plads på enhedslisten og et dashboard-felt, som alle i husstanden kan justere.
+I Homey ligger en tidsplan normalt inde i et flow, og at ændre den betyder at åbne flow-editoren. Timetable gør tidsplanen til en enhed i stedet: den har et navn, en plads på enhedslisten og et dashboard-felt, som alle i husstanden kan justere.
 
 TID
 Et enkelt tidspunkt på dagen. Udløser et flow, når uret når det.

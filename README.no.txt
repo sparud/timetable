@@ -1,6 +1,6 @@
 Tidsplaner du kan endre rett fra dashbordet.
 
-I Homey ligger en tidsplan vanligvis inne i en flyt, og å endre den betyr å åpne flytredigereren. JS Gadgets gjør tidsplanen til en enhet i stedet: den har et navn, en plass i enhetslisten og et dashbordkort som hvem som helst i husstanden kan justere.
+I Homey ligger en tidsplan vanligvis inne i en flyt, og å endre den betyr å åpne flytredigereren. Timetable gjør tidsplanen til en enhet i stedet: den har et navn, en plass i enhetslisten og et dashbordkort som hvem som helst i husstanden kan justere.
 
 TID
 Et enkelt tidspunkt på døgnet. Utløser en flyt når klokken når det.

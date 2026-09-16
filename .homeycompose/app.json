@@ -1,5 +1,5 @@
 {
-  "id": "net.sparud.jsgadgets",
+  "id": "net.sparud.timetable",
   "version": "1.0.0",
   "compatibility": ">=12.4.0",
   "sdk": 3,
@@ -7,8 +7,12 @@
     "local"
   ],
   "name": {
-    "en": "JS Gadgets",
-    "de": "JS Gadgets"
+    "en": "Timetable",
+    "sv": "Timetable",
+    "no": "Timetable",
+    "da": "Timetable",
+    "de": "Timetable",
+    "nl": "Timetable"
   },
   "description": {
     "en": "Schedules you can edit straight from your dashboard.",
