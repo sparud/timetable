@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "Pause the schedule",
+    "sv": "Pausa schemat",
+    "no": "Sett tidsplanen på pause",
+    "da": "Sæt tidsplanen på pause",
+    "de": "Zeitplan pausieren",
+    "nl": "Pauzeer het schema"
+  },
+  "titleFormatted": {
+    "en": "Pause the schedule of [[device]]",
+    "sv": "Pausa schemat för [[device]]",
+    "no": "Sett tidsplanen for [[device]] på pause",
+    "da": "Sæt tidsplanen for [[device]] på pause",
+    "de": "Zeitplan von [[device]] pausieren",
+    "nl": "Pauzeer het schema van [[device]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=time|range"
+    }
+  ]
+}

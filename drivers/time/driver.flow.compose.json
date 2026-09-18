@@ -76,6 +76,78 @@
           }
         }
       ]
+    },
+    {
+      "id": "set_time_sun",
+      "title": {
+        "en": "Set the time from the sun",
+        "sv": "Ställ in tiden efter solen",
+        "no": "Sett tidspunktet etter solen",
+        "da": "Indstil tidspunktet efter solen",
+        "de": "Zeit nach der Sonne festlegen",
+        "nl": "Stel de tijd in op de zon"
+      },
+      "titleFormatted": {
+        "en": "Set the time to [[event]], offset by [[offset]] minutes",
+        "sv": "Ställ in tiden till [[event]], förskjuten [[offset]] minuter",
+        "no": "Sett tidspunktet til [[event]], forskjøvet [[offset]] minutter",
+        "da": "Indstil tidspunktet til [[event]], forskudt [[offset]] minutter",
+        "de": "Zeit auf [[event]] setzen, verschoben um [[offset]] Minuten",
+        "nl": "Stel de tijd in op [[event]], verschoven met [[offset]] minuten"
+      },
+      "args": [
+        {
+          "name": "event",
+          "type": "dropdown",
+          "title": {
+            "en": "Sun event",
+            "sv": "Solhändelse",
+            "no": "Solhendelse",
+            "da": "Solhændelse",
+            "de": "Sonnenereignis",
+            "nl": "Zonmoment"
+          },
+          "values": [
+            {
+              "id": "sunrise",
+              "title": {
+                "en": "Sunrise",
+                "sv": "Soluppgång",
+                "no": "Soloppgang",
+                "da": "Solopgang",
+                "de": "Sonnenaufgang",
+                "nl": "Zonsopkomst"
+              }
+            },
+            {
+              "id": "sunset",
+              "title": {
+                "en": "Sunset",
+                "sv": "Solnedgång",
+                "no": "Solnedgang",
+                "da": "Solnedgang",
+                "de": "Sonnenuntergang",
+                "nl": "Zonsondergang"
+              }
+            }
+          ]
+        },
+        {
+          "name": "offset",
+          "type": "number",
+          "title": {
+            "en": "Offset (minutes)",
+            "sv": "Förskjutning (minuter)",
+            "no": "Forskyvning (minutter)",
+            "da": "Forskydning (minutter)",
+            "de": "Verschiebung (Minuten)",
+            "nl": "Verschuiving (minuten)"
+          },
+          "min": -720,
+          "max": 720,
+          "step": 1
+        }
+      ]
     }
   ]
 }

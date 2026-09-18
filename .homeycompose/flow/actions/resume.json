@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "Resume the schedule",
+    "sv": "Återuppta schemat",
+    "no": "Gjenoppta tidsplanen",
+    "da": "Genoptag tidsplanen",
+    "de": "Zeitplan fortsetzen",
+    "nl": "Hervat het schema"
+  },
+  "titleFormatted": {
+    "en": "Resume the schedule of [[device]]",
+    "sv": "Återuppta schemat för [[device]]",
+    "no": "Gjenoppta tidsplanen for [[device]]",
+    "da": "Genoptag tidsplanen for [[device]]",
+    "de": "Zeitplan von [[device]] fortsetzen",
+    "nl": "Hervat het schema van [[device]]"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=time|range"
+    }
+  ]
+}

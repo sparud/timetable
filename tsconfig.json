@@ -3,7 +3,9 @@
     "target": "ES2022",
     "module": "commonjs",
     "moduleResolution": "node",
-    "lib": ["ES2022"],
+    "lib": [
+      "ES2022"
+    ],
     "outDir": "./.homeybuild",
     "rootDir": ".",
     "strict": true,
@@ -12,6 +14,15 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["app.ts", "lib/**/*.ts", "drivers/**/*.ts", "widgets/**/*.ts"],
-  "exclude": ["node_modules", ".homeybuild"]
+  "include": [
+    "app.ts",
+    "api.ts",
+    "lib/**/*.ts",
+    "drivers/**/*.ts",
+    "widgets/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".homeybuild"
+  ]
 }

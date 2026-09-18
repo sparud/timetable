@@ -10,6 +10,7 @@
   "class": "other",
   "capabilities": [
     "onoff",
+    "schedule_enabled",
     "schedule_start",
     "schedule_end",
     "schedule_active"

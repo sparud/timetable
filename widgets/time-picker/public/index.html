@@ -137,6 +137,89 @@
         text-overflow: ellipsis;
       }
 
+      .tp-modes {
+        display: flex;
+        justify-content: center;
+        gap: var(--homey-su-1);
+      }
+
+      .tp-mode {
+        width: 36px;
+        height: 26px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: var(--homey-border-radius-small);
+        background: transparent;
+        color: var(--homey-text-color-light);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 120ms ease, color 120ms ease;
+      }
+
+      .tp-mode svg {
+        width: 18px;
+        height: 18px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .tp-mode.is-on {
+        background-color: var(--homey-color-mono-100);
+        color: var(--homey-text-color);
+      }
+
+      .tp.is-disabled .tp-modes { opacity: 0.4; pointer-events: none; }
+
+      /* Same box as the time input, but showing the time the sun event resolves to. */
+      .tp-sun {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 var(--homey-su-2);
+        box-sizing: border-box;
+      }
+
+      .tp-step {
+        width: 32px;
+        height: 32px;
+        flex: none;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background-color: var(--homey-color-mono-100);
+        color: var(--homey-text-color);
+        font-family: inherit;
+        font-size: var(--homey-font-size-default);
+        line-height: 1;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .tp-step:active { background-color: var(--homey-color-mono-200); }
+
+      .tp-resolved {
+        font-size: var(--homey-font-size-xxlarge);
+        line-height: var(--homey-line-height-xxlarge);
+        font-weight: var(--homey-font-weight-bold);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .tp-caption {
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      [hidden] { display: none !important; }
+
       .tp-status.is-success { color: var(--homey-text-color-success); }
       .tp-status.is-warning { color: var(--homey-text-color-warning); }
       .tp-status.is-error { color: var(--homey-text-color-danger); }
@@ -147,9 +230,20 @@
     <div class="tp" id="root">
       <button class="tp-power" id="power" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.5v8" /><path d="M7.4 6.6a6.5 6.5 0 1 0 9.2 0" /></svg></button>
       <div class="tp-label homey-text-small-light" id="label">&nbsp;</div>
+      <div class="tp-modes" id="modes">
+        <button class="tp-mode" type="button" data-mode="absolute"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" /><path d="M12 7.5V12l3.2 2" /></svg></button>
+        <button class="tp-mode" type="button" data-mode="sunrise"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.3 2.8-2.8 2.8 2.8" /></svg></button>
+        <button class="tp-mode" type="button" data-mode="sunset"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.2 2.8 2.8 2.8-2.8" /></svg></button>
+      </div>
       <div class="tp-field" id="field">
         <input type="time" id="time" step="60" />
+        <div class="tp-sun" id="sun" hidden>
+          <button class="tp-step" type="button" data-delta="-1">&minus;</button>
+          <span class="tp-resolved" id="resolved">--:--</span>
+          <button class="tp-step" type="button" data-delta="1">+</button>
+        </div>
       </div>
+      <div class="tp-caption homey-text-small-light" id="caption" hidden>&nbsp;</div>
       <div class="tp-days" id="days"></div>
       <div class="tp-status homey-text-small-light" id="status">&nbsp;</div>
     </div>
@@ -157,12 +251,19 @@
     <script type="text/javascript">
       const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/;
       const SAVE_DEBOUNCE = 500;
+      /** One tap of the stepper, and the furthest a time may sit from its sun event. */
+      const OFFSET_STEP = 5;
+      const OFFSET_LIMIT = 720;
 
       const root = document.getElementById('root');
       const label = document.getElementById('label');
       const field = document.getElementById('field');
       const input = document.getElementById('time');
       const status = document.getElementById('status');
+      const modesEl = document.getElementById('modes');
+      const sunEl = document.getElementById('sun');
+      const resolvedEl = document.getElementById('resolved');
+      const captionEl = document.getElementById('caption');
 
       let homey = null;
       let device = null;
@@ -170,6 +271,9 @@
       let saveTimeout = null;
       let savesInFlight = 0;
       let saveSeq = 0;
+      /** What the slot is set to, and the time that comes to today. */
+      let spec = { mode: 'absolute', time: null, offset: 0 };
+      let resolved = null;
 
       function setStatus(text, state) {
         clearTimeout(statusTimeout);
@@ -185,6 +289,74 @@
       function setDisabled(disabled) {
         root.classList.toggle('is-disabled', disabled);
         input.disabled = disabled;
+        for (const el of modesEl.children) el.disabled = disabled;
+      }
+
+      /** "Sunset −30 min", or just the event when it is followed exactly. */
+      function describeSpec() {
+        const event = homey.__(`common.${spec.mode}`);
+        if (!spec.offset) return event;
+
+        return homey.__(spec.offset > 0 ? 'common.offsetAfter' : 'common.offsetBefore',
+          { event, minutes: Math.abs(spec.offset) });
+      }
+
+      function renderMode() {
+        const followsSun = spec.mode !== 'absolute';
+
+        for (const el of modesEl.children) {
+          el.classList.toggle('is-on', el.dataset.mode === spec.mode);
+          el.title = homey.__(`common.${el.dataset.mode === 'absolute' ? 'fixedTime' : el.dataset.mode}`);
+        }
+
+        input.hidden = followsSun;
+        sunEl.hidden = !followsSun;
+        captionEl.hidden = !followsSun;
+
+        if (followsSun) {
+          resolvedEl.textContent = resolved || '--:--';
+          captionEl.textContent = describeSpec();
+        }
+
+        syncHeight();
+      }
+
+      function pickMode(mode) {
+        if (mode === spec.mode) return;
+
+        spec = Object.assign({}, spec, { mode });
+        // The fixed time is still stored, so switching back needs to send nothing but
+        // the mode; the resolved time arrives with the response.
+        renderMode();
+        setStatus(homey.__('common.saving'));
+        clearTimeout(saveTimeout);
+        saveTimeout = null;
+        save({ mode });
+      }
+
+      function stepOffset(delta) {
+        const next = Math.max(-OFFSET_LIMIT, Math.min(OFFSET_LIMIT, spec.offset + delta));
+        if (next === spec.offset) return;
+
+        // The resolved time tracks the offset one minute for one, so move it now
+        // instead of waiting for the round trip.
+        resolved = shiftLocal(resolved, next - spec.offset);
+        spec = Object.assign({}, spec, { offset: next });
+        renderMode();
+
+        setStatus(homey.__('common.saving'));
+        clearTimeout(saveTimeout);
+        saveTimeout = setTimeout(() => {
+          saveTimeout = null;
+          save({ offset: spec.offset });
+        }, SAVE_DEBOUNCE);
+      }
+
+      function shiftLocal(time, delta) {
+        if (!TIME_PATTERN.test(time)) return time;
+
+        const total = (Number(time.slice(0, 2)) * 60 + Number(time.slice(3)) + delta + 1440) % 1440;
+        return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
       }
 
       function describeError(err) {
@@ -207,9 +379,12 @@
 
       function apply(state) {
         label.textContent = homey.getSettings().title || state.name;
-        input.value = TIME_PATTERN.test(state.times.time) ? state.times.time : '';
+        spec = (state.specs && state.specs.time) || spec;
+        resolved = state.times.time;
+        input.value = TIME_PATTERN.test(spec.time) ? spec.time : '';
         enabledState = state.enabled !== false;
         renderPower();
+        renderMode();
         applyDays(state.days);
       }
 
@@ -239,20 +414,23 @@
         clearTimeout(saveTimeout);
         saveTimeout = setTimeout(() => {
           saveTimeout = null;
-          save(value);
+          save({ mode: 'absolute', time: value });
         }, SAVE_DEBOUNCE);
       }
 
-      async function save(value) {
+      async function save(changes) {
         const seq = ++saveSeq;
         savesInFlight++;
 
         try {
           // The app owns the device, so the write is immediate - nothing to confirm.
-          await homey.api('PUT', '/time', { id: device.id, slot: 'time', value });
+          const state = await homey.api('PUT', '/spec', { id: device.id, slot: 'time', changes });
           if (seq !== saveSeq) return;
 
-          flashStatus(homey.__('timePicker.saved', { time: value }), 'success');
+          spec = (state.specs && state.specs.time) || spec;
+          resolved = state.times.time;
+          renderMode();
+          flashStatus(homey.__('timePicker.saved', { time: resolved || '--:--' }), 'success');
           try {
             homey.hapticFeedback();
           } catch (err) { /* not available on every platform */ }
@@ -378,6 +556,7 @@
           setDisabled(true);
           renderDays();
           renderPower();
+          renderMode();
           daysEl.classList.add('is-disabled');
           powerEl.disabled = true;
           setStatus(Homey.__('timePicker.pickDevice'), 'error');
@@ -388,7 +567,7 @@
         label.textContent = settings.title || device.name || ' ';
 
         field.addEventListener('click', event => {
-          if (event.target === input || input.disabled) return;
+          if (spec.mode !== 'absolute' || event.target === input || input.disabled) return;
           input.focus();
           if (typeof input.showPicker === 'function') {
             try {
@@ -399,10 +578,19 @@
 
         input.addEventListener('change', scheduleSave);
         powerEl.addEventListener('click', togglePower);
+        modesEl.addEventListener('click', event => {
+          const button = event.target.closest('.tp-mode');
+          if (button) pickMode(button.dataset.mode);
+        });
+        sunEl.addEventListener('click', event => {
+          const button = event.target.closest('.tp-step');
+          if (button) stepOffset(Number(button.dataset.delta) * OFFSET_STEP);
+        });
 
         // Render before measuring, or the day strip is missing from the reported height.
         renderPower();
         renderDays();
+        renderMode();
 
         Homey.on('schedule', state => {
           if (!state || !device || state.id !== device.id) return;

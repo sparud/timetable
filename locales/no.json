@@ -8,7 +8,26 @@
     "errNoDays": "Velg minst én dag",
     "paused": "Satt på pause",
     "pause": "Sett på pause",
-    "resume": "Fortsett"
+    "resume": "Fortsett",
+    "fixedTime": "Fast tidspunkt",
+    "sunrise": "Soloppgang",
+    "sunset": "Solnedgang",
+    "offsetAfter": "__event__ +__minutes__ min",
+    "offsetBefore": "__event__ −__minutes__ min",
+    "followsDevice": "En Tid-enhet",
+    "noTimeDevices": "Ingen Tid-enheter",
+    "minutesAfter": "+__minutes__ min",
+    "minutesBefore": "−__minutes__ min",
+    "devices": "Enheter",
+    "done": "Ferdig",
+    "menu": "Innstillinger",
+    "targets": {
+      "none": "Ingen enheter",
+      "unknown": "Ukjent tilstand",
+      "on": "Alle på – trykk for å slå av",
+      "off": "Alle av – trykk for å slå på",
+      "mixed": "Noen på – trykk for å slå av alle"
+    }
   },
   "driver": {
     "time": {
@@ -39,5 +58,12 @@
     "fri": "Fr",
     "sat": "Lø",
     "sun": "Sø"
+  },
+  "settings": {
+    "intro": "Velg hvilke enheter hvert Tidsintervall slår på og av. De slås på når intervallet starter og av når det slutter.",
+    "none": "Ingen enheter",
+    "count": "__count__ valgt",
+    "missing": "__name__ (ikke funnet)",
+    "noRanges": "Legg til en Tidsintervall-enhet først."
   }
 }

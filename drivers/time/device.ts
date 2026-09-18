@@ -9,6 +9,16 @@ class TimeDevice extends ScheduleDevice {
     return SLOTS;
   }
 
+  /**
+   * A Time device switches nothing, so it has no `onoff` to mean anything - pausing
+   * moved to `schedule_enabled`. Devices paired before that shed the old capability.
+   */
+  override async onInit(): Promise<void> {
+    await super.onInit();
+
+    if (this.hasCapability('onoff')) await this.removeCapability('onoff').catch(this.error);
+  }
+
   protected override async onDue(_slot: Slot, now: Now): Promise<void> {
     this.log('Time reached:', now.time);
     await this.homey.flow

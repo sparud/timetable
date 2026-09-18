@@ -7,7 +7,7 @@
     "de": "Zeitraum-Auswahl",
     "nl": "Tijdsbereik"
   },
-  "height": 172,
+  "height": 244,
   "settings": [
     {
       "id": "device",
@@ -98,9 +98,13 @@
       "method": "GET",
       "path": "/state"
     },
-    "setTime": {
+    "getTimeDevices": {
+      "method": "GET",
+      "path": "/timedevices"
+    },
+    "setSpec": {
       "method": "PUT",
-      "path": "/time"
+      "path": "/spec"
     },
     "setDays": {
       "method": "PUT",
@@ -109,6 +113,22 @@
     "setEnabled": {
       "method": "PUT",
       "path": "/enabled"
+    },
+    "getSwitchable": {
+      "method": "GET",
+      "path": "/switchable"
+    },
+    "setTargets": {
+      "method": "PUT",
+      "path": "/targets"
+    },
+    "getTargetState": {
+      "method": "GET",
+      "path": "/targetstate"
+    },
+    "switchAll": {
+      "method": "PUT",
+      "path": "/switchall"
     }
   }
 }

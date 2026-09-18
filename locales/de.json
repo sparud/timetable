@@ -8,7 +8,26 @@
     "errNoDays": "Mindestens einen Tag wählen",
     "paused": "Pausiert",
     "pause": "Pausieren",
-    "resume": "Fortsetzen"
+    "resume": "Fortsetzen",
+    "fixedTime": "Feste Zeit",
+    "sunrise": "Sonnenaufgang",
+    "sunset": "Sonnenuntergang",
+    "offsetAfter": "__event__ +__minutes__ Min.",
+    "offsetBefore": "__event__ −__minutes__ Min.",
+    "followsDevice": "Ein Zeit-Gerät",
+    "noTimeDevices": "Keine Zeit-Geräte",
+    "minutesAfter": "+__minutes__ Min.",
+    "minutesBefore": "−__minutes__ Min.",
+    "devices": "Geräte",
+    "done": "Fertig",
+    "menu": "Einstellungen",
+    "targets": {
+      "none": "Keine Geräte",
+      "unknown": "Zustand unbekannt",
+      "on": "Alle an – tippen zum Ausschalten",
+      "off": "Alle aus – tippen zum Einschalten",
+      "mixed": "Einige an – tippen, um alle auszuschalten"
+    }
   },
   "driver": {
     "time": {
@@ -39,5 +58,12 @@
     "fri": "Fr",
     "sat": "Sa",
     "sun": "So"
+  },
+  "settings": {
+    "intro": "Wähle, welche Geräte jeder Zeitraum schaltet. Sie werden zu Beginn des Zeitraums eingeschaltet und am Ende ausgeschaltet.",
+    "none": "Keine Geräte",
+    "count": "__count__ ausgewählt",
+    "missing": "__name__ (nicht gefunden)",
+    "noRanges": "Füge zuerst ein Zeitraum-Gerät hinzu."
   }
 }

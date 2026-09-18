@@ -1,7 +1,22 @@
+/** A slot's intent: a fixed time, or an offset from a sun event. Fields may be omitted. */
+interface TimeSpec {
+  mode?: 'absolute' | 'sunrise' | 'sunset' | 'device';
+  time?: string;
+  offset?: number;
+  /** Which Time device the slot follows, by id or name. */
+  ref?: string;
+}
+
 /** What the app exposes to its widgets. */
 interface ScheduleApp {
   getDeviceState(id: string): unknown;
-  setDeviceTime(id: string, slot: string, value: string): Promise<unknown>;
+  setDeviceSpec(id: string, slot: string, changes: TimeSpec): Promise<unknown>;
+  listTimeDevices(): unknown;
+  getSwitchableDevices(): Promise<unknown>;
+  getRangeTargetState(id: string): Promise<string>;
+  switchRangeTargets(id: string, value: boolean): Promise<string>;
+  setRangeTargets(id: string, refs: string[]): Promise<unknown>;
+  getDeviceState(id: string): unknown;
   setDeviceDays(id: string, days: string[]): Promise<unknown>;
   setDeviceEnabled(id: string, enabled: boolean): Promise<unknown>;
 }
@@ -20,9 +35,33 @@ export = {
     return app(context).getDeviceState(context.query.id);
   },
 
-  async setTime(context: Context<unknown, { id: string; slot: string; value: string }>) {
-    const { id, slot, value } = context.body;
-    return app(context).setDeviceTime(id, slot, value);
+  async getTimeDevices(context: Context) {
+    return app(context).listTimeDevices();
+  },
+
+  async getSwitchable(context: Context) {
+    return app(context).getSwitchableDevices();
+  },
+
+  async getTargetState(context: Context<{ id: string }>) {
+    return app(context).getRangeTargetState(context.query.id);
+  },
+
+  async switchAll(context: Context<unknown, { id: string; value: boolean }>) {
+    const { id, value } = context.body;
+    return app(context).switchRangeTargets(id, value);
+  },
+
+  async setTargets(context: Context<unknown, { id: string; targets: string[] }>) {
+    const { id, targets } = context.body;
+    await app(context).setRangeTargets(id, targets);
+
+    return app(context).getDeviceState(id);
+  },
+
+  async setSpec(context: Context<unknown, { id: string; slot: string; changes: TimeSpec }>) {
+    const { id, slot, changes } = context.body;
+    return app(context).setDeviceSpec(id, slot, changes);
   },
 
   async setDays(context: Context<unknown, { id: string; days: string[] }>) {

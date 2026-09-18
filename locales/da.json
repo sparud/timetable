@@ -8,7 +8,26 @@
     "errNoDays": "Vælg mindst én dag",
     "paused": "Sat på pause",
     "pause": "Sæt på pause",
-    "resume": "Genoptag"
+    "resume": "Genoptag",
+    "fixedTime": "Fast tidspunkt",
+    "sunrise": "Solopgang",
+    "sunset": "Solnedgang",
+    "offsetAfter": "__event__ +__minutes__ min",
+    "offsetBefore": "__event__ −__minutes__ min",
+    "followsDevice": "En Tid-enhed",
+    "noTimeDevices": "Ingen Tid-enheder",
+    "minutesAfter": "+__minutes__ min",
+    "minutesBefore": "−__minutes__ min",
+    "devices": "Enheder",
+    "done": "Færdig",
+    "menu": "Indstillinger",
+    "targets": {
+      "none": "Ingen enheder",
+      "unknown": "Ukendt tilstand",
+      "on": "Alle tændt – tryk for at slukke",
+      "off": "Alle slukket – tryk for at tænde",
+      "mixed": "Nogle tændt – tryk for at slukke alle"
+    }
   },
   "driver": {
     "time": {
@@ -39,5 +58,12 @@
     "fri": "Fr",
     "sat": "Lø",
     "sun": "Sø"
+  },
+  "settings": {
+    "intro": "Vælg hvilke enheder hvert Tidsinterval tænder og slukker. De tændes når intervallet starter og slukkes når det slutter.",
+    "none": "Ingen enheder",
+    "count": "__count__ valgt",
+    "missing": "__name__ (ikke fundet)",
+    "noRanges": "Tilføj en Tidsinterval-enhed først."
   }
 }

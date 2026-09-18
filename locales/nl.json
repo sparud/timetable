@@ -8,7 +8,26 @@
     "errNoDays": "Kies minstens één dag",
     "paused": "Gepauzeerd",
     "pause": "Pauzeren",
-    "resume": "Hervatten"
+    "resume": "Hervatten",
+    "fixedTime": "Vaste tijd",
+    "sunrise": "Zonsopkomst",
+    "sunset": "Zonsondergang",
+    "offsetAfter": "__event__ +__minutes__ min",
+    "offsetBefore": "__event__ −__minutes__ min",
+    "followsDevice": "Een Tijd-apparaat",
+    "noTimeDevices": "Geen Tijd-apparaten",
+    "minutesAfter": "+__minutes__ min",
+    "minutesBefore": "−__minutes__ min",
+    "devices": "Apparaten",
+    "done": "Klaar",
+    "menu": "Instellingen",
+    "targets": {
+      "none": "Geen apparaten",
+      "unknown": "Status onbekend",
+      "on": "Alles aan – tik om uit te zetten",
+      "off": "Alles uit – tik om aan te zetten",
+      "mixed": "Sommige aan – tik om alles uit te zetten"
+    }
   },
   "driver": {
     "time": {
@@ -39,5 +58,12 @@
     "fri": "Vr",
     "sat": "Za",
     "sun": "Zo"
+  },
+  "settings": {
+    "intro": "Kies welke apparaten elk Tijdsbereik schakelt. Ze gaan aan als het bereik begint en uit als het eindigt.",
+    "none": "Geen apparaten",
+    "count": "__count__ geselecteerd",
+    "missing": "__name__ (niet gevonden)",
+    "noRanges": "Voeg eerst een Tijdsbereik-apparaat toe."
   }
 }

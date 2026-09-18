@@ -1,14 +1,17 @@
 {
   "name": "net.sparud.timetable",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "test": "tsc && node test/dst.js"
+    "test": "tsc && node test/dst.js && node test/sun.js"
   },
   "devDependencies": {
     "@types/homey": "npm:homey-apps-sdk-v3-types@^0.3.12",
     "@types/node": "^26.6.0",
     "typescript": "^5.4.0"
+  },
+  "dependencies": {
+    "homey-api": "^3.20.0"
   }
 }

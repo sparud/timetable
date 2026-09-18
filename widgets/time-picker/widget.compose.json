@@ -7,7 +7,7 @@
     "de": "Zeitauswahl",
     "nl": "Tijdkiezer"
   },
-  "height": 160,
+  "height": 210,
   "settings": [
     {
       "id": "device",
@@ -56,9 +56,9 @@
       "method": "GET",
       "path": "/state"
     },
-    "setTime": {
+    "setSpec": {
       "method": "PUT",
-      "path": "/time"
+      "path": "/spec"
     },
     "setDays": {
       "method": "PUT",

@@ -53,9 +53,146 @@
 
       .tr-field input::-webkit-calendar-picker-indicator { opacity: 0.35; cursor: pointer; }
 
+      .tr-modes { display: flex; justify-content: center; gap: 2px; }
+
+      .tr-mode {
+        width: 30px;
+        height: 22px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: var(--homey-border-radius-small);
+        background: transparent;
+        color: var(--homey-text-color-light);
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 120ms ease, color 120ms ease;
+      }
+
+      .tr-mode svg {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .tr-mode.is-on { background-color: var(--homey-color-mono-100); color: var(--homey-text-color); }
+
+      .tr-cell.is-disabled .tr-modes { opacity: 0.4; pointer-events: none; }
+
+      /* Same box as the time input, but showing the time the sun event resolves to. */
+      .tr-sun {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0 var(--homey-su-1);
+        box-sizing: border-box;
+      }
+
+      .tr-step {
+        width: 26px;
+        height: 26px;
+        flex: none;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        background-color: var(--homey-color-mono-100);
+        color: var(--homey-text-color);
+        font-family: inherit;
+        font-size: var(--homey-font-size-small);
+        line-height: 1;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .tr-step:active { background-color: var(--homey-color-mono-200); }
+
+      .tr-resolved {
+        font-size: var(--homey-font-size-xlarge);
+        line-height: var(--homey-line-height-xlarge);
+        font-weight: var(--homey-font-weight-bold);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .tr-caption {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+        gap: 4px;
+        min-width: 0;
+        white-space: nowrap;
+      }
+
+      .tr-caption span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* A native select, dressed down to look like the caption text it replaces. */
+      .tr-ref {
+        max-width: 100%;
+        min-width: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        color: var(--homey-text-color);
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        text-overflow: ellipsis;
+      }
+
+      [hidden] { display: none !important; }
+
       body { position: relative; }
 
-      .tr-power {
+      /* Mirrors the cog, on the other corner: the state of what the range switches. */
+      .tr-toggle {
+        position: absolute;
+        top: var(--homey-su-2);
+        left: var(--homey-su-2);
+        width: 30px;
+        height: 30px;
+        padding: 0;
+        border: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background-color: var(--homey-color-mono-100);
+        color: var(--homey-text-color-light);
+        -webkit-tap-highlight-color: transparent;
+        transition: background-color 120ms ease, color 120ms ease;
+      }
+
+      .tr-toggle svg {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+      }
+
+      .tr-toggle.is-on {
+        background-color: var(--homey-color-blue, #2674f0);
+        color: var(--homey-text-color-white, #fff);
+      }
+
+      .tr-toggle.is-mixed { color: var(--homey-text-color-warning, #f5a623); }
+
+      .tr-toggle .tr-half { fill: currentColor; stroke: none; }
+
+      .tr-cog {
         position: absolute;
         top: var(--homey-su-2);
         right: var(--homey-su-2);
@@ -74,21 +211,112 @@
         transition: background-color 120ms ease, color 120ms ease, opacity 120ms ease;
       }
 
-      .tr-power svg {
+      .tr-cog svg {
         width: 16px;
         height: 16px;
         fill: none;
         stroke: currentColor;
-        stroke-width: 2;
+        stroke-width: 1.8;
         stroke-linecap: round;
+        stroke-linejoin: round;
       }
 
-      .tr-power.is-on {
-        background-color: var(--homey-color-blue, #2674f0);
-        color: var(--homey-text-color-white, #fff);
+      .tr-cog.is-open { background-color: var(--homey-color-mono-200); color: var(--homey-text-color); }
+      .tr-cog[disabled] { opacity: 0.35; pointer-events: none; }
+
+      /* Anchored under the cog; the widget clips nothing because it sits inside the body. */
+      .tr-menu {
+        position: absolute;
+        top: 38px;
+        right: var(--homey-su-2);
+        z-index: 3;
+        min-width: 150px;
+        padding: var(--homey-su-1) 0;
+        border-radius: var(--homey-border-radius-default);
+        background-color: var(--homey-color-mono-000, #fff);
+        border: var(--homey-line-light);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
       }
 
-      .tr-power[disabled] { opacity: 0.35; pointer-events: none; }
+      .tr-menu button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--homey-su-2);
+        width: 100%;
+        padding: var(--homey-su-2) var(--homey-su-3);
+        border: none;
+        background: transparent;
+        font: inherit;
+        color: var(--homey-text-color);
+        text-align: left;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .tr-menu button:active { background-color: var(--homey-color-mono-100); }
+      .tr-menu .tr-menu-count { color: var(--homey-text-color-light); }
+
+      /* The device picker covers the widget rather than growing it. */
+      .tr-panel {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--homey-color-mono-000, #fff);
+      }
+
+      .tr-panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--homey-su-2);
+        padding: var(--homey-su-2) var(--homey-su-2) var(--homey-su-1);
+      }
+
+      .tr-panel-head button {
+        border: none;
+        background: transparent;
+        font: inherit;
+        font-weight: var(--homey-font-weight-medium);
+        color: var(--homey-color-blue, #2674f0);
+        cursor: pointer;
+        padding: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* A house can have a hundred switchable devices; scrolling alone is not enough. */
+      .tr-panel-search {
+        flex: 1;
+        min-width: 0;
+        font-family: inherit;
+        color: var(--homey-text-color);
+        background-color: var(--homey-color-mono-050);
+        border: var(--homey-line-light);
+        border-radius: var(--homey-border-radius-small);
+        padding: 2px var(--homey-su-1);
+        outline: none;
+      }
+
+      .tr-panel-list {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .tr-pick {
+        display: flex;
+        align-items: center;
+        gap: var(--homey-su-2);
+        padding: var(--homey-su-1) var(--homey-su-2);
+        cursor: pointer;
+      }
+
+      .tr-pick input { flex: none; margin: 0; }
+      .tr-pick-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .tr-pick-zone { flex: none; color: var(--homey-text-color-light); }
 
       .tr-days {
         display: flex;
@@ -129,16 +357,65 @@
 
   <body class="homey-widget">
     <div class="tr">
-      <button class="tr-power" id="power" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3.5v8" /><path d="M7.4 6.6a6.5 6.5 0 1 0 9.2 0" /></svg></button>
+      <button class="tr-toggle" id="toggle" type="button" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" id="toggle-power"><path d="M12 3.5v8" /><path d="M7.4 6.6a6.5 6.5 0 1 0 9.2 0" /></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" id="toggle-mixed" hidden><circle cx="12" cy="12" r="8" /><path class="tr-half" d="M12 4.5a7.5 7.5 0 0 1 0 15z" /></svg>
+      </button>
+      <button class="tr-cog" id="cog" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="3.2" /><path d="M19.4 14.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5v.2a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z" /></svg></button>
+      <div class="tr-menu" id="menu" hidden>
+        <button type="button" id="menu-power"></button>
+        <button type="button" id="menu-devices"><span id="menu-devices-label"></span><span class="tr-menu-count" id="menu-devices-count"></span></button>
+      </div>
+      <div class="tr-panel" id="panel" hidden>
+        <div class="tr-panel-head">
+          <input class="tr-panel-search homey-text-small" id="panel-search" type="search" />
+          <button type="button" id="panel-done"></button>
+        </div>
+        <div class="tr-panel-list" id="panel-list"></div>
+      </div>
       <div class="tr-title homey-text-small-light" id="title">&nbsp;</div>
       <div class="tr-cells">
         <div class="tr-cell" id="cell-start">
           <div class="tr-label homey-text-small-light" id="label-start">&nbsp;</div>
-          <div class="tr-field" id="field-start"><input type="time" id="input-start" step="60" /></div>
+          <div class="tr-modes" id="modes-start">
+            <button class="tr-mode" type="button" data-mode="absolute"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" /><path d="M12 7.5V12l3.2 2" /></svg></button>
+            <button class="tr-mode" type="button" data-mode="sunrise"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.3 2.8-2.8 2.8 2.8" /></svg></button>
+            <button class="tr-mode" type="button" data-mode="sunset"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.2 2.8 2.8 2.8-2.8" /></svg></button>
+            <button class="tr-mode" type="button" data-mode="device"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.5 13.5a4 4 0 0 0 5.7 0l2.3-2.3a4 4 0 0 0-5.7-5.7l-1.1 1.1" /><path d="M13.5 10.5a4 4 0 0 0-5.7 0l-2.3 2.3a4 4 0 0 0 5.7 5.7l1.1-1.1" /></svg></button>
+          </div>
+          <div class="tr-field" id="field-start">
+            <input type="time" id="input-start" step="60" />
+            <div class="tr-sun" id="sun-start" hidden>
+              <button class="tr-step" type="button" data-delta="-1">&minus;</button>
+              <span class="tr-resolved" id="resolved-start">--:--</span>
+              <button class="tr-step" type="button" data-delta="1">+</button>
+            </div>
+          </div>
+          <div class="tr-caption homey-text-small-light" id="caption-start" hidden>
+            <select class="tr-ref" id="ref-start" hidden></select>
+            <span id="captiontext-start"></span>
+          </div>
         </div>
         <div class="tr-cell" id="cell-end">
           <div class="tr-label homey-text-small-light" id="label-end">&nbsp;</div>
-          <div class="tr-field" id="field-end"><input type="time" id="input-end" step="60" /></div>
+          <div class="tr-modes" id="modes-end">
+            <button class="tr-mode" type="button" data-mode="absolute"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8" /><path d="M12 7.5V12l3.2 2" /></svg></button>
+            <button class="tr-mode" type="button" data-mode="sunrise"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.3 2.8-2.8 2.8 2.8" /></svg></button>
+            <button class="tr-mode" type="button" data-mode="sunset"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.2 2.8 2.8 2.8-2.8" /></svg></button>
+            <button class="tr-mode" type="button" data-mode="device"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.5 13.5a4 4 0 0 0 5.7 0l2.3-2.3a4 4 0 0 0-5.7-5.7l-1.1 1.1" /><path d="M13.5 10.5a4 4 0 0 0-5.7 0l-2.3 2.3a4 4 0 0 0 5.7 5.7l1.1-1.1" /></svg></button>
+          </div>
+          <div class="tr-field" id="field-end">
+            <input type="time" id="input-end" step="60" />
+            <div class="tr-sun" id="sun-end" hidden>
+              <button class="tr-step" type="button" data-delta="-1">&minus;</button>
+              <span class="tr-resolved" id="resolved-end">--:--</span>
+              <button class="tr-step" type="button" data-delta="1">+</button>
+            </div>
+          </div>
+          <div class="tr-caption homey-text-small-light" id="caption-end" hidden>
+            <select class="tr-ref" id="ref-end" hidden></select>
+            <span id="captiontext-end"></span>
+          </div>
         </div>
       </div>
       <div class="tr-days" id="days"></div>
@@ -148,6 +425,9 @@
     <script type="text/javascript">
       const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/;
       const SAVE_DEBOUNCE = 500;
+      /** One tap of the stepper, and the furthest a time may sit from its sun event. */
+      const OFFSET_STEP = 5;
+      const OFFSET_LIMIT = 720;
 
       const status = document.getElementById('status');
 
@@ -163,10 +443,26 @@
         field: document.getElementById(`field-${slot.key}`),
         input: document.getElementById(`input-${slot.key}`),
         label: document.getElementById(`label-${slot.key}`),
+        modes: document.getElementById(`modes-${slot.key}`),
+        sun: document.getElementById(`sun-${slot.key}`),
+        resolvedEl: document.getElementById(`resolved-${slot.key}`),
+        caption: document.getElementById(`caption-${slot.key}`),
+        captionText: document.getElementById(`captiontext-${slot.key}`),
+        ref: document.getElementById(`ref-${slot.key}`),
         saveTimeout: null,
         savesInFlight: 0,
         saveSeq: 0,
+        /** What the slot is set to, and the time that comes to today. */
+        spec: { mode: 'absolute', time: null, offset: 0, ref: null },
+        resolved: null,
       }));
+
+      /** Every Time device, for the reference picker; empty until the first fetch lands. */
+      let timeDevices = [];
+
+      const MODE_LABELS = {
+        absolute: 'fixedTime', sunrise: 'sunrise', sunset: 'sunset', device: 'followsDevice',
+      };
 
       const minutesOf = value => {
         const m = TIME_PATTERN.exec(value);
@@ -176,8 +472,8 @@
       // The range may wrap past midnight, so an end before the start is legitimate -
       // showing the length is what makes a genuine mistake obvious.
       function describeDuration() {
-        const from = minutesOf(slots[0].input.value.slice(0, 5));
-        const to = minutesOf(slots[1].input.value.slice(0, 5));
+        const from = minutesOf(shownTime(slots[0]));
+        const to = minutesOf(shownTime(slots[1]));
         if (from === null || to === null) return null;
 
         const total = (to - from + 1440) % 1440;
@@ -208,6 +504,127 @@
       function setDisabled(slot, disabled) {
         slot.cell.classList.toggle('is-disabled', disabled);
         slot.input.disabled = disabled;
+        for (const el of slot.modes.children) el.disabled = disabled;
+      }
+
+      /** The time this slot comes to today, whichever way it is set. */
+      function shownTime(slot) {
+        return slot.spec.mode === 'absolute' ? slot.input.value.slice(0, 5) : (slot.resolved || '');
+      }
+
+      /** "Sunset −30 min" for a sun event; for a device the name is in the select beside it. */
+      function describeSpec(slot) {
+        const { mode, offset } = slot.spec;
+
+        if (mode === 'device') {
+          if (!offset) return '';
+          return homey.__(offset > 0 ? 'common.minutesAfter' : 'common.minutesBefore',
+            { minutes: Math.abs(offset) });
+        }
+
+        const event = homey.__(`common.${mode}`);
+        if (!offset) return event;
+
+        return homey.__(offset > 0 ? 'common.offsetAfter' : 'common.offsetBefore',
+          { event, minutes: Math.abs(offset) });
+      }
+
+      /** The picker of Time devices, shown in place of the caption text. */
+      function renderRef(slot) {
+        const options = timeDevices.map(device => ({ value: device.id, label: device.name }));
+        const wanted = slot.spec.ref;
+
+        // A reference can outlive the device it names, or be a name typed into the
+        // settings page; either way it must stay visible rather than silently change.
+        const matches = device => device.id === wanted
+          || device.name.toLowerCase() === String(wanted || '').toLowerCase();
+        if (wanted && !timeDevices.some(matches)) options.unshift({ value: wanted, label: wanted });
+        if (!options.length) options.push({ value: '', label: homey.__('common.noTimeDevices') });
+
+        slot.ref.replaceChildren(...options.map(option => {
+          const el = document.createElement('option');
+          el.value = option.value;
+          el.textContent = option.label;
+          return el;
+        }));
+
+        const selected = timeDevices.find(matches);
+        slot.ref.value = selected ? selected.id : (wanted || '');
+      }
+
+      function renderMode(slot) {
+        const derived = slot.spec.mode !== 'absolute';
+        const followsDevice = slot.spec.mode === 'device';
+
+        for (const el of slot.modes.children) {
+          el.classList.toggle('is-on', el.dataset.mode === slot.spec.mode);
+          el.title = homey.__(`common.${MODE_LABELS[el.dataset.mode]}`);
+        }
+
+        slot.input.hidden = derived;
+        slot.sun.hidden = !derived;
+        slot.caption.hidden = !derived;
+        slot.ref.hidden = !followsDevice;
+
+        if (derived) {
+          slot.resolvedEl.textContent = slot.resolved || '--:--';
+          slot.captionText.textContent = describeSpec(slot);
+          if (followsDevice) renderRef(slot);
+        }
+
+        syncHeight();
+      }
+
+      function pickMode(slot, mode) {
+        if (mode === slot.spec.mode) return;
+        // Following a device needs one to follow; without a choice the mode is a dead end.
+        if (mode === 'device' && !timeDevices.length) {
+          flashStatus(homey.__('common.noTimeDevices'), 'error');
+          return;
+        }
+
+        // The fixed time is still stored, so switching back needs to send nothing but
+        // the mode; the resolved time arrives with the response.
+        const ref = mode === 'device' ? (slot.spec.ref || timeDevices[0].id) : slot.spec.ref;
+        slot.spec = Object.assign({}, slot.spec, { mode, ref });
+        renderMode(slot);
+        setStatus(homey.__('common.saving'));
+        clearTimeout(slot.saveTimeout);
+        slot.saveTimeout = null;
+        save(slot, mode === 'device' ? { mode, ref } : { mode });
+      }
+
+      function pickRef(slot, ref) {
+        if (ref === slot.spec.ref) return;
+
+        slot.spec = Object.assign({}, slot.spec, { ref });
+        setStatus(homey.__('common.saving'));
+        save(slot, { mode: 'device', ref });
+      }
+
+      function stepOffset(slot, delta) {
+        const next = Math.max(-OFFSET_LIMIT, Math.min(OFFSET_LIMIT, slot.spec.offset + delta));
+        if (next === slot.spec.offset) return;
+
+        // The resolved time tracks the offset one minute for one, so move it now
+        // instead of waiting for the round trip.
+        slot.resolved = shiftLocal(slot.resolved, next - slot.spec.offset);
+        slot.spec = Object.assign({}, slot.spec, { offset: next });
+        renderMode(slot);
+
+        setStatus(homey.__('common.saving'));
+        clearTimeout(slot.saveTimeout);
+        slot.saveTimeout = setTimeout(() => {
+          slot.saveTimeout = null;
+          save(slot, { offset: slot.spec.offset });
+        }, SAVE_DEBOUNCE);
+      }
+
+      function shiftLocal(time, delta) {
+        if (!TIME_PATTERN.test(time)) return time;
+
+        const total = (minutesOf(time) + delta + 1440) % 1440;
+        return `${String(Math.floor(total / 60)).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}`;
       }
 
       function describeError(err) {
@@ -232,15 +649,26 @@
         // An unset title collapses its row entirely; the subject is often implicit.
         document.getElementById('title').textContent = homey.getSettings().title || '';
         enabledState = state.enabled !== false;
+        targets = Array.isArray(state.targets) ? state.targets : targets;
         renderPower();
+        renderTargetState();
+        refreshTargetState();
+        // Keep an open picker honest when the change came from somewhere else.
+        if (!panelEl.hidden && switchable !== null) renderPicker();
         applyDays(state.days);
         syncHeight();
         for (const slot of slots) {
           if (!isSafeToReplaceValue(slot)) continue;
-          const value = state.times[slot.key];
-          slot.input.value = TIME_PATTERN.test(value) ? value : '';
+          applySlot(slot, state);
         }
         showIdleStatus();
+      }
+
+      function applySlot(slot, state) {
+        slot.spec = (state.specs && state.specs[slot.key]) || slot.spec;
+        slot.resolved = state.times[slot.key];
+        slot.input.value = TIME_PATTERN.test(slot.spec.time) ? slot.spec.time : '';
+        renderMode(slot);
       }
 
       async function refresh() {
@@ -263,19 +691,23 @@
         clearTimeout(slot.saveTimeout);
         slot.saveTimeout = setTimeout(() => {
           slot.saveTimeout = null;
-          save(slot, value);
+          save(slot, { mode: 'absolute', time: value });
         }, SAVE_DEBOUNCE);
       }
 
-      async function save(slot, value) {
+      async function save(slot, changes) {
         const seq = ++slot.saveSeq;
         slot.savesInFlight++;
 
         try {
-          await homey.api('PUT', '/time', { id: device.id, slot: slot.key, value });
+          const state = await homey.api('PUT', '/spec', { id: device.id, slot: slot.key, changes });
           if (seq !== slot.saveSeq) return;
 
-          flashStatus(homey.__('timeRange.saved', { label: slot.label.textContent, time: value }), 'success');
+          slot.spec = (state.specs && state.specs[slot.key]) || slot.spec;
+          slot.resolved = state.times[slot.key];
+          renderMode(slot);
+          flashStatus(homey.__('timeRange.saved',
+            { label: slot.label.textContent, time: shownTime(slot) || '--:--' }), 'success');
           try {
             homey.hapticFeedback();
           } catch (err) { /* not available on every platform */ }
@@ -346,13 +778,98 @@
         document.documentElement.style.colorScheme = luminance < 0.5 ? 'dark' : 'light';
       }
 
-      const powerEl = document.getElementById('power');
+      const cogEl = document.getElementById('cog');
+      const menuEl = document.getElementById('menu');
+      const menuPowerEl = document.getElementById('menu-power');
+      const menuDevicesEl = document.getElementById('menu-devices');
+      const menuDevicesLabel = document.getElementById('menu-devices-label');
+      const menuDevicesCount = document.getElementById('menu-devices-count');
+      const panelEl = document.getElementById('panel');
+      const panelSearch = document.getElementById('panel-search');
+      const panelDone = document.getElementById('panel-done');
+      const panelList = document.getElementById('panel-list');
+
+      const toggleEl = document.getElementById('toggle');
+      const togglePowerIcon = document.getElementById('toggle-power');
+      const toggleMixedIcon = document.getElementById('toggle-mixed');
+
       let enabledState = true;
+      /** The devices this range switches, and every device it could switch. */
+      let targets = [];
+      let switchable = null;
+      /** 'none' | 'unknown' | 'on' | 'off' | 'mixed' - what the targets are doing now. */
+      let targetState = 'none';
+      let stateSeq = 0;
+
+      function renderTargetState() {
+        toggleEl.hidden = targetState === 'none';
+        toggleEl.classList.toggle('is-on', targetState === 'on');
+        toggleEl.classList.toggle('is-mixed', targetState === 'mixed');
+        togglePowerIcon.hidden = targetState === 'mixed';
+        toggleMixedIcon.hidden = targetState !== 'mixed';
+        toggleEl.title = homey.__(`common.targets.${targetState}`);
+      }
+
+      async function refreshTargetState() {
+        if (targets.length === 0) {
+          targetState = 'none';
+          renderTargetState();
+          return;
+        }
+
+        const seq = ++stateSeq;
+        try {
+          const state = await homey.api('GET', `/targetstate?id=${encodeURIComponent(device.id)}`);
+          if (seq !== stateSeq) return;
+
+          targetState = state || 'unknown';
+          renderTargetState();
+        } catch (err) {
+          console.error('Time Range Picker:', err);
+        }
+      }
+
+      /** Anything but "all off" turns everything off; only all-off turns things on. */
+      async function switchAll() {
+        const value = targetState === 'off';
+        const previous = targetState;
+
+        targetState = value ? 'on' : 'off';
+        renderTargetState();
+        const seq = ++stateSeq;
+
+        try {
+          const state = await homey.api('PUT', '/switchall', { id: device.id, value });
+          if (seq !== stateSeq) return;
+
+          targetState = state || targetState;
+          renderTargetState();
+          try {
+            homey.hapticFeedback();
+          } catch (err) { /* not available on every platform */ }
+        } catch (err) {
+          if (seq !== stateSeq) return;
+          targetState = previous;
+          renderTargetState();
+          setStatus(describeError(err), 'error');
+        }
+      }
 
       function renderPower() {
-        powerEl.classList.toggle('is-on', enabledState);
-        powerEl.title = homey.__(enabledState ? 'common.pause' : 'common.resume');
-        powerEl.setAttribute('aria-pressed', String(enabledState));
+        // The cog shows no state, so pausing is announced in the status line instead.
+        cogEl.title = homey.__('common.menu');
+        menuPowerEl.textContent = homey.__(enabledState ? 'common.pause' : 'common.resume');
+        menuDevicesLabel.textContent = homey.__('common.devices');
+        menuDevicesCount.textContent = targets.length > 0 ? String(targets.length) : '';
+      }
+
+      function setMenuOpen(open) {
+        menuEl.hidden = !open;
+        cogEl.classList.toggle('is-open', open);
+      }
+
+      function toggleMenu() {
+        setMenuOpen(menuEl.hidden);
       }
 
       async function togglePower() {
@@ -365,6 +882,83 @@
           await homey.api('PUT', '/enabled', { id: device.id, enabled: next });
         } catch (err) {
           enabledState = !next;
+          renderPower();
+          setStatus(describeError(err), 'error');
+        }
+      }
+
+      // ---- the device picker ----
+
+      async function openDevices() {
+        setMenuOpen(false);
+        panelSearch.placeholder = homey.__('common.devices');
+        panelDone.textContent = homey.__('common.done');
+        panelEl.hidden = false;
+
+        if (switchable === null) {
+          panelList.textContent = homey.__('common.saving');
+          try {
+            switchable = await homey.api('GET', '/switchable') || [];
+          } catch (err) {
+            switchable = [];
+            setStatus(describeError(err), 'error');
+          }
+        }
+
+        renderPicker();
+      }
+
+      function renderPicker() {
+        const chosen = new Set(targets);
+        const needle = panelSearch.value.trim().toLowerCase();
+        // A target naming a device that is gone still gets a row, so unticking it is
+        // deliberate rather than an invisible loss.
+        const known = new Set(switchable.map(d => d.id));
+        const rows = [
+          ...switchable,
+          ...targets.filter(ref => !known.has(ref)).map(ref => ({ id: ref, name: ref, zoneName: null })),
+        ];
+
+        // A filtered-out device that is already ticked stays visible, so the count and
+        // the list never disagree.
+        const visible = rows.filter(item =>
+          needle === '' || chosen.has(item.id) || item.name.toLowerCase().includes(needle));
+
+        panelList.replaceChildren(...visible.map(item => {
+          const row = document.createElement('label');
+          row.className = 'tr-pick homey-text-small';
+
+          const box = document.createElement('input');
+          box.type = 'checkbox';
+          box.checked = chosen.has(item.id);
+          box.addEventListener('change', () => saveTargets(item.id, box));
+
+          const name = document.createElement('span');
+          name.className = 'tr-pick-name';
+          name.textContent = item.name;
+
+          const zone = document.createElement('span');
+          zone.className = 'tr-pick-zone homey-text-small-light';
+          zone.textContent = item.zoneName || '';
+
+          row.append(box, name, zone);
+          return row;
+        }));
+      }
+
+      async function saveTargets(id, box) {
+        const next = box.checked ? [...targets, id] : targets.filter(ref => ref !== id);
+        const previous = targets;
+        targets = next;
+        renderPower();
+
+        try {
+          const state = await homey.api('PUT', '/targets', { id: device.id, targets: next });
+          if (state && Array.isArray(state.targets)) targets = state.targets;
+          refreshTargetState();
+        } catch (err) {
+          targets = previous;
+          box.checked = !box.checked;
           renderPower();
           setStatus(describeError(err), 'error');
         }
@@ -401,7 +995,7 @@
           slot.label.textContent = settings[slot.labelSetting] || Homey.__(slot.defaultLabel);
 
           slot.field.addEventListener('click', event => {
-            if (event.target === slot.input || slot.input.disabled) return;
+            if (slot.spec.mode !== 'absolute' || event.target === slot.input || slot.input.disabled) return;
             slot.input.focus();
             if (typeof slot.input.showPicker === 'function') {
               try {
@@ -411,6 +1005,20 @@
           });
 
           slot.input.addEventListener('change', () => scheduleSave(slot));
+
+          slot.modes.addEventListener('click', event => {
+            const button = event.target.closest('.tr-mode');
+            if (button) pickMode(slot, button.dataset.mode);
+          });
+
+          slot.sun.addEventListener('click', event => {
+            const button = event.target.closest('.tr-step');
+            if (button) stepOffset(slot, Number(button.dataset.delta) * OFFSET_STEP);
+          });
+
+          slot.ref.addEventListener('change', () => pickRef(slot, slot.ref.value));
+
+          renderMode(slot);
         }
 
         if (device === null) {
@@ -418,17 +1026,46 @@
           renderDays();
           renderPower();
           daysEl.classList.add('is-disabled');
-          powerEl.disabled = true;
+          cogEl.disabled = true;
           setStatus(Homey.__('timeRange.pickDevice'), 'error');
           ready();
           return;
         }
 
-        powerEl.addEventListener('click', togglePower);
+        toggleEl.addEventListener('click', event => {
+          event.stopPropagation();
+          switchAll();
+        });
+        cogEl.addEventListener('click', event => {
+          event.stopPropagation();
+          toggleMenu();
+        });
+        menuPowerEl.addEventListener('click', () => {
+          setMenuOpen(false);
+          togglePower();
+        });
+        menuDevicesEl.addEventListener('click', openDevices);
+        panelDone.addEventListener('click', () => {
+          panelEl.hidden = true;
+          panelSearch.value = '';
+        });
+        panelSearch.addEventListener('input', () => renderPicker());
+        panelEl.addEventListener('click', event => event.stopPropagation());
+        // A tap anywhere else dismisses the menu, as a menu should.
+        document.addEventListener('click', () => setMenuOpen(false));
 
         // Render before measuring, or the day strip is missing from the reported height.
         renderPower();
         renderDays();
+
+        // Sent the moment the schedule switches the devices, or another widget does.
+        Homey.on('targets', payload => {
+          if (!payload || !device || payload.id !== device.id) return;
+
+          targetState = payload.state;
+          stateSeq++; // a poll already in flight must not overwrite this
+          renderTargetState();
+        });
 
         Homey.on('schedule', state => {
           if (!state || !device || state.id !== device.id) return;
@@ -436,11 +1073,31 @@
         });
 
         document.addEventListener('visibilitychange', () => {
-          if (!document.hidden) refresh();
+          if (!document.hidden) {
+            refresh();
+            refreshTargetState();
+          }
         });
+
+        // A lamp switched anywhere else must not leave the button lying for long. Homey
+        // sends no realtime event to a widget for devices this app does not own.
+        setInterval(() => {
+          if (!document.hidden) refreshTargetState();
+        }, 30_000);
 
         ready();
         refresh();
+        loadTimeDevices();
+      }
+
+      /** Fetched once: the list only changes when devices are added or removed. */
+      async function loadTimeDevices() {
+        try {
+          timeDevices = await homey.api('GET', '/timedevices') || [];
+          slots.filter(slot => slot.spec.mode === 'device').forEach(renderMode);
+        } catch (err) {
+          console.error('Time Range Picker:', err);
+        }
       }
     </script>
   </body>

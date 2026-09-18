@@ -9,7 +9,7 @@
   },
   "class": "other",
   "capabilities": [
-    "onoff",
+    "schedule_enabled",
     "schedule_time"
   ],
   "platforms": [

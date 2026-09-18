@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "The schedule is running",
+    "sv": "Schemat är igång",
+    "no": "Tidsplanen kjører",
+    "da": "Tidsplanen kører",
+    "de": "Der Zeitplan läuft",
+    "nl": "Het schema loopt"
+  },
+  "titleFormatted": {
+    "en": "The schedule of [[device]] !{{is|is not}} running",
+    "sv": "Schemat för [[device]] !{{är|är inte}} igång",
+    "no": "Tidsplanen for [[device]] !{{kjører|kjører ikke}}",
+    "da": "Tidsplanen for [[device]] !{{kører|kører ikke}}",
+    "de": "Der Zeitplan von [[device]] !{{läuft|läuft nicht}}",
+    "nl": "Het schema van [[device]] !{{loopt|loopt niet}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=time|range"
+    }
+  ]
+}

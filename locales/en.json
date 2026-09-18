@@ -8,7 +8,26 @@
     "errNoDays": "Pick at least one day",
     "paused": "Paused",
     "pause": "Pause",
-    "resume": "Resume"
+    "resume": "Resume",
+    "fixedTime": "Fixed time",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset",
+    "offsetAfter": "__event__ +__minutes__ min",
+    "offsetBefore": "__event__ −__minutes__ min",
+    "followsDevice": "A Time device",
+    "noTimeDevices": "No Time devices",
+    "minutesAfter": "+__minutes__ min",
+    "minutesBefore": "−__minutes__ min",
+    "devices": "Devices",
+    "done": "Done",
+    "menu": "Settings",
+    "targets": {
+      "none": "No devices",
+      "unknown": "State unknown",
+      "on": "All on — tap to turn off",
+      "off": "All off — tap to turn on",
+      "mixed": "Some on — tap to turn all off"
+    }
   },
   "driver": {
     "time": {
@@ -39,5 +58,12 @@
     "fri": "Fr",
     "sat": "Sa",
     "sun": "Su"
+  },
+  "settings": {
+    "intro": "Choose which devices each Time Range switches. They are turned on when the range starts and off when it ends.",
+    "none": "No devices",
+    "count": "__count__ selected",
+    "missing": "__name__ (not found)",
+    "noRanges": "Add a Time Range device first."
   }
 }

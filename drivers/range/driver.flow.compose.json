@@ -172,6 +172,248 @@
           }
         }
       ]
+    },
+    {
+      "id": "set_start_sun",
+      "title": {
+        "en": "Set the start time from the sun",
+        "sv": "Ställ in starttiden efter solen",
+        "no": "Sett starttidspunktet etter solen",
+        "da": "Indstil starttidspunktet efter solen",
+        "de": "Startzeit nach der Sonne festlegen",
+        "nl": "Stel de starttijd in op de zon"
+      },
+      "titleFormatted": {
+        "en": "Set the start time to [[event]], offset by [[offset]] minutes",
+        "sv": "Ställ in starttiden till [[event]], förskjuten [[offset]] minuter",
+        "no": "Sett starttidspunktet til [[event]], forskjøvet [[offset]] minutter",
+        "da": "Indstil starttidspunktet til [[event]], forskudt [[offset]] minutter",
+        "de": "Startzeit auf [[event]] setzen, verschoben um [[offset]] Minuten",
+        "nl": "Stel de starttijd in op [[event]], verschoven met [[offset]] minuten"
+      },
+      "args": [
+        {
+          "name": "event",
+          "type": "dropdown",
+          "title": {
+            "en": "Sun event",
+            "sv": "Solhändelse",
+            "no": "Solhendelse",
+            "da": "Solhændelse",
+            "de": "Sonnenereignis",
+            "nl": "Zonmoment"
+          },
+          "values": [
+            {
+              "id": "sunrise",
+              "title": {
+                "en": "Sunrise",
+                "sv": "Soluppgång",
+                "no": "Soloppgang",
+                "da": "Solopgang",
+                "de": "Sonnenaufgang",
+                "nl": "Zonsopkomst"
+              }
+            },
+            {
+              "id": "sunset",
+              "title": {
+                "en": "Sunset",
+                "sv": "Solnedgång",
+                "no": "Solnedgang",
+                "da": "Solnedgang",
+                "de": "Sonnenuntergang",
+                "nl": "Zonsondergang"
+              }
+            }
+          ]
+        },
+        {
+          "name": "offset",
+          "type": "number",
+          "title": {
+            "en": "Offset (minutes)",
+            "sv": "Förskjutning (minuter)",
+            "no": "Forskyvning (minutter)",
+            "da": "Forskydning (minutter)",
+            "de": "Verschiebung (Minuten)",
+            "nl": "Verschuiving (minuten)"
+          },
+          "min": -720,
+          "max": 720,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "set_end_sun",
+      "title": {
+        "en": "Set the end time from the sun",
+        "sv": "Ställ in sluttiden efter solen",
+        "no": "Sett sluttidspunktet etter solen",
+        "da": "Indstil sluttidspunktet efter solen",
+        "de": "Endzeit nach der Sonne festlegen",
+        "nl": "Stel de eindtijd in op de zon"
+      },
+      "titleFormatted": {
+        "en": "Set the end time to [[event]], offset by [[offset]] minutes",
+        "sv": "Ställ in sluttiden till [[event]], förskjuten [[offset]] minuter",
+        "no": "Sett sluttidspunktet til [[event]], forskjøvet [[offset]] minutter",
+        "da": "Indstil sluttidspunktet til [[event]], forskudt [[offset]] minutter",
+        "de": "Endzeit auf [[event]] setzen, verschoben um [[offset]] Minuten",
+        "nl": "Stel de eindtijd in op [[event]], verschoven met [[offset]] minuten"
+      },
+      "args": [
+        {
+          "name": "event",
+          "type": "dropdown",
+          "title": {
+            "en": "Sun event",
+            "sv": "Solhändelse",
+            "no": "Solhendelse",
+            "da": "Solhændelse",
+            "de": "Sonnenereignis",
+            "nl": "Zonmoment"
+          },
+          "values": [
+            {
+              "id": "sunrise",
+              "title": {
+                "en": "Sunrise",
+                "sv": "Soluppgång",
+                "no": "Soloppgang",
+                "da": "Solopgang",
+                "de": "Sonnenaufgang",
+                "nl": "Zonsopkomst"
+              }
+            },
+            {
+              "id": "sunset",
+              "title": {
+                "en": "Sunset",
+                "sv": "Solnedgång",
+                "no": "Solnedgang",
+                "da": "Solnedgang",
+                "de": "Sonnenuntergang",
+                "nl": "Zonsondergang"
+              }
+            }
+          ]
+        },
+        {
+          "name": "offset",
+          "type": "number",
+          "title": {
+            "en": "Offset (minutes)",
+            "sv": "Förskjutning (minuter)",
+            "no": "Forskyvning (minutter)",
+            "da": "Forskydning (minutter)",
+            "de": "Verschiebung (Minuten)",
+            "nl": "Verschuiving (minuten)"
+          },
+          "min": -720,
+          "max": 720,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "set_start_device",
+      "title": {
+        "en": "Set the start time from a device",
+        "sv": "Ställ in starttiden från en enhet",
+        "no": "Sett starttidspunktet fra en enhet",
+        "da": "Indstil starttidspunktet fra en enhed",
+        "de": "Startzeit von einem Gerät übernehmen",
+        "nl": "Stel de starttijd in vanaf een apparaat"
+      },
+      "titleFormatted": {
+        "en": "Set the start time to [[source]], offset by [[offset]] minutes",
+        "sv": "Ställ in starttiden till [[source]], förskjuten [[offset]] minuter",
+        "no": "Sett starttidspunktet til [[source]], forskjøvet [[offset]] minutter",
+        "da": "Indstil starttidspunktet til [[source]], forskudt [[offset]] minutter",
+        "de": "Startzeit auf [[source]] setzen, verschoben um [[offset]] Minuten",
+        "nl": "Stel de starttijd in op [[source]], verschoven met [[offset]] minuten"
+      },
+      "args": [
+        {
+          "name": "source",
+          "type": "device",
+          "title": {
+            "en": "Time device",
+            "sv": "Tid-enhet",
+            "no": "Tid-enhet",
+            "da": "Tid-enhed",
+            "de": "Zeit-Gerät",
+            "nl": "Tijd-apparaat"
+          },
+          "filter": "driver_id=time"
+        },
+        {
+          "name": "offset",
+          "type": "number",
+          "title": {
+            "en": "Offset (minutes)",
+            "sv": "Förskjutning (minuter)",
+            "no": "Forskyvning (minutter)",
+            "da": "Forskydning (minutter)",
+            "de": "Verschiebung (Minuten)",
+            "nl": "Verschuiving (minuten)"
+          },
+          "min": -720,
+          "max": 720,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "set_end_device",
+      "title": {
+        "en": "Set the end time from a device",
+        "sv": "Ställ in sluttiden från en enhet",
+        "no": "Sett sluttidspunktet fra en enhet",
+        "da": "Indstil sluttidspunktet fra en enhed",
+        "de": "Endzeit von einem Gerät übernehmen",
+        "nl": "Stel de eindtijd in vanaf een apparaat"
+      },
+      "titleFormatted": {
+        "en": "Set the end time to [[source]], offset by [[offset]] minutes",
+        "sv": "Ställ in sluttiden till [[source]], förskjuten [[offset]] minuter",
+        "no": "Sett sluttidspunktet til [[source]], forskjøvet [[offset]] minutter",
+        "da": "Indstil sluttidspunktet til [[source]], forskudt [[offset]] minutter",
+        "de": "Endzeit auf [[source]] setzen, verschoben um [[offset]] Minuten",
+        "nl": "Stel de eindtijd in op [[source]], verschoven met [[offset]] minuten"
+      },
+      "args": [
+        {
+          "name": "source",
+          "type": "device",
+          "title": {
+            "en": "Time device",
+            "sv": "Tid-enhet",
+            "no": "Tid-enhet",
+            "da": "Tid-enhed",
+            "de": "Zeit-Gerät",
+            "nl": "Tijd-apparaat"
+          },
+          "filter": "driver_id=time"
+        },
+        {
+          "name": "offset",
+          "type": "number",
+          "title": {
+            "en": "Offset (minutes)",
+            "sv": "Förskjutning (minuter)",
+            "no": "Forskyvning (minutter)",
+            "da": "Forskydning (minutter)",
+            "de": "Verschiebung (Minuten)",
+            "nl": "Verschuiving (minuten)"
+          },
+          "min": -720,
+          "max": 720,
+          "step": 1
+        }
+      ]
     }
   ]
 }

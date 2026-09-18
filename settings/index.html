@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        margin: 0;
+        padding: var(--homey-su-3, 16px);
+      }
+
+      .tt-intro {
+        margin: 0 0 var(--homey-su-4, 24px);
+      }
+
+      .tt-range {
+        margin-bottom: var(--homey-su-5, 32px);
+      }
+
+      .tt-range h2 {
+        margin: 0 0 var(--homey-su-1, 4px);
+      }
+
+      .tt-summary {
+        margin: 0 0 var(--homey-su-2, 8px);
+        color: var(--homey-text-color-light);
+      }
+
+      .tt-devices {
+        border: var(--homey-line-light, 1px solid #e6e6ea);
+        border-radius: var(--homey-border-radius-default, 8px);
+        overflow: hidden;
+      }
+
+      .tt-device {
+        display: flex;
+        align-items: center;
+        gap: var(--homey-su-2, 8px);
+        padding: var(--homey-su-2, 8px) var(--homey-su-3, 16px);
+        cursor: pointer;
+      }
+
+      .tt-device + .tt-device {
+        border-top: var(--homey-line-light, 1px solid #e6e6ea);
+      }
+
+      .tt-device input {
+        flex: none;
+        margin: 0;
+      }
+
+      .tt-device-name {
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .tt-zone {
+        color: var(--homey-text-color-light);
+        flex: none;
+      }
+
+      /* A reference that no longer matches any device, kept so it is not lost silently. */
+      .tt-orphan .tt-device-name { color: var(--homey-text-color-danger, #d3382c); }
+
+      .tt-empty, .tt-error {
+        color: var(--homey-text-color-light);
+      }
+
+      .tt-error { color: var(--homey-text-color-danger, #d3382c); }
+    </style>
+  </head>
+
+  <body class="homey-form">
+    <p class="tt-intro homey-text-small-light" id="intro"></p>
+    <div id="ranges"></div>
+
+    <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+    <script type="text/javascript">
+      function onHomeyReady(Homey) {
+        const intro = document.getElementById('intro');
+        const container = document.getElementById('ranges');
+
+        intro.textContent = Homey.__('settings.intro');
+        Homey.ready();
+
+        let devices = [];
+
+        /** Renders one range with a checkbox per switchable device. */
+        function renderRange(range) {
+          const section = document.createElement('div');
+          section.className = 'tt-range';
+
+          const title = document.createElement('h2');
+          title.className = 'homey-text-regular-bold';
+          title.textContent = range.name;
+          section.append(title);
+
+          const summary = document.createElement('p');
+          summary.className = 'tt-summary homey-text-small';
+          section.append(summary);
+
+          const list = document.createElement('div');
+          list.className = 'tt-devices';
+
+          // A target may name a device that has been deleted or renamed; show it as its
+          // own row so unticking it is a deliberate act rather than an invisible loss.
+          const known = new Set(devices.map(device => device.id));
+          const orphans = range.targets.filter(ref => !known.has(ref));
+          const rows = [
+            ...devices.map(device => ({ ...device, orphan: false })),
+            ...orphans.map(ref => ({ id: ref, name: ref, zoneName: null, orphan: true })),
+          ];
+
+          const selected = new Set(range.targets);
+
+          function updateSummary() {
+            summary.textContent = selected.size === 0
+              ? Homey.__('settings.none')
+              : Homey.__('settings.count', { count: selected.size });
+          }
+
+          for (const device of rows) {
+            const row = document.createElement('label');
+            row.className = `tt-device${device.orphan ? ' tt-orphan' : ''}`;
+
+            const box = document.createElement('input');
+            box.type = 'checkbox';
+            box.checked = selected.has(device.id);
+
+            const name = document.createElement('span');
+            name.className = 'tt-device-name';
+            name.textContent = device.orphan
+              ? Homey.__('settings.missing', { name: device.name })
+              : device.name;
+
+            const zone = document.createElement('span');
+            zone.className = 'tt-zone homey-text-small-light';
+            zone.textContent = device.zoneName || '';
+
+            box.addEventListener('change', async () => {
+              if (box.checked) selected.add(device.id);
+              else selected.delete(device.id);
+              updateSummary();
+
+              try {
+                await Homey.api('POST', '/targets', { id: range.id, targets: [...selected] });
+              } catch (err) {
+                box.checked = !box.checked;
+                if (box.checked) selected.add(device.id);
+                else selected.delete(device.id);
+                updateSummary();
+                Homey.alert(String(err.message || err));
+              }
+            });
+
+            row.append(box, name, zone);
+            list.append(row);
+          }
+
+          updateSummary();
+          section.append(list);
+
+          return section;
+        }
+
+        async function load() {
+          try {
+            const [ranges, deviceList] = await Promise.all([
+              Homey.api('GET', '/ranges'),
+              Homey.api('GET', '/devices'),
+            ]);
+            devices = deviceList || [];
+
+            if (!ranges || ranges.length === 0) {
+              container.innerHTML = '';
+              const empty = document.createElement('p');
+              empty.className = 'tt-empty homey-text-small';
+              empty.textContent = Homey.__('settings.noRanges');
+              container.append(empty);
+              return;
+            }
+
+            container.replaceChildren(...ranges.map(renderRange));
+          } catch (err) {
+            container.innerHTML = '';
+            const failed = document.createElement('p');
+            failed.className = 'tt-error homey-text-small';
+            failed.textContent = String(err.message || err);
+            container.append(failed);
+          }
+        }
+
+        load();
+      }
+    </script>
+  </body>
+</html>

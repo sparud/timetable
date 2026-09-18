@@ -1,9 +1,6 @@
 [
   {
-    "id": "time",
-    "type": "text",
-    "value": "07:00",
-    "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+    "type": "group",
     "label": {
       "en": "Time",
       "sv": "Tid",
@@ -12,14 +9,118 @@
       "de": "Zeit",
       "nl": "Tijd"
     },
-    "hint": {
-      "en": "24-hour time, HH:MM.",
-      "sv": "24-timmarsformat, HH:MM.",
-      "no": "24-timersformat, HH:MM.",
-      "da": "24-timersformat, HH:MM.",
-      "de": "24-Stunden-Format, HH:MM.",
-      "nl": "24-uursnotatie, UU:MM."
-    }
+    "children": [
+      {
+        "id": "time_mode",
+        "type": "dropdown",
+        "value": "absolute",
+        "label": {
+          "en": "Set by",
+          "sv": "Bestäms av",
+          "no": "Bestemmes av",
+          "da": "Bestemmes af",
+          "de": "Festgelegt durch",
+          "nl": "Bepaald door"
+        },
+        "hint": {
+          "en": "A fixed time, or a time that follows the sun.",
+          "sv": "En fast tid, eller en tid som följer solen.",
+          "no": "Et fast tidspunkt, eller et tidspunkt som følger solen.",
+          "da": "Et fast tidspunkt, eller et tidspunkt der følger solen.",
+          "de": "Eine feste Zeit oder eine Zeit, die der Sonne folgt.",
+          "nl": "Een vaste tijd, of een tijd die de zon volgt."
+        },
+        "values": [
+          {
+            "id": "absolute",
+            "label": {
+              "en": "A fixed time",
+              "sv": "En fast tid",
+              "no": "Et fast tidspunkt",
+              "da": "Et fast tidspunkt",
+              "de": "Eine feste Zeit",
+              "nl": "Een vaste tijd"
+            }
+          },
+          {
+            "id": "sunrise",
+            "label": {
+              "en": "Sunrise",
+              "sv": "Soluppgång",
+              "no": "Soloppgang",
+              "da": "Solopgang",
+              "de": "Sonnenaufgang",
+              "nl": "Zonsopkomst"
+            }
+          },
+          {
+            "id": "sunset",
+            "label": {
+              "en": "Sunset",
+              "sv": "Solnedgång",
+              "no": "Solnedgang",
+              "da": "Solnedgang",
+              "de": "Sonnenuntergang",
+              "nl": "Zonsondergang"
+            }
+          }
+        ]
+      },
+      {
+        "id": "time",
+        "type": "text",
+        "value": "07:00",
+        "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+        "label": {
+          "en": "Fixed time",
+          "sv": "Fast tid",
+          "no": "Fast tidspunkt",
+          "da": "Fast tidspunkt",
+          "de": "Feste Zeit",
+          "nl": "Vaste tijd"
+        },
+        "hint": {
+          "en": "24-hour time, HH:MM. Used when set by a fixed time.",
+          "sv": "24-timmarsformat, HH:MM. Används när tiden är fast.",
+          "no": "24-timersformat, HH:MM. Brukes når tidspunktet er fast.",
+          "da": "24-timersformat, HH:MM. Bruges når tidspunktet er fast.",
+          "de": "24-Stunden-Format, HH:MM. Gilt bei fester Zeit.",
+          "nl": "24-uursnotatie, UU:MM. Wordt gebruikt bij een vaste tijd."
+        }
+      },
+      {
+        "id": "time_offset",
+        "type": "number",
+        "value": 0,
+        "label": {
+          "en": "Offset",
+          "sv": "Förskjutning",
+          "no": "Forskyvning",
+          "da": "Forskydning",
+          "de": "Verschiebung",
+          "nl": "Verschuiving"
+        },
+        "hint": {
+          "en": "Minutes after sunrise or sunset; negative is before. Ignored for a fixed time.",
+          "sv": "Minuter efter soluppgång eller solnedgång; negativt är före. Ignoreras för en fast tid.",
+          "no": "Minutter etter soloppgang eller solnedgang; negativt er før. Ignoreres for et fast tidspunkt.",
+          "da": "Minutter efter solopgang eller solnedgang; negativt er før. Ignoreres ved et fast tidspunkt.",
+          "de": "Minuten nach Sonnenauf- oder -untergang; negativ bedeutet davor. Ohne Wirkung bei fester Zeit.",
+          "nl": "Minuten na zonsopkomst of zonsondergang; negatief is ervoor. Genegeerd bij een vaste tijd."
+        },
+        "units": {
+          "en": "minutes",
+          "sv": "minuter",
+          "no": "minutter",
+          "da": "minutter",
+          "de": "Minuten",
+          "nl": "minuten"
+        },
+        "min": -720,
+        "max": 720,
+        "step": 1
+      }
+    ]
   },
   {
     "type": "group",

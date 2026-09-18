@@ -1,0 +1,15 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Schedule",
+    "sv": "Schema",
+    "no": "Tidsplan",
+    "da": "Tidsplan",
+    "de": "Zeitplan",
+    "nl": "Schema"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle",
+  "insights": false
+}

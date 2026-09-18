@@ -1,5 +1,9 @@
 import Homey from 'homey';
-import { Now, WEEKDAYS, isDayEnabled, isTime, normalizeTime, shouldFire } from './time';
+import { SunTimes } from './sun';
+import {
+  Now, TimeMode, TimeSpec, WEEKDAYS, isDayEnabled, isTime, isTimeMode, normalizeOffset,
+  normalizeTime, resolveSpec, shouldFire,
+} from './time';
 
 /** One editable time on a device: a settings key paired with the capability that shows it. */
 export interface Slot {
@@ -22,13 +26,9 @@ export abstract class ScheduleDevice extends Homey.Device {
   protected abstract onDue(slot: Slot, now: Now): Promise<void>;
 
   override async onInit(): Promise<void> {
-    // Devices paired before the toggle existed do not have the capability yet.
-    if (!this.hasCapability('onoff')) await this.addCapability('onoff').catch(this.error);
-    if (typeof this.getCapabilityValue('onoff') !== 'boolean') {
-      await this.setCapabilityValue('onoff', true).catch(this.error);
-    }
+    await this.migrateEnabled();
 
-    this.registerCapabilityListener('onoff', async () => {
+    this.registerCapabilityListener('schedule_enabled', async () => {
       // Deferred so the new value is readable, as with onSettings.
       this.homey.setTimeout(() => {
         this.onTimesChanged();
@@ -46,38 +46,162 @@ export abstract class ScheduleDevice extends Homey.Device {
     }
   }
 
+  /**
+   * `onoff` used to mean "the schedule is running". It now means "the devices this range
+   * switches", which is what anyone expects from a device that owns lights - so the old
+   * value moves across to `schedule_enabled` once, for devices paired before the change.
+   */
+  private async migrateEnabled(): Promise<void> {
+    if (!this.hasCapability('schedule_enabled')) {
+      await this.addCapability('schedule_enabled').catch(this.error);
+      // Whatever onoff held was the pause flag, and it is the only record of it.
+      const legacy = this.hasCapability('onoff') ? this.getCapabilityValue('onoff') : null;
+      await this.setCapabilityValue('schedule_enabled', legacy !== false).catch(this.error);
+    }
+
+    if (typeof this.getCapabilityValue('schedule_enabled') !== 'boolean') {
+      await this.setCapabilityValue('schedule_enabled', true).catch(this.error);
+    }
+  }
+
   protected scheduleNow(): Now {
-    return (this.homey.app as unknown as { now(): Now }).now();
+    return this.scheduleApp.now();
   }
 
-  getTime(slotId: string): string | null {
-    const value = this.getSetting(slotId);
-    return isTime(value) ? value : null;
+  protected get scheduleApp() {
+    return this.homey.app as unknown as {
+      now(): Now;
+      sunTimes(date: string): SunTimes;
+      timeOfDevice(ref: string, date: string): string | null;
+      refreshDependents(device: ScheduleDevice): void;
+      switchTargets(refs: string[], value: boolean): Promise<void>;
+      targetStateOf(refs: string[]): Promise<string>;
+    };
   }
 
-  /** Single funnel for time changes, whichever way they arrive. */
-  async setTime(slotId: string, value: string): Promise<void> {
-    const time = normalizeTime(value);
-    if (time === null) throw new Error('invalid_time');
+  /**
+   * Which modes this device's slots accept. Following another device is a range's
+   * privilege: a Time device stays a leaf, so a reference cannot close a loop.
+   */
+  get supportedModes(): TimeMode[] {
+    return ['absolute', 'sunrise', 'sunset'];
+  }
+
+  /**
+   * What a slot is set to, before a date is applied. The three settings are one value:
+   * the mode chooses between the fixed time and an offset from a sun event.
+   */
+  spec(slotId: string): TimeSpec {
+    const mode = this.getSetting(`${slotId}_mode`);
+    const time = this.getSetting(slotId);
+
+    const ref = this.getSetting(`${slotId}_ref`);
+
+    return {
+      mode: isTimeMode(mode) && this.supportedModes.includes(mode) ? mode : 'absolute',
+      time: isTime(time) ? time : null,
+      offset: normalizeOffset(this.getSetting(`${slotId}_offset`)),
+      ref: typeof ref === 'string' && ref.trim() !== '' ? ref.trim() : null,
+    };
+  }
+
+  /** The clock time a slot means on the local date `date`. */
+  resolve(slotId: string, date: string): string | null {
+    const spec = this.spec(slotId);
+    const referenced = spec.mode === 'device' && spec.ref !== null
+      ? this.scheduleApp.timeOfDevice(spec.ref, date)
+      : null;
+
+    return resolveSpec(spec, this.scheduleApp.sunTimes(date), referenced);
+  }
+
+  /** The clock time a slot means today - or on whichever day `now` names. */
+  getTime(slotId: string, now: Now = this.scheduleNow()): string | null {
+    return this.resolve(slotId, now.date);
+  }
+
+  /**
+   * Single funnel for time changes, whichever way they arrive. Only the fields present
+   * in `changes` are written, so switching to sunset keeps the fixed time to come back
+   * to, and typing a fixed time keeps the offset.
+   */
+  async setSpec(slotId: string, changes: Partial<TimeSpec>): Promise<void> {
     if (!this.slots.some(slot => slot.id === slotId)) throw new Error('unknown_slot');
-    if (this.getTime(slotId) === time) return;
 
-    await this.setSettings({ [slotId]: time });
+    const current = this.spec(slotId);
+    const patch: Record<string, string | number> = {};
+
+    if (changes.time !== undefined) {
+      const time = normalizeTime(changes.time);
+      if (time === null) throw new Error('invalid_time');
+      if (time !== current.time) patch[slotId] = time;
+    }
+
+    if (changes.mode !== undefined) {
+      if (!isTimeMode(changes.mode) || !this.supportedModes.includes(changes.mode)) {
+        throw new Error('invalid_mode');
+      }
+      if (changes.mode !== current.mode) patch[`${slotId}_mode`] = changes.mode;
+    }
+
+    if (changes.ref !== undefined) {
+      const ref = typeof changes.ref === 'string' ? changes.ref.trim() : '';
+      if (ref !== (current.ref ?? '')) patch[`${slotId}_ref`] = ref;
+    }
+
+    if (changes.offset !== undefined) {
+      const offset = normalizeOffset(changes.offset);
+      if (offset !== current.offset) patch[`${slotId}_offset`] = offset;
+    }
+
+    if (Object.keys(patch).length === 0) return;
+
+    await this.setSettings(patch);
     await this.syncCapabilities();
     this.onTimesChanged();
     this.publishState();
   }
 
+  /** Sets a slot to a fixed clock time, whatever it followed before. */
+  async setTime(slotId: string, value: string): Promise<void> {
+    await this.setSpec(slotId, { mode: 'absolute', time: value });
+  }
+
   /** Tell open widgets the times moved, whoever moved them. */
   publishState(): void {
     this.homey.api.realtime('schedule', this.toWidgetState());
+    // Anything following this device has just changed too, and should not have to wait
+    // for the next tick to notice.
+    this.scheduleApp.refreshDependents(this);
+  }
+
+  /**
+   * Tells open widgets what the switched devices are now doing.
+   *
+   * A widget only receives realtime events for devices *this app owns*, and the switched
+   * devices belong to other apps - so when the schedule switches them, nothing would
+   * reach the widget and its button would sit wrong until its next poll. We know the
+   * answer at the moment we act, so we say it.
+   */
+  publishTargetState(state: string): void {
+    this.homey.api.realtime('targets', { id: this.getData().id, state });
+  }
+
+  /** Recompute because something this device follows moved. */
+  refreshFromDependency(): void {
+    this.syncCapabilities()
+      .then(() => {
+        this.onTimesChanged();
+        this.homey.api.realtime('schedule', this.toWidgetState());
+      })
+      .catch(this.error);
   }
 
   /** Pauses or resumes the schedule, keeping its times and days. */
   async setEnabled(value: boolean): Promise<void> {
     if (this.enabled === value) return;
 
-    await this.setCapabilityValue('onoff', value);
+    await this.setCapabilityValue('schedule_enabled', value);
     // setCapabilityValue does not invoke our own capability listener.
     this.onTimesChanged();
     this.publishState();
@@ -99,23 +223,29 @@ export abstract class ScheduleDevice extends Homey.Device {
     this.publishState();
   }
 
-  async syncCapabilities(): Promise<void> {
+  async syncCapabilities(now: Now = this.scheduleNow()): Promise<void> {
     for (const slot of this.slots) {
-      await this.setCapabilityValue(slot.capability, this.getTime(slot.id) ?? '--:--')
-        .catch(this.error);
+      const value = this.getTime(slot.id, now) ?? '--:--';
+      if (this.getCapabilityValue(slot.capability) === value) continue;
+
+      await this.setCapabilityValue(slot.capability, value).catch(this.error);
     }
   }
 
-  /** A disabled schedule keeps its times and days, it just stops acting on them. */
+  /** A paused schedule keeps its times and days, it just stops acting on them. */
   get enabled(): boolean {
-    return this.getCapabilityValue('onoff') !== false;
+    return this.getCapabilityValue('schedule_enabled') !== false;
   }
 
   async onTick(now: Now): Promise<void> {
+    // A sun-following slot means a different time every day, so the mirrored capability
+    // has to be refreshed as the date turns - and while paused, so the tile stays honest.
+    await this.syncCapabilities(now);
     if (!this.enabled) return;
 
     for (const slot of this.slots) {
-      if (!shouldFire(this.getTime(slot.id), this.fired[slot.id], now, this.isSlotDue(slot, now))) {
+      const target = this.getTime(slot.id, now);
+      if (!shouldFire(target, this.fired[slot.id], now, this.isSlotDue(slot, now))) {
         continue;
       }
 
@@ -131,7 +261,8 @@ export abstract class ScheduleDevice extends Homey.Device {
     changedKeys: string[];
   }): Promise<void> {
     const relevant = changedKeys.some(key =>
-      this.slots.some(slot => slot.id === key) || (WEEKDAYS as readonly string[]).includes(key));
+      this.slots.some(slot => key === slot.id || key.startsWith(`${slot.id}_`))
+      || (WEEKDAYS as readonly string[]).includes(key));
     if (!relevant) return;
 
     // setSettings() has not resolved yet, so defer until the new values are readable.
@@ -164,16 +295,25 @@ export abstract class ScheduleDevice extends Homey.Device {
     id: string;
     name: string;
     times: Record<string, string | null>;
+    specs: Record<string, TimeSpec>;
     days: string[];
     enabled: boolean;
   } {
+    const now = this.scheduleNow();
     const times: Record<string, string | null> = {};
-    for (const slot of this.slots) times[slot.id] = this.getTime(slot.id);
+    const specs: Record<string, TimeSpec> = {};
+
+    for (const slot of this.slots) {
+      // `times` is what the slot comes to today; `specs` is what the user set.
+      times[slot.id] = this.getTime(slot.id, now);
+      specs[slot.id] = this.spec(slot.id);
+    }
 
     return {
       id: this.getData().id,
       name: this.getName(),
       times,
+      specs,
       days: this.days,
       enabled: this.enabled,
     };

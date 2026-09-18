@@ -1,6 +1,6 @@
 {
   "id": "net.sparud.timetable",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "platforms": [
@@ -15,12 +15,12 @@
     "nl": "Timetable"
   },
   "description": {
-    "en": "Schedules you can edit straight from your dashboard.",
-    "sv": "Scheman du kan ändra direkt från din instrumentpanel.",
-    "no": "Tidsplaner du kan endre rett fra dashbordet.",
-    "da": "Tidsplaner du kan ændre direkte fra dit dashboard.",
-    "de": "Zeitpläne, die du direkt vom Dashboard aus änderst.",
-    "nl": "Schema’s die je rechtstreeks vanaf je dashboard aanpast."
+    "en": "Schedules that are devices: sun-aware times, and the lights they switch.",
+    "sv": "Scheman som är enheter: tider som följer solen, och lamporna de styr.",
+    "no": "Tidsplaner som er enheter: tider som følger solen, og lampene de styrer.",
+    "da": "Tidsplaner som er enheder: tider der følger solen, og lamperne de styrer.",
+    "de": "Zeitpläne als Geräte: Zeiten, die der Sonne folgen, und die Lampen, die sie schalten.",
+    "nl": "Schema's als apparaten: tijden die de zon volgen, en de lampen die ze schakelen."
   },
   "category": [
     "tools"
@@ -31,7 +31,10 @@
   "bugs": {
     "url": "https://github.com/sparud/timetable/issues"
   },
-  "permissions": [],
+  "permissions": [
+    "homey:manager:geolocation",
+    "homey:manager:api"
+  ],
   "images": {
     "small": "/assets/images/small.png",
     "large": "/assets/images/large.png",
@@ -40,5 +43,19 @@
   "author": {
     "name": "Jan Sparud",
     "email": "jan@sparud.net"
+  },
+  "api": {
+    "getRanges": {
+      "method": "GET",
+      "path": "/ranges"
+    },
+    "getDevices": {
+      "method": "GET",
+      "path": "/devices"
+    },
+    "setTargets": {
+      "method": "POST",
+      "path": "/targets"
+    }
   }
 }

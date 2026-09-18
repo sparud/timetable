@@ -1,7 +1,14 @@
+/** A slot's intent: a fixed time, or an offset from a sun event. Fields may be omitted. */
+interface TimeSpec {
+  mode?: 'absolute' | 'sunrise' | 'sunset';
+  time?: string;
+  offset?: number;
+}
+
 /** What the app exposes to its widgets. */
 interface ScheduleApp {
   getDeviceState(id: string): unknown;
-  setDeviceTime(id: string, slot: string, value: string): Promise<unknown>;
+  setDeviceSpec(id: string, slot: string, changes: TimeSpec): Promise<unknown>;
   setDeviceDays(id: string, days: string[]): Promise<unknown>;
   setDeviceEnabled(id: string, enabled: boolean): Promise<unknown>;
 }
@@ -20,9 +27,9 @@ export = {
     return app(context).getDeviceState(context.query.id);
   },
 
-  async setTime(context: Context<unknown, { id: string; slot: string; value: string }>) {
-    const { id, slot, value } = context.body;
-    return app(context).setDeviceTime(id, slot, value);
+  async setSpec(context: Context<unknown, { id: string; slot: string; changes: TimeSpec }>) {
+    const { id, slot, changes } = context.body;
+    return app(context).setDeviceSpec(id, slot, changes);
   },
 
   async setDays(context: Context<unknown, { id: string; days: string[] }>) {
