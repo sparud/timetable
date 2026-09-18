@@ -6,20 +6,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```sh
 npm install
-npm test                              # compiles, then runs test/dst.js
+npm test                              # compiles, then runs test/dst.js and test/sun.js
 npx homey app validate --level publish # always validate at publish level, not the default
 npx homey app install                 # build + install onto the selected Homey
 npx homey app run                     # dev mode with live logs (app is removed on exit)
 ./artwork/build.sh                    # regenerate all PNGs from artwork/*.svg (needs rsvg-convert)
 ```
 
-`npm test` has no filtering — `test/dst.js` is a single plain-node file of `check(name, fn)`
+`npm test` has no filtering — each test file is a single plain-node file of `check(name, fn)`
 blocks that prints a pass/fail line each. To run one case, comment out the others or add a
-name filter; there is no test framework.
+name filter; there is no test framework. `test/dst.js` covers the scheduler and weekday
+semantics; `test/sun.js` covers sunrise/sunset and how a slot resolves to a time.
 
-The tests `require('../.homeybuild/lib/time.js')` — the **compiled** output, so they exercise
+The tests `require('../.homeybuild/lib/*.js')` — the **compiled** output, so they exercise
 what actually ships. `npm test` runs `tsc` first for that reason; running `node test/dst.js`
 alone will test a stale build.
+
+`test/sun.js` asserts against **published** sunrise times for real places (Stockholm at the
+solstices, Auckland, the Kiruna midnight sun). That is deliberate: a sign error in the
+equation of time is self-consistent, so the algorithm has to be checked against something
+outside the code.
 
 ## Why this app is device-based
 
@@ -31,9 +37,22 @@ accepted and silently ignored. HomeyScript is special-cased in firmware and does
 `homey:app:com.athom.homeyscript`).
 
 Owning the devices sidesteps all of that: an app may freely write its own device settings and
-capabilities. Hence `permissions: []` in the manifest — **keep it that way**. Anything that
-would reintroduce `homey:manager:api` also reintroduces the "control everything" install
-warning for every user.
+capabilities. That is still why the scheduling core needs no permission at all.
+
+Two permissions are declared, each for one specific thing, and neither should grow:
+
+- `homey:manager:geolocation` — sunrise and sunset.
+- `homey:manager:api` — switching devices owned by other apps. Measured 2026-09-18:
+  `this.homey.api.get/post/put/delete` all throw `No permission to use ManagerApi` without it,
+  even though only `getOwnerApiToken()` and `getLocalUrl()` are documented as requiring it.
+  `realtime()` is the exception and works without it, which is why widget live-updates
+  predate this permission. There is no narrower "control devices" permission — the manifest
+  has 13 to choose from — so the "control everything" install warning is the price of
+  switching a lamp, and `homey app validate` warns that it slows store review.
+
+The app uses the Web API for exactly two things: `GET /manager/devices/device` to list
+`onoff`-capable devices, and `PUT /manager/devices/device/:id/capability/onoff` to switch
+them. Keep it to that; anything more makes the permission harder to justify in review.
 
 ## Architecture
 
@@ -44,25 +63,73 @@ timers — is what makes it survive DST, restarts and clock jumps. Devices guard
 `YYYY-MM-DDTHH:MM` key so an event fires at most once per minute, and seed that guard in
 `onInit` so restarting mid-minute cannot re-fire.
 
+**A slot is a spec, not a time.** Four settings per slot — `<slot>_mode`, `<slot>`,
+`<slot>_offset` and `<slot>_ref` — say "this fixed time", "sunrise/sunset, shifted by N minutes",
+or "whatever that Time device comes to, shifted by N minutes".
+`resolveSpec` turns that into a concrete `HH:MM` *for a given day*, so `getTime(slot, now)`
+answers "what does this come to today". `lib/sun.ts` computes the day's events locally with
+NOAA's algorithm; no dependency, no network, and null where the sun does not cross the
+horizon. The resolved time is what the capability mirrors and what the tick compares, so a
+sun-following slot moves through the year on its own. `syncCapabilities` therefore runs on
+**every tick**, not only on a write — the date turning is a change nobody notified us about.
+
+**Only a range may follow a device, and only a Time device may be followed.** That is enforced
+by `supportedModes`, which `spec()` also uses to coerce an unsupported stored mode back to
+`absolute`. The point is structural: a Time device is always a leaf, so no reference can form a
+cycle and `resolve` needs no visited-set or depth limit. Do not "just allow" Time-to-Time
+references without adding cycle detection — the resolver runs inside a 20s tick.
+
+`<slot>_ref` holds **either an id or a name**: the widget and the Flow card write the id, which
+survives a rename, while the device settings page can only offer a text field (Homey's settings
+schema has no device picker), so what is typed there is a name. `findTimeDevice` tries id first.
+
+`publishState()` calls `refreshDependents`, so a range following a device updates as soon as
+that device moves rather than on the next tick. Dependents refresh through
+`refreshFromDependency`, which deliberately does **not** call `publishState` — that would be a
+cascade if the leaf rule were ever relaxed.
+
 **Decision logic lives in `lib/time.ts` as pure functions** (`shouldFire`, `isRangeActive`,
 `isRangeEndDue`, `isDayEnabled`, `normalizeTime`) precisely so `test/dst.js` exercises the real
 code rather than a copy. Put new scheduling rules there, not inline in a device.
 
 **`lib/ScheduleDevice.ts` is the shared base.** Subclasses declare `slots` (a settings key
 paired with the capability that displays it) and implement `onDue`. All writes funnel through
-`setTime` / `setDays` / `setEnabled`, which validate, persist to **device settings**, mirror to
+`setSpec` / `setDays` / `setEnabled`, which validate, persist to **device settings**, mirror to
 capabilities, and call `publishState()`. Add new write paths through those methods or open
-widgets will not update.
+widgets will not update. `setSpec` writes only the fields it is given, which is what lets the
+widget switch to sunset without discarding the fixed time to come back to.
 
 **Times live in device settings, not capabilities.** A settable *string* capability has no
 text-input UI in Homey, so settings are the source of truth and the read-only `schedule_*`
 capabilities mirror them. That mirroring is load-bearing: Homey publishes every capability as a
 Flow tag automatically, which is the only reason the times are usable in other Flows.
 
+**A range resolves its start against the day the occurrence began.** For `sunset–sunrise`,
+the start in play at 03:00 is *yesterday's* sunset, not today's; `RangeDevice.window()` picks
+the right one before handing the pair to the pure functions. With fixed times the two are
+identical, which is why this only appeared once times could follow the sun.
+
 **Weekdays select the day a range *starts*.** For `22:00–06:00 on Monday`, the end belongs to
 Monday's occurrence and fires on Tuesday morning. Checking the weekday independently per event
 leaves the range open until the following Monday — `test/dst.js` pins this. An empty day set
 means every day.
+
+**Switching targets is edge-triggered, never enforced.** `RangeDevice.onDue` switches at the
+start and the end and at no other moment. Do not add a "make reality match the range" pass on
+the tick: it would undo a manual override within 20s, which is the single most annoying thing
+a schedule can do.
+
+**Two API surfaces, two files, and both need their routes declared.** `api.ts` at the root
+serves `/settings/index.html`; each widget has its own `widgets/*/api.ts`. Two ways to get a
+silent 404 on every call, both of which cost an afternoon once:
+
+1. The root `api.ts` must be listed in `tsconfig.json`'s `include`, or it never compiles.
+2. **App-level routes must be declared in `.homeycompose/app.json` under `api`**, keyed by
+   handler name, exactly like `widget.compose.json` does for widgets:
+   `"api": { "getRanges": { "method": "GET", "path": "/ranges" } }`. There is **no**
+   name-derived fallback — an undeclared handler is simply not routed. The `api` property is
+   absent from homey-lib's app schema, so `homey app validate` passes either way and tells you
+   nothing.
 
 **Widget → app plumbing:** `public/index.html` calls `Homey.api(...)` → `widgets/*/api.ts`
 (thin, typed structurally against `homey.app`) → methods on the app class → `ScheduleDevice`.
@@ -80,11 +147,53 @@ added automatically — that is why triggers are per-device with no run listener
 otherwise, with a message that does not obviously point at tsconfig.
 
 **Device settings use `label`; widget settings use `title`.** Mixing them fails validation.
+The same split runs through dropdowns: a *device setting* dropdown's `values` carry `label`,
+a *Flow argument* dropdown's `values` carry `title`.
 
 **Custom capabilities get tags but no Flow cards.** `schedule_*` produce tags only. *System*
 capabilities do generate cards — `onoff` gives on/off/toggle actions, an `is turned on`
 condition, `onoff_*` triggers and a tile toggle for free. Prefer a system capability when one
 fits.
+
+**The range widget's cog menu owns the top-right corner.** It replaced the power button
+there, so pausing costs one more tap but the corner now scales to more than one action. The
+device picker is an overlay (`position: absolute; inset: 0`) rather than another row, which
+keeps it out of the reported height entirely — worth preserving, the widget is already tall.
+The Time Picker deliberately still has a bare power button: a one-item menu is worse than a
+button.
+
+**`onoff` on a range is the devices it switches; `schedule_enabled` is the pause.** It was the
+other way round until the range grew targets, at which point the tile of a device that owns
+lights had to switch those lights. Consequences to keep in mind:
+
+- Homey's free on/off/toggle cards now switch the lamps, which is why the bespoke `targets_*`
+  cards were removed — two ways to do one thing is worse than none.
+- `schedule_enabled` is a custom capability, so it generates **no** cards; `pause`, `resume`
+  and the `schedule_running` condition are declared at **app level** (`.homeycompose/flow/`)
+  rather than per driver, because a driver-scoped card id must be unique app-wide and both
+  drivers need them. Their device arg is filtered `driver_id=time|range`.
+- A Time device has no targets, so it has no `onoff` at all — `onInit` removes it from devices
+  paired before the swap, and `migrateEnabled` copies the old pause value across first. That
+  migration reads `onoff` *before* the driver removes it; do not reorder those.
+- The tile value is a mirror of devices this app does not own, refreshed on a 60s throttle in
+  `onTick` and written directly after any switch. `isAnyOn` collapses the tri-state: mixed
+  reads as on, so a tap offers to turn everything off; unknown reads as off, so the tile never
+  claims a lamp is lit.
+
+**The targets button polls, but the app pushes what it knows.** A widget gets realtime events
+for devices *this app owns*, and the switched devices belong to other apps, so the state button
+refreshes on load, on `visibilitychange`, after its own writes, and on a 30s interval while
+visible. The poll alone is not enough: when the schedule itself switches the targets, the app
+knows the new state at that instant, so `publishTargetState` emits a `targets` realtime event
+rather than letting the widget sit wrong for up to 30s. Anything that switches targets must
+publish — that is the whole difference between the button feeling live and feeling broken.
+A change made *outside* the app (someone using a wall switch) is still only seen by the poll.
+`rawDevices(maxAge)` is the single fetch point behind it, so several widgets asking at once
+cost one API call; the picker accepts a 5 minute age, the state button 3 seconds.
+
+`aggregateState` keeps `unknown` distinct from `off` on purpose — all-unreachable must not
+render as "everything is off" — and `nextState` says only all-off turns things on, so mixed
+and unknown both mean "turn everything off". Both are pure and pinned in `test/sun.js`.
 
 **Widget height: render before `ready()`.** `homey.ready({height})` measures
 `document.body.scrollHeight`, so anything rendered later (the day strip arrives with the first
