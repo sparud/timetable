@@ -7,6 +7,12 @@ schedule attached.
 
 ![Time Range Picker](widgets/range-picker/preview-light.png)
 
+The evening lamps above come on at *Dusk* and go off at 23:58. *Dusk* is a device too —
+sunset plus a quarter of an hour, so it moves through the year on its own, and every
+range that follows it moves with it:
+
+![Time Picker](widgets/time-picker/preview-light.png)
+
 ## Why
 
 In Homey a schedule is normally an invisible property of a Flow: `19:25` sits inside a
@@ -75,14 +81,14 @@ within the day are exact.
 ## Sharing one time between ranges
 
 A range's start or end can also **follow a Time device**, with the same offset field. Define
-one Time device — say *Wake up*, itself following sunrise — and point as many ranges at it as
-you like; moving it moves all of them at once.
+one Time device — *Dusk* in the pictures above, itself following sunset — and point as many
+ranges at it as you like; moving it moves all of them at once.
 
 ```
-Wake up (Time, sunrise −20)
+Dusk (Time, sunset +15)
    ↑                ↑
-Kitchen          Bathroom
-(range start)    (range start +15)
+Evening lamps    Outdoor lights
+(range start)    (range start −10)
 ```
 
 Only a range can follow, and only a Time device can be followed, so a Time device is always a

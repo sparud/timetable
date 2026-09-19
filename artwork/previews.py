@@ -139,13 +139,13 @@ def time_preview(c):
     """One time, following the sun."""
     body = [
         *power(c),
-        text(190, 31, 'Porch light', 12.5, c['muted']),
+        text(190, 31, 'Dusk', 12.5, c['muted']),
         *chips(190, 42, 'sunset', c, modes=TIME_MODES),
         f'    <rect x="16" y="76" width="348" height="52" rx="10" fill="{c["field"]}" stroke="{c["line"]}"/>',
         *stepper(46, 102, c),
-        text(190, 113, '20:14', 34, c['text'], weight=700),
+        text(190, 113, '19:35', 34, c['text'], weight=700),
         *plus(334, 102, c),
-        text(190, 145, 'Sunset −30 min', 12.5, c['muted']),
+        text(190, 145, 'Sunset +15 min', 12.5, c['muted']),
         *days(190, 156, c),
     ]
     return card(194, body, c)
@@ -162,9 +162,9 @@ def range_preview(c):
         *chips(101, 62, 'device', c, width=26, height=22, gap=3, icon=15),
         f'    <rect x="16" y="92" width="170" height="44" rx="10" fill="{c["field"]}" stroke="{c["line"]}"/>',
         *stepper(38, 114, c, r=11),
-        text(101, 123, '20:14', 26, c['text'], weight=700),
+        text(101, 123, '19:35', 26, c['text'], weight=700),
         *plus(164, 114, c, r=11),
-        text(101, 151, 'Det mörknar ▾', 11.5, c['muted']),
+        text(101, 151, 'Dusk ▾', 11.5, c['muted']),
 
         text(279, 54, 'Off', 12.5, c['muted']),
         *chips(279, 62, 'absolute', c, width=26, height=22, gap=3, icon=15),
@@ -172,7 +172,7 @@ def range_preview(c):
         text(279, 123, '23:58', 26, c['text'], weight=700),
 
         *days(190, 162, c),
-        text(190, 202, '3 h 44 min', 12.5, c['muted']),
+        text(190, 202, '4 h 23 min', 12.5, c['muted']),
     ]
     return card(218, body, c)
 

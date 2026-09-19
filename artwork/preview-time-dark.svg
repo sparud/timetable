@@ -7,7 +7,7 @@
        transform="translate(346 18)">
       <path d="M8 2.5v5.5"/><path d="M4.4 4.6a5 5 0 1 0 7.2 0"/>
     </g>
-    <text x="190" y="31" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8E8E93" text-anchor="middle">Porch light</text>
+    <text x="190" y="31" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8E8E93" text-anchor="middle">Dusk</text>
     <g fill="none" stroke="#8E8E93" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(139 46) scale(0.75)"><circle cx="12" cy="12" r="8" /><path d="M12 7.5V12l3.2 2" /></g>
     <g fill="none" stroke="#8E8E93" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(181 46) scale(0.75)"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.3 2.8-2.8 2.8 2.8" /></g>
     <rect x="214" y="42" width="36" height="26" rx="6" fill="#3A3A3C"/>
@@ -15,10 +15,10 @@
     <rect x="16" y="76" width="348" height="52" rx="10" fill="#2C2C2E" stroke="#3A3A3C"/>
     <circle cx="46" cy="102" r="13" fill="#3A3A3C"/>
     <g stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round"><path d="M41 102h10"/></g>
-    <text x="190" y="113" font-family="Helvetica, Arial, sans-serif" font-size="34" font-weight="700" fill="#F5F5F7" text-anchor="middle">20:14</text>
+    <text x="190" y="113" font-family="Helvetica, Arial, sans-serif" font-size="34" font-weight="700" fill="#F5F5F7" text-anchor="middle">19:35</text>
     <circle cx="334" cy="102" r="13" fill="#3A3A3C"/>
     <g stroke="#F5F5F7" stroke-width="1.8" stroke-linecap="round"><path d="M329 102h10"/><path d="M334 97v10"/></g>
-    <text x="190" y="145" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8E8E93" text-anchor="middle">Sunset −30 min</text>
+    <text x="190" y="145" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8E8E93" text-anchor="middle">Sunset +15 min</text>
     <rect x="80" y="156" width="28" height="22" rx="6" fill="#3A3A3C"/>
     <text x="94.0" y="171.5" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#F5F5F7" text-anchor="middle">Mo</text>
     <rect x="112" y="156" width="28" height="22" rx="6" fill="#3A3A3C"/>
