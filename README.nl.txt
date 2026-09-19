@@ -14,7 +14,7 @@ DE ZON VOLGEN
 Elke tijd kan vast zijn of zonsopkomst of zonsondergang volgen, met een verschuiving in minuten — zonsondergang min 30 voor de lampen, zonsopkomst plus 15 voor de zonwering. De echte tijd van de dag rekent de Homey zelf uit, zodat het schema vanzelf met het jaar meebeweegt. Zonsondergang tot zonsopkomst is een bereik dat actief is precies zolang het donker is. Het begin of einde van een bereik kan ook een Tijd-apparaat volgen, zodat meerdere bereiken dezelfde tijd delen: verplaats het Tijd-apparaat en ze verschuiven allemaal mee.
 
 WIDGETS
-Tijdkiezer en Tijdsbereik zetten de tijden, de weekdagen en de pauzeknop op je dashboard, zodat een schema met een paar tikken is aangepast.
+Tijdkiezer en Tijdsbereik zetten de tijden, de weekdagen, de apparaten en de schakelaar op je dashboard, zodat een schema met een paar tikken is aangepast. Voeg de widget toe aan het dashboard en kies daarna in de instellingen van de widget welk apparaat hij toont — tot die tijd vraagt hij je alleen er een te kiezen. Eén widget toont één schema.
 
 APPARATEN SCHAKELEN
 Vink de apparaten aan die een bereik moet schakelen: ze gaan aan als het begint en uit als het eindigt — zonder Flow. De tegel van het bereik schakelt ze ook en laat zien wanneer sommige aan zijn en andere niet, zodat het meteen een lampgroep is die je vanaf het dashboard bewerkt. Er wordt alleen aan het begin en het einde geschakeld, nooit ertussenin, dus een lamp die je met de hand uitdoet blijft uit.

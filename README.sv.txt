@@ -14,7 +14,7 @@ FÖLJER SOLEN
 Varje tid kan vara fast eller följa soluppgången eller solnedgången, med en förskjutning i minuter — solnedgång minus 30 för lamporna, soluppgång plus 15 för persiennerna. Dagens verkliga tid räknas ut i Homeyn själv, så schemat följer med genom året av sig självt. Solnedgång till soluppgång är ett intervall som är aktivt precis när det är mörkt. Ett intervalls start eller slut kan också följa en Tid-enhet, så att flera intervall delar samma tid: flytta Tid-enheten så flyttas alla med den.
 
 WIDGETAR
-Tidsväljare och Tidsintervall lägger tiderna, veckodagarna och pausknappen på din instrumentpanel, så att ett schema kan ändras med ett par tryck.
+Tidsväljare och Tidsintervall lägger tiderna, veckodagarna, enheterna och strömbrytaren på din instrumentpanel, så att ett schema kan ändras med ett par tryck. Lägg till widgeten på panelen och välj sedan i widgetens egna inställningar vilken enhet den ska visa — tills dess ber den dig bara välja en. En widget visar ett schema.
 
 SLÅR PÅ OCH AV ENHETER
 Kryssa i enheterna ett intervall ska styra, så slås de på när det börjar och av när det slutar — helt utan flöde. Intervallets egen panelruta styr dem också och visar när några är på men inte andra, så den fungerar som en lampgrupp du redigerar från instrumentpanelen. Den agerar vid början och slutet, aldrig däremellan, så en lampa du släcker för hand lämnas i fred.

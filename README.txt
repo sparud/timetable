@@ -17,7 +17,7 @@ SWITCHING DEVICES
 Tick the devices a range should control and it turns them on when it starts and off when it ends — no Flow required. The range's own tile then switches them too, showing when some are on but not others, so it doubles as a light group you can edit from the dashboard. It acts at the start and the end and never in between, so a lamp you switch by hand is left alone.
 
 WIDGETS
-Time Picker and Time Range Picker put the times, the weekdays, the devices and the switch on your dashboard, so a schedule can be changed in a couple of taps.
+Time Picker and Time Range Picker put the times, the weekdays, the devices and the switch on your dashboard, so a schedule can be changed in a couple of taps. Add the widget to a dashboard, then open the widget's own settings and choose which device it shows — until you do, it just asks you to pick one. One widget shows one schedule.
 
 Timetable asks for two permissions. Reading Homey's location is what sunrise and sunset are computed from, on the Homey itself, with nothing sent anywhere. Full access to Homey is what lets a range switch a device owned by another app — Homey has no narrower permission for that. It is used for two things only: listing devices that can be switched, and switching the ones you picked.
 

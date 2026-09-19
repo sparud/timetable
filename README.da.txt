@@ -14,7 +14,7 @@ FØLGER SOLEN
 Hvert tidspunkt kan være fast eller følge solopgang eller solnedgang, med en forskydning i minutter — solnedgang minus 30 til lamperne, solopgang plus 15 til gardinerne. Dagens faktiske tidspunkt beregnes på Homey selv, så tidsplanen følger med året af sig selv. Solnedgang til solopgang er et interval, der er aktivt præcis mens det er mørkt. Et intervals start eller slut kan også følge en Tid-enhed, så flere intervaller deler samme tidspunkt: flyt Tid-enheden, og de flytter sig alle med den.
 
 WIDGETS
-Tidsvælger og Tidsinterval placerer tiderne, ugedagene og pauseknappen på dit dashboard, så en tidsplan kan ændres med et par tryk.
+Tidsvælger og Tidsinterval placerer tiderne, ugedagene, enhederne og kontakten på dit dashboard, så en tidsplan kan ændres med et par tryk. Tilføj widgetten til dashboardet, og vælg derefter i widgettens egne indstillinger, hvilken enhed den skal vise — indtil da beder den dig bare vælge en. Én widget viser én tidsplan.
 
 TÆNDER OG SLUKKER ENHEDER
 Sæt flueben ved de enheder et interval skal styre, så tændes de når det starter og slukkes når det slutter — helt uden flow. Intervallets egen flise styrer dem også og viser, når nogle er tændt men ikke andre, så den fungerer som en lampegruppe du redigerer fra dashboardet. Det handler ved start og slut, aldrig imellem, så en lampe du slukker manuelt får lov at være slukket.
