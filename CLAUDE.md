@@ -162,12 +162,13 @@ capabilities do generate cards — `onoff` gives on/off/toggle actions, an `is t
 condition, `onoff_*` triggers and a tile toggle for free. Prefer a system capability when one
 fits.
 
-**The range widget's cog menu owns the top-right corner.** It replaced the power button
-there, so pausing costs one more tap but the corner now scales to more than one action. The
-device picker is an overlay (`position: absolute; inset: 0`) rather than another row, which
-keeps it out of the reported height entirely — worth preserving, the widget is already tall.
-The Time Picker deliberately still has a bare power button: a one-item menu is worse than a
-button.
+**A cog owns the top-right corner of both widgets.** It replaced the power button, so pausing
+costs one more tap, but the corner scales to more than one action and the two widgets match —
+the Time Picker's menu holds only pause/resume, which is a deliberate trade of one tap for
+consistency. The range's device picker is an overlay (`position: absolute; inset: 0`) rather
+than another row, which keeps it out of the reported height entirely; worth preserving, the
+widget is already tall. The cog glyph is copied from the range widget into the Time Picker and
+into `artwork/previews.py` by reading the source, so all three cannot drift.
 
 **`onoff` on a range is the devices it switches; `schedule_enabled` is the pause.** It was the
 other way round until the range grew targets, at which point the tile of a device that owns

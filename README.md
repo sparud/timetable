@@ -184,10 +184,10 @@ sunrise, sunset, and on a range a fourth for following a Time device, which then
 dropdown of them. The `−` and `+` step the offset by five minutes, and the big number is
 always the time it comes to today.
 
-The Time Range Picker's top-right **cog** opens a small menu: pause or resume the schedule,
-and **Devices**, which is where you choose what the range switches — a searchable list of
-everything in your Homey with an on/off capability. The Time Picker keeps a plain pause
-button, having nothing else to put in a menu.
+Both widgets have a **cog** in the top-right corner. On a Time Picker its menu holds one
+entry, pause or resume the schedule; on a Time Range Picker it adds **Devices**, where you
+choose what the range switches — a searchable list of everything in your Homey with an on/off
+capability.
 
 Its top-left button shows what those devices are doing right now — lit when they are all on,
 plain when all off, and a half-filled amber circle when some are on and some are not. Tapping

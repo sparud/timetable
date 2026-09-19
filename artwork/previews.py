@@ -81,14 +81,6 @@ def plus(cx, cy, c, r=13):
     ]
 
 
-def power(c):
-    return ['    <circle cx="354" cy="26" r="15" fill="#2674F0"/>',
-            '    <g fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"',
-            '       transform="translate(346 18)">',
-            '      <path d="M8 2.5v5.5"/><path d="M4.4 4.6a5 5 0 1 0 7.2 0"/>',
-            '    </g>']
-
-
 def cog(c, cx=354):
     """The range widget's menu button, top right - the same gear the widget draws."""
     return [f'    <circle cx="{cx}" cy="26" r="15" fill="{c["chip"]}"/>',
@@ -138,7 +130,7 @@ def card(height, body, c):
 def time_preview(c):
     """One time, following the sun."""
     body = [
-        *power(c),
+        *cog(c),
         text(190, 31, 'Dusk', 12.5, c['muted']),
         *chips(190, 42, 'sunset', c, modes=TIME_MODES),
         f'    <rect x="16" y="76" width="348" height="52" rx="10" fill="{c["field"]}" stroke="{c["line"]}"/>',
