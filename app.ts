@@ -1,5 +1,4 @@
 import Homey from 'homey';
-import { HomeyAPI } from 'homey-api';
 import { ScheduleDevice } from './lib/ScheduleDevice';
 import { Coordinates, SunEvent, SunTimes, sunTimes } from './lib/sun';
 import {
@@ -8,6 +7,15 @@ import {
 } from './lib/targets';
 import { DeviceItem, TargetWatcher } from './lib/TargetWatcher';
 import { Now, TimeSpec, nowInZone } from './lib/time';
+
+/**
+ * `require('homey-api')` pulls in every Athom cloud API and parses each one's specification:
+ * measured at 8.4 MB of heap for classes this app never touches. `HomeyAPI` on its own costs
+ * 0.2 MB and lazily requires only the version `createAppAPI` resolves to.
+ */
+const HomeyAPI = require('homey-api/lib/HomeyAPI/HomeyAPI.js') as {
+  createAppAPI(opts: { homey: unknown }): Promise<any>;
+};
 
 /** How long the fetched device list is trusted. It only feeds the picker and name lookups. */
 const DEVICES_TTL = 5 * 60_000;
@@ -229,7 +237,13 @@ class TimetableApp extends Homey.App {
    * `createAppAPI` mints the session that the app's scopes hang off.
    */
   private webApi(): Promise<any> {
-    this.api_ ??= HomeyAPI.createAppAPI({ homey: this.homey });
+    // A rejected promise must not be kept: createAppAPI can fail while the Homey is still
+    // coming up, and caching that failure would leave the app without an API until restart.
+    this.api_ ??= HomeyAPI.createAppAPI({ homey: this.homey })
+      .catch((err: unknown) => {
+        this.api_ = undefined;
+        throw err;
+      });
 
     return this.api_;
   }
