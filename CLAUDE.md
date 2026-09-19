@@ -195,6 +195,13 @@ cost one API call; the picker accepts a 5 minute age, the state button 3 seconds
 render as "everything is off" — and `nextState` says only all-off turns things on, so mixed
 and unknown both mean "turn everything off". Both are pure and pinned in `test/sun.js`.
 
+**The widget previews are generated, not drawn.** `artwork/previews.py` builds the four
+mock-up SVGs and `artwork/build.sh` runs it before rasterising, so `./artwork/build.sh` is the
+only command needed. It reads the mode glyphs and the cog straight out of
+`widgets/range-picker/public/index.html`: they were restated by hand once and the preview
+silently fell a mode behind when the fourth chip arrived. Adding a mode now means adding it to
+`MODES` — the icon follows by itself.
+
 **Widget height: render before `ready()`.** `homey.ready({height})` measures
 `document.body.scrollHeight`, so anything rendered later (the day strip arrives with the first
 `/state` response) is missing from the measurement and the widget gets clipped. Both widgets

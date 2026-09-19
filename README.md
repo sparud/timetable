@@ -179,7 +179,7 @@ npm install
 npm test                 # scheduler behaviour: DST, weekday semantics, sun times
 npx homey app validate --level publish
 npx homey app install
-./artwork/build.sh       # regenerate images from SVG (needs rsvg-convert)
+./artwork/build.sh       # redraw the mock-ups and rasterise (needs rsvg-convert)
 ```
 
 Written in TypeScript. `tsconfig.json` must keep `outDir: "./.homeybuild"` — the Homey

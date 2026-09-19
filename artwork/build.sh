@@ -5,6 +5,10 @@ set -euo pipefail
 cd "$(dirname "$0")"
 root=..
 
+# Redraw the widget mock-ups first: they copy their icons from the widget source,
+# so regenerating is what keeps them from falling behind it.
+python3 previews.py
+
 png() { rsvg-convert -w "$2" -h "$3" "$1" -o "$4"; }
 
 cp icon.svg                 "$root/assets/icon.svg"

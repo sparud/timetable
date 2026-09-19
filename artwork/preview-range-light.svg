@@ -8,22 +8,24 @@
     <g fill="none" stroke="#17171A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(346 18) scale(0.667)"><circle cx="12" cy="12" r="3.2" /><path d="M19.4 14.5a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5v.2a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1h.2a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z" /></g>
     <text x="190" y="31" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8F8F94" text-anchor="middle">Evening lamps</text>
     <text x="101" y="54" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8F8F94" text-anchor="middle">On</text>
-    <g fill="none" stroke="#8F8F94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(59 65) scale(0.666667)"><circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3.2 2"/></g>
-    <g fill="none" stroke="#8F8F94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(93 65) scale(0.666667)"><path d="M3 19h18"/><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0"/><path d="M12 3.5v5.5"/><path d="m9.2 6.3 2.8-2.8 2.8 2.8"/></g>
-    <rect x="120" y="62" width="30" height="22" rx="6" fill="#EBEBEF"/>
-    <g fill="none" stroke="#17171A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(127 65) scale(0.666667)"><path d="M3 19h18"/><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0"/><path d="M12 3.5v5.5"/><path d="m9.2 6.2 2.8 2.8 2.8-2.8"/></g>
+    <g fill="none" stroke="#8F8F94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(50 65.5) scale(0.625)"><circle cx="12" cy="12" r="8" /><path d="M12 7.5V12l3.2 2" /></g>
+    <g fill="none" stroke="#8F8F94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(79 65.5) scale(0.625)"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.3 2.8-2.8 2.8 2.8" /></g>
+    <g fill="none" stroke="#8F8F94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(108 65.5) scale(0.625)"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.2 2.8 2.8 2.8-2.8" /></g>
+    <rect x="131.5" y="62" width="26" height="22" rx="6" fill="#EBEBEF"/>
+    <g fill="none" stroke="#17171A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(137 65.5) scale(0.625)"><path d="M10.5 13.5a4 4 0 0 0 5.7 0l2.3-2.3a4 4 0 0 0-5.7-5.7l-1.1 1.1" /><path d="M13.5 10.5a4 4 0 0 0-5.7 0l-2.3 2.3a4 4 0 0 0 5.7 5.7l1.1-1.1" /></g>
     <rect x="16" y="92" width="170" height="44" rx="10" fill="#F6F6F8" stroke="#E6E6EA"/>
     <circle cx="38" cy="114" r="11" fill="#EBEBEF"/>
     <g stroke="#17171A" stroke-width="1.8" stroke-linecap="round"><path d="M33 114h10"/></g>
     <text x="101" y="123" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#17171A" text-anchor="middle">20:14</text>
     <circle cx="164" cy="114" r="11" fill="#EBEBEF"/>
     <g stroke="#17171A" stroke-width="1.8" stroke-linecap="round"><path d="M159 114h10"/><path d="M164 109v10"/></g>
-    <text x="101" y="151" font-family="Helvetica, Arial, sans-serif" font-size="11.5" fill="#8F8F94" text-anchor="middle">Sunset −30 min</text>
+    <text x="101" y="151" font-family="Helvetica, Arial, sans-serif" font-size="11.5" fill="#8F8F94" text-anchor="middle">Det mörknar ▾</text>
     <text x="279" y="54" font-family="Helvetica, Arial, sans-serif" font-size="12.5" fill="#8F8F94" text-anchor="middle">Off</text>
-    <rect x="230" y="62" width="30" height="22" rx="6" fill="#EBEBEF"/>
-    <g fill="none" stroke="#17171A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(237 65) scale(0.666667)"><circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3.2 2"/></g>
-    <g fill="none" stroke="#8F8F94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(271 65) scale(0.666667)"><path d="M3 19h18"/><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0"/><path d="M12 3.5v5.5"/><path d="m9.2 6.3 2.8-2.8 2.8 2.8"/></g>
-    <g fill="none" stroke="#8F8F94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(305 65) scale(0.666667)"><path d="M3 19h18"/><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0"/><path d="M12 3.5v5.5"/><path d="m9.2 6.2 2.8 2.8 2.8-2.8"/></g>
+    <rect x="222.5" y="62" width="26" height="22" rx="6" fill="#EBEBEF"/>
+    <g fill="none" stroke="#17171A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(228 65.5) scale(0.625)"><circle cx="12" cy="12" r="8" /><path d="M12 7.5V12l3.2 2" /></g>
+    <g fill="none" stroke="#8F8F94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(257 65.5) scale(0.625)"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.3 2.8-2.8 2.8 2.8" /></g>
+    <g fill="none" stroke="#8F8F94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(286 65.5) scale(0.625)"><path d="M3 19h18" /><path d="M7.5 15.5a4.5 4.5 0 0 1 9 0" /><path d="M12 3.5v5.5" /><path d="m9.2 6.2 2.8 2.8 2.8-2.8" /></g>
+    <g fill="none" stroke="#8F8F94" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" transform="translate(315 65.5) scale(0.625)"><path d="M10.5 13.5a4 4 0 0 0 5.7 0l2.3-2.3a4 4 0 0 0-5.7-5.7l-1.1 1.1" /><path d="M13.5 10.5a4 4 0 0 0-5.7 0l-2.3 2.3a4 4 0 0 0 5.7 5.7l1.1-1.1" /></g>
     <rect x="194" y="92" width="170" height="44" rx="10" fill="#F6F6F8" stroke="#E6E6EA"/>
     <text x="279" y="123" font-family="Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#17171A" text-anchor="middle">23:58</text>
     <rect x="80" y="162" width="28" height="22" rx="6" fill="#EBEBEF"/>
