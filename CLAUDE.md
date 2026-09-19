@@ -79,6 +79,13 @@ by `supportedModes`, which `spec()` also uses to coerce an unsupported stored mo
 cycle and `resolve` needs no visited-set or depth limit. Do not "just allow" Time-to-Time
 references without adding cycle detection — the resolver runs inside a 20s tick.
 
+**Never compare a stored reference by hand** — resolve it through `matchTarget`, or
+`findTimeDevice` for a Time device. `refreshDependents` compared `spec.ref` to a bare id and a
+bare name, which was correct until references gained their `Name (id)` form, and then silently
+stopped matching: ranges kept working, because the tick recomputes them anyway, but stopped
+updating the moment the device they follow moved. A duplicated matcher is the bug; there is one
+resolver and it handles all three forms.
+
 `<slot>_ref` holds **either an id or a name**: the widget and the Flow card write the id, which
 survives a rename, while the device settings page can only offer a text field (Homey's settings
 schema has no device picker), so what is typed there is a name. `findTimeDevice` tries id first.

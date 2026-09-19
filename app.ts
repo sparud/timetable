@@ -201,13 +201,15 @@ class TimetableApp extends Homey.App {
     if (source.driver.id !== 'time') return;
 
     const id = source.getData().id;
-    const name = source.getName().toLowerCase();
 
-    for (const device of this.homey.drivers.getDriver('range').getDevices() as unknown as ScheduleDevice[]) {
+    for (const device of this.rangeDevices()) {
+      // Through the same resolver as everything else: comparing the stored string by
+      // hand is what broke this when references gained their readable `Name (id)` form.
       const follows = device.slots.some(slot => {
         const spec = device.spec(slot.id);
-        return spec.mode === 'device' && spec.ref !== null
-          && (spec.ref === id || spec.ref.toLowerCase() === name);
+        return spec.mode === 'device'
+          && spec.ref !== null
+          && this.findTimeDevice(spec.ref)?.getData().id === id;
       });
 
       if (follows) device.refreshFromDependency();
