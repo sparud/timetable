@@ -1085,11 +1085,8 @@
           }
         });
 
-        // A lamp switched anywhere else must not leave the button lying for long. Homey
-        // sends no realtime event to a widget for devices this app does not own.
-        setInterval(() => {
-          if (!document.hidden) refreshTargetState();
-        }, 30_000);
+        // No polling: the app subscribes to the switched devices and pushes a `targets`
+        // event whenever one moves, whoever moved it.
 
         ready();
         refresh();

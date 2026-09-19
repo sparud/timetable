@@ -9,16 +9,13 @@ const SLOTS: Slot[] = [
   { id: 'end', capability: 'schedule_end' },
 ];
 
-/** How often the tile's on/off is re-read from the devices it mirrors. */
-const MIRROR_MS = 60_000;
+
 
 class RangeDevice extends ScheduleDevice {
 
   override get slots(): Slot[] {
     return SLOTS;
   }
-
-  private mirroredAt = 0;
 
   /**
    * `onoff` on a range is the devices it switches, not the schedule - so the tile
@@ -29,9 +26,28 @@ class RangeDevice extends ScheduleDevice {
     await super.onInit();
 
     this.registerCapabilityListener('onoff', async (value: boolean) => this.switchTargets(value));
-    this.refreshTargetMirror(true).catch(this.error);
-    // Turns any bare ids left by an earlier version into something readable.
-    this.scheduleApp.describeReferences(this).catch(this.error);
+    // Turns any bare ids left by an earlier version into something readable, then
+    // subscribes to whatever it now points at.
+    this.scheduleApp.describeReferences(this)
+      .then(() => this.scheduleApp.syncWatchedTargets())
+      .then(() => this.refreshTargetMirror())
+      .catch(this.error);
+  }
+
+  override async onSettings(event: {
+    oldSettings: Record<string, unknown>;
+    newSettings: Record<string, unknown>;
+    changedKeys: string[];
+  }): Promise<void> {
+    await super.onSettings(event);
+
+    if (event.changedKeys.includes('targets')) {
+      this.homey.setTimeout(() => {
+        this.scheduleApp.syncWatchedTargets()
+          .then(() => this.refreshTargetMirror())
+          .catch(this.error);
+      }, 0);
+    }
   }
 
   /** A range may also follow a Time device, so several ranges can share one time. */
@@ -97,10 +113,9 @@ class RangeDevice extends ScheduleDevice {
     }
 
     await this.scheduleApp.switchTargets(refs, value).catch(this.error);
-    this.publishTargetState(value ? 'on' : 'off');
 
-    // We just decided the answer, so do not make the next mirror read discover it.
-    this.mirroredAt = Date.now();
+    // Say what we asked for straight away; the subscriptions will confirm or correct it.
+    this.publishTargetState(value ? 'on' : 'off');
     await this.setMirror(value);
   }
 
@@ -110,14 +125,18 @@ class RangeDevice extends ScheduleDevice {
     await this.refreshTargetMirror();
   }
 
-  /**
-   * Keeps the tile in step with devices this app does not own and gets no events for.
-   * Throttled: every tick would mean an API round trip three times a minute, forever.
-   */
-  private async refreshTargetMirror(force = false): Promise<void> {
-    if (!force && Date.now() - this.mirroredAt < MIRROR_MS) return;
-    this.mirroredAt = Date.now();
+  /** A watched device moved: correct the tile and tell any open widget. */
+  refreshFromTargets(): void {
+    this.refreshTargetMirror()
+      .then(() => this.publishTargetState(this.getCapabilityValue('onoff') ? 'on' : 'off'))
+      .catch(this.error);
+  }
 
+  /**
+   * Brings the tile in line with the devices it mirrors. Cheap now that the values come
+   * from subscriptions rather than a request, so it runs on every tick as a backstop.
+   */
+  private async refreshTargetMirror(): Promise<void> {
     const refs = parseTargets(this.getSetting('targets'));
     const state = refs.length === 0
       ? 'off'

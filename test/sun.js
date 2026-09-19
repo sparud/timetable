@@ -10,6 +10,7 @@ const assert = require('assert');
 const { sunTimes } = require('../.homeybuild/lib/sun.js');
 const { aggregateState, formatRef, formatTargets, isAnyOn, matchTarget,
         parseTargets, splitRef } = require('../.homeybuild/lib/targets.js');
+const { diffKeys } = require('../.homeybuild/lib/TargetWatcher.js');
 const { isRangeActive, isRangeEndDue, isTimeMode, nowInZone, normalizeOffset, previousDate,
         resolveSpec, shiftTime, shouldFire, timeOf } = require('../.homeybuild/lib/time.js');
 
@@ -229,6 +230,15 @@ check('the tile shows on whenever anything is on', () => {
   assert.strictEqual(isAnyOn('off'), false);
   assert.strictEqual(isAnyOn('unknown'), false, 'never claim a lamp is lit');
   assert.strictEqual(isAnyOn('none'), false);
+});
+
+check('subscriptions are opened and closed to match what is targeted', () => {
+  assert.deepStrictEqual(diffKeys([], ['a', 'b']), { add: ['a', 'b'], remove: [] });
+  assert.deepStrictEqual(diffKeys(['a', 'b'], ['b']), { add: [], remove: ['a'] });
+  assert.deepStrictEqual(diffKeys(['a'], ['a']), { add: [], remove: [] }, 'no churn when unchanged');
+  assert.deepStrictEqual(diffKeys(['a'], ['b']), { add: ['b'], remove: ['a'] });
+  // Two ranges sharing a lamp must not open it twice, nor close it when one lets go.
+  assert.deepStrictEqual(diffKeys(['a'], ['a', 'a']), { add: [], remove: [] });
 });
 
 // --- the whole scheduler, on a sun-following slot ----------------------------

@@ -4,13 +4,16 @@ import { ScheduleDevice } from './lib/ScheduleDevice';
 import { Coordinates, SunEvent, SunTimes, sunTimes } from './lib/sun';
 import {
   SwitchableDevice, TargetState, aggregateState, formatRef, formatTargets, matchTarget,
-  parseTargets,
+  parseTargets, splitRef,
 } from './lib/targets';
+import { DeviceItem, TargetWatcher } from './lib/TargetWatcher';
 import { Now, TimeSpec, nowInZone } from './lib/time';
 
-/** How long a fetched device list is trusted: long for the picker, briefly for values. */
+/** How long the fetched device list is trusted. It only feeds the picker and name lookups. */
 const DEVICES_TTL = 5 * 60_000;
-const VALUES_TTL = 3_000;
+
+/** How often watched values are re-read from the Homey, in case a subscription went quiet. */
+const RESYNC_MS = 15 * 60_000;
 
 /** What the Web API returns per device, of which this app uses very little. */
 interface RawDevice {
@@ -32,6 +35,7 @@ const DRIVERS = ['time', 'range'] as const;
 class TimetableApp extends Homey.App {
 
   private ticker?: NodeJS.Timeout;
+  private resyncer?: NodeJS.Timeout;
 
   override async onInit(): Promise<void> {
     for (const driverId of DRIVERS) {
@@ -90,11 +94,18 @@ class TimetableApp extends Homey.App {
       this.onTick().catch(err => this.error('Tick failed:', err));
     }, TICK_MS);
 
+    this.resyncer = this.homey.setInterval(() => {
+      this.targetWatcher().resync().catch(err => this.error('Target resync failed:', err));
+    }, RESYNC_MS);
+
     this.log('Timetable has been initialized');
   }
 
   override async onUninit(): Promise<void> {
-    if (this.ticker) this.homey.clearTimeout(this.ticker);
+    if (this.ticker) this.homey.clearInterval(this.ticker);
+    if (this.resyncer) this.homey.clearInterval(this.resyncer);
+    // Orphaned subscriptions are exactly the resource cost this was meant to remove.
+    this.watcher?.destroy();
   }
 
   /** The wall clock, in Homey's own timezone. */
@@ -255,18 +266,68 @@ class TimetableApp extends Homey.App {
     return list;
   }
 
-  /** The combined state of some targets, for the widget's on/off button. */
+  // ---- watching what the targets are doing ----
+
+  private watcher?: TargetWatcher;
+
+  private targetWatcher(): TargetWatcher {
+    this.watcher ??= new TargetWatcher({
+      devices: async (fresh: boolean) => {
+        const api = await this.webApi();
+        return api.devices.getDevices(fresh ? { $cache: false } : undefined) as Promise<Record<string, DeviceItem>>;
+      },
+      onChange: id => this.onTargetChanged(id),
+      error: (...args: unknown[]) => this.error(...args),
+    });
+
+    return this.watcher;
+  }
+
+  /** The id a stored reference points at, without a round trip where possible. */
+  private refToId(ref: string): string | null {
+    const { id } = splitRef(ref);
+    if (id !== null) return id;
+
+    // A bare name, typed into device settings, still needs the list to resolve.
+    return this.devices_ ? matchTarget(this.devices_.list, ref)?.id ?? null : null;
+  }
+
+  private rangeDevices(): ScheduleDevice[] {
+    return this.homey.drivers.getDriver('range').getDevices() as unknown as ScheduleDevice[];
+  }
+
+  private targetIdsOf(device: ScheduleDevice): string[] {
+    return parseTargets(device.getSetting('targets'))
+      .map(ref => this.refToId(ref))
+      .filter((id): id is string => id !== null);
+  }
+
+  /** Subscribes to exactly the devices the ranges switch, and nothing else. */
+  async syncWatchedTargets(): Promise<void> {
+    const ids = new Set(this.rangeDevices().flatMap(device => this.targetIdsOf(device)));
+
+    await this.targetWatcher().sync([...ids])
+      .catch(err => this.error('Could not watch the switched devices:', err));
+  }
+
+  /** A watched device moved, so every range showing it is now out of date. */
+  private onTargetChanged(id: string): void {
+    for (const device of this.rangeDevices()) {
+      if (this.targetIdsOf(device).includes(id)) {
+        (device as unknown as { refreshFromTargets(): void }).refreshFromTargets();
+      }
+    }
+  }
+
+  /** The combined state of some targets, read from the subscriptions rather than fetched. */
   async targetStateOf(refs: string[]): Promise<TargetState> {
     if (refs.length === 0) return 'none';
 
-    const devices = await this.rawDevices(VALUES_TTL).catch(err => {
-      this.error('Could not read device states:', err);
-      return [] as RawDevice[];
-    });
+    const watcher = this.targetWatcher();
 
     return aggregateState(refs.map(ref => {
-      const value = matchTarget(devices, ref)?.capabilitiesObj?.onoff?.value;
-      return typeof value === 'boolean' ? value : null;
+      const id = this.refToId(ref);
+      return id === null ? null : watcher.value(id);
     }));
   }
 
@@ -356,6 +417,7 @@ class TimetableApp extends Homey.App {
     });
 
     await device.setSettings({ targets: formatTargets(described) });
+    await this.syncWatchedTargets();
 
     return parseTargets(device.getSetting('targets'));
   }

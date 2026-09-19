@@ -195,9 +195,10 @@ turns everything on only when everything is off; from any other state, including
 turns everything off. It is hidden entirely when the range switches nothing.
 
 Changes made anywhere — widget, device settings, the app's settings page, or a Flow action —
-show up in an open widget immediately. A device switched from somewhere else entirely, by a
-Flow of your own or a wall switch, is picked up within half a minute: Homey sends a widget no
-events for devices this app does not own, so that corner button polls.
+show up in an open widget immediately. So does a lamp switched from somewhere else entirely,
+by a Flow of your own or at the wall: the app subscribes to the on/off of exactly the devices
+your ranges switch, so the corner button follows within about a second without polling
+anything.
 
 ## Development
 

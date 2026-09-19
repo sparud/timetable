@@ -180,6 +180,45 @@ lights had to switch those lights. Consequences to keep in mind:
   reads as on, so a tap offers to turn everything off; unknown reads as off, so the tile never
   claims a lamp is lit.
 
+**The switched devices are subscribed to, not polled.** `lib/TargetWatcher.ts` holds one
+`makeCapabilityInstance('onoff', …)` per target device, shared by every range that targets it
+and opened only for devices a user picked — subscribing to all 85 devices in a house to render
+one button is the cost this exists to avoid. `targetStateOf` then reads values from memory, so
+refreshing the tile is free and runs on every tick as a backstop.
+
+Three things that are load-bearing:
+
+- **Seed on subscribe.** An instance reports *changes*, not the state it starts in, so `sync`
+  takes the value from the device item it subscribed through.
+- **`resync()` passes `$cache: false`.** Once connected, homey-api serves reads from a cache
+  kept live by those same events, so a safety re-read through the normal path would only ever
+  confirm itself. It runs every 15 minutes, against a subscription that stopped delivering
+  without disconnecting.
+- **Destroy on the way out.** `sync` closes instances for devices no longer targeted and
+  `onUninit` closes the rest. Leaked subscriptions across app restarts are the exact resource
+  problem this replaced.
+
+Anything that changes a range's `targets` must call `syncWatchedTargets`, or the new devices
+are stored but never watched.
+
+**`onoff` on a range is the devices it switches; `schedule_enabled` is the pause.** It was the
+other way round until the range grew targets, at which point the tile of a device that owns
+lights had to switch those lights. Consequences to keep in mind:
+
+- Homey's free on/off/toggle cards now switch the lamps, which is why the bespoke `targets_*`
+  cards were removed — two ways to do one thing is worse than none.
+- `schedule_enabled` is a custom capability, so it generates **no** cards; `pause`, `resume`
+  and the `schedule_running` condition are declared at **app level** (`.homeycompose/flow/`)
+  rather than per driver, because a driver-scoped card id must be unique app-wide and both
+  drivers need them. Their device arg is filtered `driver_id=time|range`.
+- A Time device has no targets, so it has no `onoff` at all — `onInit` removes it from devices
+  paired before the swap, and `migrateEnabled` copies the old pause value across first. That
+  migration reads `onoff` *before* the driver removes it; do not reorder those.
+- The tile value is a mirror of devices this app does not own, refreshed on a 60s throttle in
+  `onTick` and written directly after any switch. `isAnyOn` collapses the tri-state: mixed
+  reads as on, so a tap offers to turn everything off; unknown reads as off, so the tile never
+  claims a lamp is lit.
+
 **The targets button polls, but the app pushes what it knows.** A widget gets realtime events
 for devices *this app owns*, and the switched devices belong to other apps, so the state button
 refreshes on load, on `visibilitychange`, after its own writes, and on a 30s interval while

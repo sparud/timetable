@@ -77,6 +77,7 @@ export abstract class ScheduleDevice extends Homey.Device {
       switchTargets(refs: string[], value: boolean): Promise<void>;
       targetStateOf(refs: string[]): Promise<string>;
       describeReferences(device: ScheduleDevice): Promise<void>;
+      syncWatchedTargets(): Promise<void>;
     };
   }
 
