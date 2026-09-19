@@ -189,7 +189,9 @@ class TimetableApp extends Homey.App {
     }
 
     const refs = parseTargets(device.getSetting('targets'));
-    if (refs.length > 0) {
+    // References that already carry an id need no lookup, which is the case after the
+    // first run - so a restart costs no device fetch at all.
+    if (refs.some(ref => splitRef(ref).id === null || splitRef(ref).name === '')) {
       const devices = await this.switchableDevices().catch(() => [] as SwitchableDevice[]);
       const described = refs.map(ref => {
         const found = matchTarget(devices, ref);
@@ -226,7 +228,7 @@ class TimetableApp extends Homey.App {
 
   // ---- switching other devices ----
 
-  private devices_?: { at: number; list: RawDevice[] };
+  private devices_?: { at: number; list: SwitchableDevice[] };
   private api_?: Promise<any>;
 
   /**
@@ -254,28 +256,23 @@ class TimetableApp extends Homey.App {
    * Cached, because a range asks for it each time it opens or closes and the answer only
    * changes when devices are added, removed or renamed.
    */
-  async switchableDevices(refresh = false): Promise<SwitchableDevice[]> {
-    const devices = await this.rawDevices(refresh ? 0 : DEVICES_TTL);
-
-    return devices
-      .map(device => ({ id: device.id, name: device.name, zone: device.zone ?? null }))
-      .sort((a, b) => a.name.localeCompare(b.name));
-  }
-
   /**
-   * Every `onoff`-capable device, with its current value.
+   * Every `onoff`-capable device, for the picker and for resolving names.
    *
-   * One fetch serves both readers: the picker, which only wants names and may be minutes
-   * stale, and the widget's state button, which wants values and must not be. `maxAge`
-   * lets each say what it can live with, and coalesces bursts from several widgets.
+   * Only the three fields a picker needs are kept. Holding the full records meant 85
+   * devices' worth of capability objects staying live for the lifetime of the app, to
+   * render a list of checkboxes.
    */
-  private async rawDevices(maxAge: number): Promise<RawDevice[]> {
+  async switchableDevices(refresh = false): Promise<SwitchableDevice[]> {
+    const maxAge = refresh ? 0 : DEVICES_TTL;
     if (this.devices_ && Date.now() - this.devices_.at <= maxAge) return this.devices_.list;
 
     const api = await this.webApi();
-    const response = await api.devices.getDevices() as Record<string, RawDevice>;
+    const response = await api.devices.getDevices({ $updateCache: false }) as Record<string, RawDevice>;
     const list = Object.values(response ?? {})
-      .filter(device => (device.capabilities ?? []).includes('onoff'));
+      .filter(device => (device.capabilities ?? []).includes('onoff'))
+      .map(device => ({ id: device.id, name: device.name, zone: device.zone ?? null }))
+      .sort((a, b) => a.name.localeCompare(b.name));
 
     this.devices_ = { at: Date.now(), list };
 
@@ -288,9 +285,9 @@ class TimetableApp extends Homey.App {
 
   private targetWatcher(): TargetWatcher {
     this.watcher ??= new TargetWatcher({
-      devices: async (fresh: boolean) => {
+      device: async (id: string, fresh: boolean) => {
         const api = await this.webApi();
-        return api.devices.getDevices(fresh ? { $cache: false } : undefined) as Promise<Record<string, DeviceItem>>;
+        return api.devices.getDevice(fresh ? { id, $cache: false } : { id }) as Promise<DeviceItem>;
       },
       onChange: id => this.onTargetChanged(id),
       error: (...args: unknown[]) => this.error(...args),

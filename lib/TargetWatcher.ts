@@ -22,8 +22,12 @@ export interface DeviceItem {
 }
 
 export interface WatcherOptions {
-  /** `fresh` bypasses homey-api's cache, which is otherwise live but only while connected. */
-  devices(fresh: boolean): Promise<Record<string, DeviceItem>>;
+  /**
+   * One device, by id. Deliberately not the whole list: fetching all of them to subscribe
+   * to a handful parses a payload the size of the house, and that peak is what grows the
+   * process. `fresh` bypasses any cache.
+   */
+  device(id: string, fresh: boolean): Promise<DeviceItem | null>;
   onChange(id: string, value: boolean | null): void;
   error(...args: unknown[]): void;
 }
@@ -66,11 +70,11 @@ export class TargetWatcher {
       this.watched.delete(id);
     }
 
-    if (add.length === 0) return;
-
-    const devices = await this.options.devices(false);
     for (const id of add) {
-      const device = devices[id];
+      const device = await this.options.device(id, false).catch(err => {
+        this.options.error(`Could not watch ${id}:`, err);
+        return null;
+      });
       if (!device) continue;
 
       // The seed matters: a subscription reports changes, not the state it starts in.
@@ -88,9 +92,9 @@ export class TargetWatcher {
   async resync(): Promise<void> {
     if (this.watched.size === 0) return;
 
-    const devices = await this.options.devices(true);
     for (const [id, entry] of this.watched) {
-      const value = asBoolean(devices[id]?.capabilitiesObj?.onoff?.value);
+      const device = await this.options.device(id, true).catch(() => null);
+      const value = asBoolean(device?.capabilitiesObj?.onoff?.value);
       if (value !== entry.value) {
         entry.value = value;
         this.options.onChange(id, value);

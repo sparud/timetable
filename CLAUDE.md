@@ -187,6 +187,17 @@ lights had to switch those lights. Consequences to keep in mind:
   reads as on, so a tap offers to turn everything off; unknown reads as off, so the tile never
   claims a lamp is lit.
 
+**Fetch one device, not all of them.** `TargetWatcher` takes a `device(id)` rather than a
+device list, and `describeReferences` skips the list entirely when every reference already
+carries an id — which it does after the first run. A restart therefore fetches no device list
+at all. Measured on a house with 85 devices: parsing that payload and keeping the records live
+was 3 MB of heap and a much larger transient peak, which is what grows a Node process's RSS.
+`switchableDevices` still fetches the lot, because a picker needs it, but keeps only id, name
+and zone and passes `$updateCache: false`.
+
+`process.memoryUsage()` throws `ENOENT: uv_resident_set_memory` inside the app sandbox; use
+`v8.getHeapStatistics()`. The heap limit for an app is 70 MB, and this one runs at about 13.
+
 **The switched devices are subscribed to, not polled.** `lib/TargetWatcher.ts` holds one
 `makeCapabilityInstance('onoff', …)` per target device, shared by every range that targets it
 and opened only for devices a user picked — subscribing to all 85 devices in a house to render
