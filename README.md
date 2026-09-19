@@ -13,6 +13,27 @@ range that follows it moves with it:
 
 ![Time Picker](widgets/time-picker/preview-light.png)
 
+## Getting started
+
+The pictures above are two **widgets**, each showing one **device**. Those are separate
+things, and the widget is the optional half: a schedule works perfectly well without one,
+through its device settings, its tile and its Flow cards. The widget is how you put it
+somewhere the household can reach it.
+
+1. **Add a device.** *Devices → ✚ → Timetable →* **Time** or **Time Range**. Name it after
+   what it schedules rather than when — *Dusk*, *Evening lamps* — because the time is the
+   part that will change.
+2. **Set its times.** Open the device and use its settings: a fixed `HH:MM`, or sunrise or
+   sunset with an offset. A range also asks for an end, and for the devices it switches.
+3. **Put it on a dashboard**, if you want it there. *Edit the dashboard → add a widget →*
+   **Time Picker** for a Time device, **Time Range Picker** for a range. A freshly added
+   widget shows *"Pick a Time device in the settings"* and nothing else until you open the
+   widget's own settings and choose which device it shows. That step is the one people
+   miss: adding the widget does not attach it to anything by itself.
+
+One widget shows one device, so a household with three schedules on the wall has three
+widgets. There is no widget that lists them all.
+
 ## Why
 
 In Homey a schedule is normally an invisible property of a Flow: `19:25` sits inside a
