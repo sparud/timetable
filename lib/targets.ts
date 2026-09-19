@@ -29,15 +29,42 @@ export function formatTargets(refs: string[]): string {
   return parseTargets(refs.join(',')).join(', ');
 }
 
+/** A device id as it appears at the end of a stored reference. */
+const TRAILING_ID = /\(\s*([0-9a-fA-F-]{36})\s*\)\s*$/;
+
+/**
+ * Splits a stored reference into the parts worth matching on.
+ *
+ * References are written as `Name (id)`, which reads in the settings page while still
+ * surviving a rename, because the id is what resolves. Bare ids and bare names both
+ * still parse: the first is what earlier versions stored, the second is what someone
+ * types by hand.
+ */
+export function splitRef(ref: string): { id: string | null; name: string } {
+  const match = TRAILING_ID.exec(ref);
+
+  return match
+    ? { id: match[1], name: ref.slice(0, match.index).trim() }
+    : { id: null, name: ref.trim() };
+}
+
+/** How a reference is stored once the app knows which device is meant. */
+export function formatRef(device: { id: string; name: string }): string {
+  // Commas separate the target list, so a name carrying one cannot go in verbatim.
+  return `${device.name.replace(/,/g, ' ')} (${device.id})`;
+}
+
 /** Finds the device a stored reference means: by id, else by name, case-insensitively. */
 export function matchTarget<T extends { id: string; name: string }>(
   devices: T[],
   ref: string,
 ): T | undefined {
-  const needle = ref.trim().toLowerCase();
+  const { id, name } = splitRef(ref);
+  const needle = name.toLowerCase();
 
-  return devices.find(device => device.id === ref)
-    ?? devices.find(device => device.name.toLowerCase() === needle);
+  return (id === null ? undefined : devices.find(device => device.id === id))
+    ?? devices.find(device => device.id === name)
+    ?? (needle === '' ? undefined : devices.find(device => device.name.toLowerCase() === needle));
 }
 
 /**

@@ -3,7 +3,8 @@ import { HomeyAPI } from 'homey-api';
 import { ScheduleDevice } from './lib/ScheduleDevice';
 import { Coordinates, SunEvent, SunTimes, sunTimes } from './lib/sun';
 import {
-  SwitchableDevice, TargetState, aggregateState, formatTargets, matchTarget, parseTargets,
+  SwitchableDevice, TargetState, aggregateState, formatRef, formatTargets, matchTarget,
+  parseTargets,
 } from './lib/targets';
 import { Now, TimeSpec, nowInZone } from './lib/time';
 
@@ -137,17 +138,48 @@ class TimetableApp extends Homey.App {
   }
 
   private findTimeDevice(ref: string): ScheduleDevice | undefined {
-    const devices = this.homey.drivers.getDriver('time').getDevices() as unknown as ScheduleDevice[];
-    const needle = ref.trim().toLowerCase();
+    const devices = this.listTimeDevices();
+    const match = matchTarget(devices, ref);
 
-    return devices.find(device => device.getData().id === ref)
-      ?? devices.find(device => device.getName().toLowerCase() === needle);
+    return match ? devices.find(device => device.id === match.id)?.device : undefined;
   }
 
-  /** Every Time device, for the widget's picker. */
+  /** Every Time device, for the widget's picker and for resolving references. */
   listTimeDevices() {
     return (this.homey.drivers.getDriver('time').getDevices() as unknown as ScheduleDevice[])
-      .map(device => ({ id: device.getData().id, name: device.getName() }));
+      .map(device => ({ id: device.getData().id, name: device.getName(), device }));
+  }
+
+  /**
+   * Rewrites a device's stored references into `Name (id)`.
+   *
+   * The id alone is what the widget and the Flow cards know, and an id alone is what the
+   * settings page then showed - four UUIDs in a text field tell you nothing. Resolving
+   * them once, here, is the only place that knows both halves.
+   */
+  async describeReferences(device: ScheduleDevice): Promise<void> {
+    const patch: Record<string, string> = {};
+
+    for (const slot of device.slots) {
+      // Described whatever the mode, so the field still reads if the mode changes later.
+      const spec = device.spec(slot.id);
+      if (spec.ref === null) continue;
+
+      const found = matchTarget(this.listTimeDevices(), spec.ref);
+      if (found && formatRef(found) !== spec.ref) patch[`${slot.id}_ref`] = formatRef(found);
+    }
+
+    const refs = parseTargets(device.getSetting('targets'));
+    if (refs.length > 0) {
+      const devices = await this.switchableDevices().catch(() => [] as SwitchableDevice[]);
+      const described = refs.map(ref => {
+        const found = matchTarget(devices, ref);
+        return found ? formatRef(found) : ref;
+      });
+      if (formatTargets(described) !== formatTargets(refs)) patch.targets = formatTargets(described);
+    }
+
+    if (Object.keys(patch).length > 0) await device.setSettings(patch).catch(this.error);
   }
 
   /**
@@ -317,7 +349,13 @@ class TimetableApp extends Homey.App {
 
   async setRangeTargets(id: string, refs: string[]) {
     const device = this.findDevice(id);
-    await device.setSettings({ targets: formatTargets(refs) });
+    const devices = await this.switchableDevices().catch(() => [] as SwitchableDevice[]);
+    const described = refs.map(ref => {
+      const found = matchTarget(devices, ref);
+      return found ? formatRef(found) : ref;
+    });
+
+    await device.setSettings({ targets: formatTargets(described) });
 
     return parseTargets(device.getSetting('targets'));
   }
@@ -391,6 +429,13 @@ class TimetableApp extends Homey.App {
 
   async setDeviceSpec(id: string, slot: string, changes: Partial<TimeSpec>) {
     const device = this.findDevice(id);
+
+    // The widget sends a bare id; store it with the name so the settings page reads.
+    if (typeof changes.ref === 'string') {
+      const found = matchTarget(this.listTimeDevices(), changes.ref);
+      if (found) changes = { ...changes, ref: formatRef(found) };
+    }
+
     await device.setSpec(slot, changes);
 
     return device.toWidgetState();

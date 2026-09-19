@@ -30,6 +30,8 @@ class RangeDevice extends ScheduleDevice {
 
     this.registerCapabilityListener('onoff', async (value: boolean) => this.switchTargets(value));
     this.refreshTargetMirror(true).catch(this.error);
+    // Turns any bare ids left by an earlier version into something readable.
+    this.scheduleApp.describeReferences(this).catch(this.error);
   }
 
   /** A range may also follow a Time device, so several ranges can share one time. */

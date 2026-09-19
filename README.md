@@ -25,8 +25,10 @@ A single moment in the day.
 | | |
 |---|---|
 | Settings | `Set by` (fixed time, sunrise or sunset), `Fixed time` (`HH:MM`), `Offset`, repeat weekdays |
+| Tile | A `Schedule` toggle, which pauses and resumes it |
 | Trigger | **The time is reached** — carries a `Time` tag |
-| Actions | **Set the time** — accepts a literal time or a tag; **Set the time from the sun** |
+| Actions | **Set the time** — accepts a literal time or a tag; **Set the time from the sun**; **Pause** / **Resume the schedule** |
+| Condition | **The schedule is running** |
 | Tags | `Time` — the time it comes to today |
 
 ### Time Range
@@ -40,10 +42,10 @@ reading is **Within range**, which the device keeps up to date on its own.
 | | |
 |---|---|
 | Settings | `Start` and `End`, each a fixed time, an offset from sunrise or sunset, or another Time device; devices to switch; repeat weekdays |
-| Tile | On/off switches the connected devices; pausing the schedule lives on its own toggle |
+| Tile | On/off switches the connected devices; a separate `Schedule` toggle pauses the schedule |
 | Triggers | **The range starts**, **The range ends** — each carries a `Time` tag |
-| Condition | **The time is / is not within the range** |
-| Actions | **Set the start time**, **Set the end time**, the same two **from the sun** and **from a device**; Homey's own **on / off / toggle** switch the connected devices |
+| Conditions | **The time is / is not within the range**; **The schedule is running** |
+| Actions | **Set the start time**, **Set the end time**, the same two **from the sun** and **from a device**; **Pause** / **Resume the schedule**; Homey's own **on / off / toggle** switch the connected devices |
 | Tags | `Start`, `End`, `Within range` |
 
 A typical pair of Flows:
@@ -89,10 +91,11 @@ still decide which days it runs, and pausing the followed device stops that devi
 own trigger without moving the ranges that point at it. A reference to a device that no longer
 exists resolves to nothing, exactly like a polar night — `--:--`, and it does not fire.
 
-Pick the device in the widget or in the **Set the start time from a device** Flow card, both of
-which store its id and so survive a rename. The device's own settings page has no device picker
-— Homey's settings schema has no such field — so there you type the name instead, which does
-mean a rename breaks a reference made that way.
+Pick the device in the widget's `Set by` strip, or in the **Set the start time from a device**
+Flow card. The device's own settings page has no device picker — Homey's settings schema has no
+such field — so the reference is stored as `Det mörknar (6f8ed1f4-…)`: readable there, and still
+resolved by the id, so renaming the followed device does not break it. Typing a bare name into
+that field works too, and is the one form a rename *does* break.
 
 ## Switching devices without a Flow
 
@@ -117,9 +120,9 @@ start and at its end and never in between, so a lamp you switch off by hand insi
 stays off instead of being corrected on the next tick. A paused range switches nothing. If
 one device is unreachable the rest are still switched, and the failure is logged.
 
-The device settings page also has a plain `Devices` field taking comma-separated names, for
-when you would rather not open the app settings; the picker writes ids, which survive a
-rename, while a name typed by hand does not.
+The device settings page also has a plain `Devices` field, a comma-separated list in the same
+`Name (id)` form, for when you would rather not open a picker. Typing bare names there works
+as well.
 
 ## Behaviour worth knowing
 
@@ -132,10 +135,11 @@ that begins on Monday, and it closes on Tuesday morning. Judging each end on its
 calendar day would leave the range open until the following Monday. Leave every day
 unticked to repeat daily.
 
-**Pausing keeps everything.** The `onoff` toggle stops the device acting on its times
+**Pausing keeps everything.** The `Schedule` toggle stops the device acting on its times
 without losing them, so pausing over a holiday does not cost you your weekday selection.
 Pausing a range that is currently running forces **Within range** to false but does *not*
-fire **The range ends** — disable means *stop scheduling*, not *run the end action now*.
+fire **The range ends** — pausing means *stop scheduling*, not *run the end action now*. It
+also leaves the connected devices alone; a paused range's on/off still works by hand.
 
 **Times are read in Homey's own timezone**, compared against the wall clock on every
 tick. That is what makes the scheduler survive daylight-saving changes, restarts and
@@ -145,20 +149,28 @@ once, not twice.
 
 ## Widgets
 
-**Time Picker** and **Time Range Picker** put the times, the weekday strip and the controls
-on the dashboard. Pick which device a widget edits in its settings.
+**Time Picker** and **Time Range Picker** put the times, the weekday strip and the controls on
+the dashboard. A widget's own settings choose *which schedule it shows* — that is all they do.
+
+Everything else is edited in the widget itself. Each time has a `Set by` strip — clock,
+sunrise, sunset, and on a range a fourth for following a Time device, which then offers a
+dropdown of them. The `−` and `+` step the offset by five minutes, and the big number is
+always the time it comes to today.
 
 The Time Range Picker's top-right **cog** opens a small menu: pause or resume the schedule,
-and choose the devices it switches. The Time Picker keeps a plain pause button, having
-nothing else to put in a menu.
+and **Devices**, which is where you choose what the range switches — a searchable list of
+everything in your Homey with an on/off capability. The Time Picker keeps a plain pause
+button, having nothing else to put in a menu.
 
 Its top-left button shows what those devices are doing right now — lit when they are all on,
 plain when all off, and a half-filled amber circle when some are on and some are not. Tapping
 turns everything on only when everything is off; from any other state, including mixed, it
 turns everything off. It is hidden entirely when the range switches nothing.
 
-Changes made anywhere — widget, device settings, or a Flow action — show up in an open
-widget immediately.
+Changes made anywhere — widget, device settings, the app's settings page, or a Flow action —
+show up in an open widget immediately. A device switched from somewhere else entirely, by a
+Flow of your own or a wall switch, is picked up within half a minute: Homey sends a widget no
+events for devices this app does not own, so that corner button polls.
 
 ## Development
 

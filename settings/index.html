@@ -87,6 +87,12 @@
 
         let devices = [];
 
+        /** Stored references read `Name (id)`; the checkboxes work in plain ids. */
+        function refId(ref) {
+          const match = /\(\s*([0-9a-fA-F-]{36})\s*\)\s*$/.exec(String(ref || ''));
+          return match ? match[1] : String(ref || '').trim();
+        }
+
         /** Renders one range with a checkbox per switchable device. */
         function renderRange(range) {
           const section = document.createElement('div');
@@ -182,7 +188,9 @@
               return;
             }
 
-            container.replaceChildren(...ranges.map(renderRange));
+            container.replaceChildren(...ranges.map(range => renderRange({
+              ...range, targets: (range.targets || []).map(refId),
+            })));
           } catch (err) {
             container.innerHTML = '';
             const failed = document.createElement('p');

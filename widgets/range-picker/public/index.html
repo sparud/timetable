@@ -457,6 +457,12 @@
         resolved: null,
       }));
 
+      /** Stored references read `Name (id)`; the pickers work in plain ids. */
+      function refId(ref) {
+        const match = /\(\s*([0-9a-fA-F-]{36})\s*\)\s*$/.exec(String(ref || ''));
+        return match ? match[1] : String(ref || '').trim();
+      }
+
       /** Every Time device, for the reference picker; empty until the first fetch lands. */
       let timeDevices = [];
 
@@ -532,7 +538,7 @@
       /** The picker of Time devices, shown in place of the caption text. */
       function renderRef(slot) {
         const options = timeDevices.map(device => ({ value: device.id, label: device.name }));
-        const wanted = slot.spec.ref;
+        const wanted = slot.spec.ref === null ? null : refId(slot.spec.ref);
 
         // A reference can outlive the device it names, or be a name typed into the
         // settings page; either way it must stay visible rather than silently change.
@@ -649,7 +655,7 @@
         // An unset title collapses its row entirely; the subject is often implicit.
         document.getElementById('title').textContent = homey.getSettings().title || '';
         enabledState = state.enabled !== false;
-        targets = Array.isArray(state.targets) ? state.targets : targets;
+        targets = Array.isArray(state.targets) ? state.targets.map(refId) : targets;
         renderPower();
         renderTargetState();
         refreshTargetState();
@@ -954,7 +960,7 @@
 
         try {
           const state = await homey.api('PUT', '/targets', { id: device.id, targets: next });
-          if (state && Array.isArray(state.targets)) targets = state.targets;
+          if (state && Array.isArray(state.targets)) targets = state.targets.map(refId);
           refreshTargetState();
         } catch (err) {
           targets = previous;

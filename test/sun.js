@@ -8,8 +8,8 @@
  */
 const assert = require('assert');
 const { sunTimes } = require('../.homeybuild/lib/sun.js');
-const { aggregateState, formatTargets, isAnyOn, matchTarget,
-        parseTargets } = require('../.homeybuild/lib/targets.js');
+const { aggregateState, formatRef, formatTargets, isAnyOn, matchTarget,
+        parseTargets, splitRef } = require('../.homeybuild/lib/targets.js');
 const { isRangeActive, isRangeEndDue, isTimeMode, nowInZone, normalizeOffset, previousDate,
         resolveSpec, shiftTime, shouldFire, timeOf } = require('../.homeybuild/lib/time.js');
 
@@ -178,6 +178,28 @@ check('targets parse from one comma-separated setting', () => {
 check('targets round-trip through the setting unchanged', () => {
   const refs = ['abc-123', 'Porch light'];
   assert.deepStrictEqual(parseTargets(formatTargets(refs)), refs);
+});
+
+check('a reference is stored readably and still matched by id', () => {
+  const device = { id: 'abc-123', name: 'Porch light' };
+  assert.strictEqual(formatRef(device), 'Porch light (abc-123)');
+  assert.deepStrictEqual(splitRef('Porch light (11111111-2222-3333-4444-555555555555)'),
+    { id: '11111111-2222-3333-4444-555555555555', name: 'Porch light' });
+  assert.deepStrictEqual(splitRef('  Wake up  '), { id: null, name: 'Wake up' });
+  // A name carrying a comma would split the target list in two.
+  assert.strictEqual(formatRef({ id: 'x', name: 'Lamp, kitchen' }), 'Lamp  kitchen (x)');
+});
+
+check('a renamed device is still found through its stored id', () => {
+  const stored = 'Old name (11111111-2222-3333-4444-555555555555)';
+  const devices = [{ id: '11111111-2222-3333-4444-555555555555', name: 'New name' }];
+  assert.strictEqual(matchTarget(devices, stored).name, 'New name');
+});
+
+check('references written by earlier versions still resolve', () => {
+  const devices = [{ id: 'abc-123', name: 'Porch light' }];
+  assert.strictEqual(matchTarget(devices, 'abc-123')?.id, 'abc-123', 'a bare id');
+  assert.strictEqual(matchTarget(devices, 'Porch light')?.id, 'abc-123', 'a bare name');
 });
 
 check('a target matches by id first, then by name', () => {

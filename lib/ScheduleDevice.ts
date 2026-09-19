@@ -76,6 +76,7 @@ export abstract class ScheduleDevice extends Homey.Device {
       refreshDependents(device: ScheduleDevice): void;
       switchTargets(refs: string[], value: boolean): Promise<void>;
       targetStateOf(refs: string[]): Promise<string>;
+      describeReferences(device: ScheduleDevice): Promise<void>;
     };
   }
 
