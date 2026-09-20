@@ -353,31 +353,49 @@ class TimetableApp extends Homey.App {
   }
 
   /**
-   * Switches every target, and keeps going when one fails: an unreachable lamp must not
-   * stop the rest of the range from happening.
+   * Switches every target at once.
+   *
+   * Awaiting each in turn made four lamps in one room come on over about six seconds,
+   * which reads as a stagger rather than a switch. Each write is caught on its own, so
+   * an unreachable device still cannot stop the rest of the range from happening.
    */
   async switchTargets(refs: string[], value: boolean): Promise<void> {
     if (refs.length === 0) return;
 
-    const devices = await this.switchableDevices().catch(err => {
-      this.error('Could not list devices to switch:', err);
-      return [] as SwitchableDevice[];
-    });
+    const [api, targets] = await Promise.all([this.webApi(), this.resolveTargets(refs)]);
 
-    const api = await this.webApi();
+    await Promise.all(targets.map(target => api.devices
+      .setCapabilityValue({ deviceId: target.id, capabilityId: 'onoff', value })
+      .then(() => this.log(`Switched ${target.name} ${value ? 'on' : 'off'}`))
+      .catch((err: unknown) => this.error(`Could not switch ${target.name}:`, err))));
+  }
 
-    for (const ref of refs) {
-      const device = matchTarget(devices, ref);
-      if (!device) {
+  /**
+   * The id and name behind each stored reference.
+   *
+   * The device list is only fetched if some reference is a bare name, which after the
+   * first run none of them are - so firing a range costs no lookup before it acts.
+   */
+  private async resolveTargets(refs: string[]): Promise<Array<{ id: string; name: string }>> {
+    const devices = refs.some(ref => splitRef(ref).id === null)
+      ? await this.switchableDevices().catch(err => {
+        this.error('Could not list devices to switch:', err);
+        return [] as SwitchableDevice[];
+      })
+      : [];
+
+    return refs.flatMap(ref => {
+      const { id, name } = splitRef(ref);
+      if (id !== null) return [{ id, name: name || id }];
+
+      const found = matchTarget(devices, ref);
+      if (!found) {
         this.error(`No switchable device matches "${ref}"`);
-        continue;
+        return [];
       }
 
-      await api.devices
-        .setCapabilityValue({ deviceId: device.id, capabilityId: 'onoff', value })
-        .then(() => this.log(`Switched ${device.name} ${value ? 'on' : 'off'}`))
-        .catch((err: unknown) => this.error(`Could not switch ${device.name}:`, err));
-    }
+      return [{ id: found.id, name: found.name }];
+    });
   }
 
   // ---- app settings page ----
