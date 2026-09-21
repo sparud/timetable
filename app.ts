@@ -353,21 +353,29 @@ class TimetableApp extends Homey.App {
   }
 
   /**
-   * Switches every target at once.
+   * Switches every target, one after another.
    *
-   * Awaiting each in turn made four lamps in one room come on over about six seconds,
-   * which reads as a stagger rather than a switch. Each write is caught on its own, so
-   * an unreachable device still cannot stop the rest of the range from happening.
+   * Sequential on purpose. Firing all four writes at once was tried, to lose the stagger
+   * of about a second per lamp, and the first two nights of it each lost one lamp: the
+   * Plejd cloud app acknowledged the burst but one command never reached its lamp, and
+   * at the next end none of the four was acknowledged within the client's 10s timeout.
+   * The same lamps had switched every night for two weeks when written to in turn, so
+   * the stagger is what the driver behind them needs.
+   *
+   * Each write is caught on its own, so an unreachable device still cannot stop the rest
+   * of the range from happening.
    */
   async switchTargets(refs: string[], value: boolean): Promise<void> {
     if (refs.length === 0) return;
 
     const [api, targets] = await Promise.all([this.webApi(), this.resolveTargets(refs)]);
 
-    await Promise.all(targets.map(target => api.devices
-      .setCapabilityValue({ deviceId: target.id, capabilityId: 'onoff', value })
-      .then(() => this.log(`Switched ${target.name} ${value ? 'on' : 'off'}`))
-      .catch((err: unknown) => this.error(`Could not switch ${target.name}:`, err))));
+    for (const target of targets) {
+      await api.devices
+        .setCapabilityValue({ deviceId: target.id, capabilityId: 'onoff', value })
+        .then(() => this.log(`Switched ${target.name} ${value ? 'on' : 'off'}`))
+        .catch((err: unknown) => this.error(`Could not switch ${target.name}:`, err));
+    }
   }
 
   /**
